@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TM&Partners | Recupero Fondi Professionale</title>
+    <style>
+        /* IMPOSTAZIONI GENERALI */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+            line-height: 1.6;
+        }
+
+        /* COLORI PROFESSIONALI */
+        :root {
+            --primary: #0f3b5e;
+            --primary-dark: #0a2a42;
+            --primary-light: #1e4f7a;
+            --secondary: #c89f4c;
+            --secondary-light: #d8b16a;
+            --accent: #e74c3c;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --gray-100: #f8fafc;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-400: #94a3b8;
+            --gray-500: #64748b;
+            --gray-600: #475569;
+            --gray-700: #334155;
+            --gray-800: #1e293b;
+            --white: #ffffff;
+            --shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            --shadow-hover: 0 20px 50px rgba(0, 59, 94, 0.15);
+        }
+
+        /* HEADER E NAVIGAZIONE */
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: var(--shadow);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-icon {
+            font-size: 2rem;
+            font-weight: 700;
+            background: var(--secondary);
+            color: var(--primary);
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            transform: rotate(-5deg);
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+        }
+
+        .logo-text span {
+            color: var(--secondary);
+            font-weight: 300;
+            font-size: 1rem;
+            display: block;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: rgba(255,255,255,0.9);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--secondary);
+        }
+
+        .nav-links a.active {
+            color: var(--secondary);
+            border-bottom: 2px solid var(--secondary);
+            padding-bottom: 0.25rem;
+        }
+
+        .btn-login {
+            background: var(--secondary);
+            color: var(--primary) !important;
+            padding: 0.6rem 1.5rem !important;
+            border-radius: 50px;
+            font-weight: 600 !important;
+        }
+
+        .btn-login:hover {
+            background: var(--secondary-light);
+            color: var(--primary-dark) !important;
+        }
+
+        /* MAIN CONTENT */
+        .main-content {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        /* HERO SECTION */
+        .hero {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            border-radius: 30px;
+            padding: 4rem;
+            color: white;
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 600px;
+            height: 600px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 50%;
+        }
+
+        .hero::after {
+            content: "";
+            position: absolute;
+            bottom: -30%;
+            left: -5%;
+            width: 400px;
+            height: 400px;
+            background: rgba(200,159,76,0.1);
+            border-radius: 50%;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 600px;
+        }
+
+        .hero h1 {
+            font-size: 3.2rem;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero h1 span {
+            color: var(--secondary);
+            display: block;
+            font-size: 2rem;
+            font-weight: 400;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 3rem;
+            margin-top: 2rem;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--secondary);
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* SEZIONE FORM RICHIESTA */
+        .section-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--gray-500);
+            max-width: 700px;
+            margin: 0 auto 3rem auto;
+        }
+
+        .form-container {
+            background: white;
+            border-radius: 30px;
+            padding: 3rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 4rem;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group.full-width {
+            grid-column: span 2;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--gray-700);
+            font-size: 0.95rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 1rem 1.2rem;
+            border: 2px solid var(--gray-200);
+            border-radius: 15px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(15,59,94,0.1);
+        }
+
+        .form-control.error {
+            border-color: var(--accent);
+        }
+
+        .error-message {
+            color: var(--accent);
+            font-size: 0.85rem;
+            margin-top: 0.3rem;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .checkbox-group input {
+            width: 20px;
+            height: 20px;
+            accent-color: var(--primary);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .btn-secondary {
+            background: var(--secondary);
+            color: var(--primary);
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background: var(--secondary-light);
+            transform: translateY(-2px);
+        }
+
+        /* AREA PERSONALE */
+        .dashboard-container {
+            display: none;
+            background: white;
+            border-radius: 30px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            margin-top: 2rem;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid var(--gray-200);
+        }
+
+        .welcome-message {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .client-badge {
+            background: var(--gray-100);
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 500;
+            color: var(--gray-600);
+        }
+
+        .case-status {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .status-card {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid var(--gray-200);
+        }
+
+        .status-card.pending {
+            border-left: 5px solid var(--warning);
+        }
+
+        .status-card.recovered {
+            border-left: 5px solid var(--success);
+        }
+
+        .status-title {
+            font-size: 1.2rem;
+            color: var(--gray-500);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .amount-large {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .amount-large small {
+            font-size: 1rem;
+            color: var(--gray-400);
+            font-weight: 400;
+        }
+
+        .progress-bar {
+            background: var(--gray-200);
+            height: 10px;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+            height: 100%;
+            width: 0%;
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+
+        /* TABELLA TRANSAZIONI */
+        .transactions-section {
+            margin-top: 2rem;
+        }
+
+        .transactions-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .transactions-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+        }
+
+        .transactions-table th {
+            background: var(--primary);
+            color: white;
+            font-weight: 600;
+            font-size: 0.9rem;
+            padding: 1.2rem 1rem;
+            text-align: left;
+        }
+
+        .transactions-table td {
+            padding: 1.2rem 1rem;
+            border-bottom: 1px solid var(--gray-200);
+            color: var(--gray-600);
+        }
+
+        .transactions-table tr:hover td {
+            background: var(--gray-100);
+        }
+
+        .status-badge {
+            padding: 0.4rem 1rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .status-badge.pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-badge.completed {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-badge.processing {
+            background: #cce5ff;
+            color: #004085;
+        }
+
+        .commission-box {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            border-radius: 20px;
+            padding: 2rem;
+            color: white;
+            margin: 2rem 0;
+        }
+
+        .commission-box h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: var(--secondary);
+        }
+
+        .commission-details {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .commission-amount {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .commission-note {
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+
+        /* CARDS SERVIZI */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin: 4rem 0;
+        }
+
+        .service-card {
+            background: white;
+            border-radius: 25px;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            border: 1px solid var(--gray-200);
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .service-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .service-card h3 {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .service-card p {
+            color: var(--gray-500);
+            margin-bottom: 1.5rem;
+        }
+
+        .service-features {
+            list-style: none;
+            text-align: left;
+            margin-top: 1.5rem;
+        }
+
+        .service-features li {
+            padding: 0.5rem 0;
+            color: var(--gray-600);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .service-features li::before {
+            content: "✓";
+            color: var(--success);
+            font-weight: 700;
+        }
+
+        /* FOOTER */
+        .footer {
+            background: var(--primary-dark);
+            color: white;
+            padding: 4rem 0 2rem 0;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 3rem;
+        }
+
+        .footer-column h4 {
+            color: var(--secondary);
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-column ul li a {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-column ul li a:hover {
+            color: var(--secondary);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            margin-top: 3rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.5);
+            font-size: 0.9rem;
+        }
+
+        /* NOTIFICHE */
+        .notification {
+            position: fixed;
+            top: 100px;
+            right: 30px;
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            max-width: 400px;
+            z-index: 2000;
+            display: none;
+            border-left: 5px solid var(--success);
+        }
+
+        .notification.show {
+            display: block;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-group.full-width {
+                grid-column: span 1;
+            }
+            
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .case-status {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .commission-details {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="header">
+        <div class="nav-container">
+            <div class="logo">
+                <div class="logo-icon">TM</div>
+                <div class="logo-text">
+                    TM&Partners
+                    <span>Fund Recovery Specialists</span>
+                </div>
+            </div>
+            <div class="nav-links">
+                <a href="#" class="active">Home</a>
+                <a href="#">Servizi</a>
+                <a href="#">Come Funziona</a>
+                <a href="#">Casi di Successo</a>
+                <a href="#">Contatti</a>
+                <a href="#" class="btn-login" onclick="showLogin(event)">Area Personale</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- NOTIFICA -->
+    <div class="notification" id="notification">
+        <strong style="color: var(--success); font-size: 1.2rem;">✓ Richiesta Inviata!</strong>
+        <p style="margin-top: 0.5rem;">La tua pratica è stata registrata. Controlla la tua area personale per i dettagli.</p>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+        <!-- HERO SECTION -->
+        <section class="hero">
+            <div class="hero-content">
+                <h1>
+                    Recupero Fondi Professionale
+                    <span>No Win, No Fee</span>
+                </h1>
+                <p>Recuperiamo i tuoi fondi persi in transazioni crypto, frodi o errori bancari. Zero costi anticipati, paghi solo a successo ottenuto.</p>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <div class="stat-number">€15M+</div>
+                        <div class="stat-label">Fondi Recuperati</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">98%</div>
+                        <div class="stat-label">Tasso Successo</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">1.200+</div>
+                        <div class="stat-label">Clienti Soddisfatti</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FORM RICHIESTA -->
+        <div class="form-container" id="requestForm">
+            <h2 class="section-title">Inizia la tua pratica di recupero</h2>
+            <p class="section-subtitle">Compila il form con i dettagli della tua situazione. Ti contatteremo entro 24 ore con una valutazione preliminare.</p>
+            
+            <form id="recoveryForm">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">Nome e Cognome</label>
+                        <input type="text" class="form-control" id="nome" placeholder="Mario Rossi" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Codice Fiscale</label>
+                        <input type="text" class="form-control" id="cf" placeholder="RSSMRA80A01H501X" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" placeholder="mario.rossi@email.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Telefono</label>
+                        <input type="tel" class="form-control" id="telefono" placeholder="+39 123 456 7890" required>
+                    </div>
+                    <div class="form-group full-width">
+                        <label class="form-label">Tipo di Problema</label>
+                        <select class="form-control" id="tipo" required>
+                            <option value="">Seleziona...</option>
+                            <option value="crypto">Transazione crypto bloccata / persa</option>
+                            <option value="frode">Vittima di frode / truffa</option>
+                            <option value="bonifico">Bonifico non ricevuto / bloccato</option>
+                            <option value="wallet">Accesso perso a wallet</option>
+                            <option value="altro">Altro</option>
+                        </select>
+                    </div>
+                    <div class="form-group full-width">
+                        <label class="form-label">Importo da Recuperare (USD/€)</label>
+                        <input type="text" class="form-control" id="importo" placeholder="es. 44.240,89" required>
+                    </div>
+                    <div class="form-group full-width">
+                        <label class="form-label">Descrizione Dettagliata</label>
+                        <textarea class="form-control" id="descrizione" rows="4" placeholder="Descrivi la tua situazione nel dettaglio..." required></textarea>
+                    </div>
+                    <div class="form-group full-width">
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="privacy" required>
+                            <label for="privacy">Ho letto e accetto l'informativa sulla privacy e i termini del servizio *</label>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn-primary">INVIA RICHIESTA DI RECUPERO</button>
+            </form>
+        </div>
+
+        <!-- AREA PERSONALE (inizialmente nascosta) -->
+        <div class="dashboard-container" id="dashboard">
+            <div class="dashboard-header">
+                <div class="welcome-message" id="welcomeMessage"></div>
+                <div class="client-badge" id="clientBadge"></div>
+            </div>
+
+            <!-- STATO PRATICA -->
+            <div class="case-status">
+                <div class="status-card pending">
+                    <div class="status-title">
+                        <span>⏳</span> Importo in fase di recupero
+                    </div>
+                    <div class="amount-large" id="recoveryAmount">€ 44.240,89</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill" style="width: 75%;"></div>
+                    </div>
+                    <p>75% completato - Verifica finale in corso</p>
+                </div>
+                <div class="status-card recovered">
+                    <div class="status-title">
+                        <span>✓</span> Importo recuperato
+                    </div>
+                    <div class="amount-large" id="recoveredAmount">€ 33.180,67</div>
+                    <p>Accreditato sul conto in data 26/02/2026</p>
+                </div>
+            </div>
+
+            <!-- BOX COMMISSIONE -->
+            <div class="commission-box">
+                <h3>💰 Commissione di Successo (7%)</h3>
+                <div class="commission-details">
+                    <div>
+                        <div class="commission-amount" id="commissionAmount">€ 2.316,85</div>
+                        <div class="commission-note">Da saldare entro 7 giorni dall'accredito finale</div>
+                    </div>
+                    <button class="btn-secondary" onclick="payCommission()">PAGA ORA</button>
+                </div>
+            </div>
+
+            <!-- TABELLA TRANSAZIONI -->
+            <div class="transactions-section">
+                <h3 class="transactions-title">📋 Dettaglio Transazioni</h3>
+                <table class="transactions-table">
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Hash Transazione</th>
+                            <th>Importo</th>
+                            <th>Stato</th>
+                            <th>Link</th>
+                        </tr>
+                    </thead>
+                    <tbody id="transactionsList">
+                        <tr>
+                            <td>24/02/2026</td>
+                            <td><small>0x614f...c4617</small></td>
+                            <td>€ 1.052,21</td>
+                            <td><span class="status-badge completed">Completato</span></td>
+                            <td><a href="#" style="color: var(--primary);">🔍</a></td>
+                        </tr>
+                        <tr>
+                            <td>24/02/2026</td>
+                            <td><small>0xa97f...b356</small></td>
+                            <td>€ 29.688,16</td>
+                            <td><span class="status-badge completed">Completato</span></td>
+                            <td><a href="#" style="color: var(--primary);">🔍</a></td>
+                        </tr>
+                        <tr>
+                            <td>24/02/2026</td>
+                            <td><small>0x1c66...ba30</small></td>
+                            <td>€ 13.500,50</td>
+                            <td><span class="status-badge processing">In elaborazione</span></td>
+                            <td><a href="#" style="color: var(--primary);">🔍</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- SERVIZI -->
+        <section>
+            <h2 class="section-title">I nostri servizi</h2>
+            <p class="section-subtitle">Operiamo con successo in diversi ambiti di recupero fondi, sempre con la garanzia "No Win, No Fee"</p>
+            
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">🪙</div>
+                    <h3>Crypto & Blockchain</h3>
+                    <p>Recupero di transazioni crypto bloccate, perse o inviate per errore</p>
+                    <ul class="service-features">
+                        <li>Transazioni ERC-20 pending</li>
+                        <li>Wallet compromessi</li>
+                        <li>Smart contract bloccati</li>
+                    </ul>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">🏦</div>
+                    <h3>Frodi Bancarie</h3>
+                    <p>Bonifici non autorizzati, frodi con carta, truffe online</p>
+                    <ul class="service-features">
+                        <li>Bonifici fraudolenti</li>
+                        <li>Chargeback</li>
+                        <li>Conti bloccati</li>
+                    </ul>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">🔐</div>
+                    <h3>Accesso Perso</h3>
+                    <p>Recupero accesso a wallet, conti e piattaforme di trading</p>
+                    <ul class="service-features">
+                        <li>2FA perso</li>
+                        <li>Seed phrase smarrita</li>
+                        <li>Account hackerato</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-column">
+                <h4>TM&Partners</h4>
+                <ul>
+                    <li>Jakobs Torg 3</li>
+                    <li>111 52 Stockholm</li>
+                    <li>Svezia</li>
+                    <li>P.IVA: SE969715168701</li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Servizi</h4>
+                <ul>
+                    <li><a href="#">Recupero Crypto</a></li>
+                    <li><a href="#">Frodi Bancarie</a></li>
+                    <li><a href="#">Wallet Persi</a></li>
+                    <li><a href="#">Transazioni Bloccate</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Link Utili</h4>
+                <ul>
+                    <li><a href="#">Come Funziona</a></li>
+                    <li><a href="#">Casi di Successo</a></li>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Contatti</h4>
+                <ul>
+                    <li>info@tmpartners.se</li>
+                    <li>+46 8 123 456</li>
+                    <li>Supporto 24/7</li>
+                    <li>Chat dal vivo</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            © 2026 TM&Partners Consulting AB - Tutti i diritti riservati
+        </div>
+    </footer>
+
+    <script>
+        // Gestione form richiesta
+        document.getElementById('recoveryForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Validazione base
+            let isValid = true;
+            const inputs = this.querySelectorAll('[required]');
+            
+            inputs.forEach(input => {
+                if (!input.value) {
+                    input.classList.add('error');
+                    isValid = false;
+                    
+                    // Aggiungi messaggio errore
+                    let errorMsg = input.parentNode.querySelector('.error-message');
+                    if (!errorMsg) {
+                        errorMsg = document.createElement('div');
+                        errorMsg.className = 'error-message';
+                        errorMsg.textContent = 'Campo obbligatorio';
+                        input.parentNode.appendChild(errorMsg);
+                    }
+                } else {
+                    input.classList.remove('error');
+                    const errorMsg = input.parentNode.querySelector('.error-message');
+                    if (errorMsg) errorMsg.remove();
+                }
+            });
+            
+            if (!isValid) return;
+            
+            // Mostra notifica
+            const notification = document.getElementById('notification');
+            notification.classList.add('show');
+            
+            // Nascondi dopo 5 secondi
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 5000);
+            
+            // Resetta form
+            this.reset();
+        });
+
+        // Funzione per mostrare area personale (simulazione login)
+        function showLogin(e) {
+            e.preventDefault();
+            
+            const formSection = document.getElementById('requestForm');
+            const dashboard = document.getElementById('dashboard');
+            
+            formSection.style.display = 'none';
+            dashboard.style.display = 'block';
+            
+            // Popola dati esempio
+            document.getElementById('welcomeMessage').textContent = 'Benvenuto, Mario Rossi';
+            document.getElementById('clientBadge').textContent = 'Pratica #CB-IT-0226-98412';
+            document.getElementById('recoveryAmount').textContent = '€ 44.240,89';
+            document.getElementById('recoveredAmount').textContent = '€ 33.180,67';
+            document.getElementById('commissionAmount').textContent = '€ 2.316,85';
+            
+            // Simula progresso
+            document.getElementById('progressFill').style.width = '75%';
+        }
+
+        // Funzione per pagamento commissione
+        function payCommission() {
+            alert('Reindirizzamento al portale pagamenti sicuro...');
+        }
+
+        // Rimuovi errori durante la digitazione
+        document.querySelectorAll('.form-control').forEach(input => {
+            input.addEventListener('input', function() {
+                this.classList.remove('error');
+                const errorMsg = this.parentNode.querySelector('.error-message');
+                if (errorMsg) errorMsg.remove();
+            });
+        });
+    </script>
+</body>
+</html>
