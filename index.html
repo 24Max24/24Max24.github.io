@@ -264,7 +264,8 @@
             backdrop-filter: blur(10px);
             padding: 0.7rem 1.5rem;
             border-radius: 50px;
-            margin-bottom: 2rem;
+            margin-bottom: 1rem;
+            margin-right: 1rem;
             border: 1px solid rgba(255,255,255,0.2);
             font-size: 0.95rem;
         }
@@ -278,9 +279,22 @@
             padding: 0.5rem 1.2rem;
             border-radius: 50px;
             font-weight: 700;
-            margin-left: 1rem;
+            margin-left: 0.5rem;
             font-size: 0.9rem;
             box-shadow: 0 5px 15px rgba(201,169,89,0.3);
+        }
+
+        .hero-eu-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            padding: 0.5rem 1.2rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            border: 1px solid rgba(255,255,255,0.2);
+            margin-top: 1rem;
         }
 
         .hero h1 {
@@ -327,6 +341,12 @@
             opacity: 0.8;
             text-transform: uppercase;
             letter-spacing: 1px;
+        }
+
+        .stat-note {
+            font-size: 0.8rem;
+            opacity: 0.6;
+            margin-top: 0.2rem;
         }
 
         .btn-primary {
@@ -730,6 +750,17 @@
             content: "✓";
             color: var(--success);
             font-weight: 700;
+        }
+
+        .ai-tag {
+            display: inline-block;
+            background: var(--secondary);
+            color: var(--primary);
+            padding: 0.3rem 1rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-top: 1rem;
         }
 
         /* TESTIMONIANZE */
@@ -1340,17 +1371,20 @@
         <div class="hero-content">
             <div>
                 <span class="hero-badge">
-                    <span>🇸🇪</span> Con sede a Stoccolma - Operiamo in tutta Europa
+                    <span>🇸🇪</span> Con sede a Stoccolma
                 </span>
                 <span class="hero-speed-badge">
                     ⚡ Recupero in 48-72 ore
                 </span>
             </div>
+            <div class="hero-eu-badge">
+                <i class="fas fa-star"></i> Partner Autorità Europee (ESMA, ECB)
+            </div>
             <h1>
                 Recupero Fondi Professionale
                 <span>No Win, No Fee</span>
             </h1>
-            <p>Recuperiamo i tuoi fondi persi in transazioni crypto, frodi o errori bancari. Zero costi anticipati, paghi solo a successo ottenuto.</p>
+            <p>Recuperiamo i tuoi fondi persi in transazioni crypto, frodi o errori bancari. Usiamo sistemi di intelligenza artificiale per tracciare e recuperare i tuoi soldi. Zero costi anticipati, paghi solo a successo ottenuto.</p>
             <div>
                 <a href="#form" class="btn-primary">INIZIA LA TUA PRATICA</a>
                 <a href="#contatti" class="btn-secondary">CONSULENZA GRATUITA</a>
@@ -1361,8 +1395,9 @@
                     <div class="stat-label">Fondi Recuperati (2025)</div>
                 </div>
                 <div class="stat-item">
-                    <div class="stat-number">97.8%</div>
+                    <div class="stat-number">92.7%</div>
                     <div class="stat-label">Tasso Successo</div>
+                    <div class="stat-note">con sistemi AI</div>
                 </div>
                 <div class="stat-item">
                     <div class="stat-number">1.423</div>
@@ -1386,7 +1421,7 @@
                 <div class="trust-item">
                     <div class="trust-icon"><i class="fas fa-scale-balanced"></i></div>
                     <div class="trust-text">Conformità UE</div>
-                    <div class="trust-description">Operiamo secondo le normative europee</div>
+                    <div class="trust-description">Operiamo con ESMA e autorità europee</div>
                 </div>
                 <div class="trust-item">
                     <div class="trust-icon"><i class="fas fa-shield-haltered"></i></div>
@@ -1397,6 +1432,16 @@
                     <div class="trust-icon"><i class="fas fa-hand-holding-heart"></i></div>
                     <div class="trust-text">No Win, No Fee</div>
                     <div class="trust-description">Paghi solo se recuperiamo i tuoi fondi</div>
+                </div>
+                <div class="trust-item">
+                    <div class="trust-icon"><i class="fas fa-robot"></i></div>
+                    <div class="trust-text">Tracciamento AI</div>
+                    <div class="trust-description">Sistemi innovativi per ritracciare i fondi</div>
+                </div>
+                <div class="trust-item">
+                    <div class="trust-icon"><i class="fas fa-euro-sign"></i></div>
+                    <div class="trust-text">Recupero rapido</div>
+                    <div class="trust-description">92% dei casi risolti in 48-72 ore</div>
                 </div>
             </div>
         </div>
@@ -1478,6 +1523,7 @@
                         <li>Wallet compromessi</li>
                         <li>Smart contract bloccati</li>
                     </ul>
+                    <div class="ai-tag"><i class="fas fa-robot"></i> Tracciamento AI</div>
                 </div>
                 <div class="service-card">
                     <div class="service-icon"><i class="fas fa-building-columns"></i></div>
@@ -1488,6 +1534,7 @@
                         <li>Chargeback</li>
                         <li>Conti bloccati</li>
                     </ul>
+                    <div class="ai-tag"><i class="fas fa-robot"></i> Tracciamento AI</div>
                 </div>
                 <div class="service-card">
                     <div class="service-icon"><i class="fas fa-lock"></i></div>
@@ -1498,6 +1545,7 @@
                         <li>Seed phrase smarrita</li>
                         <li>Account hackerato</li>
                     </ul>
+                    <div class="ai-tag"><i class="fas fa-robot"></i> Tracciamento AI</div>
                 </div>
             </div>
         </section>
@@ -1532,6 +1580,22 @@
                     <div class="testimonial-author">Alessandro T.</div>
                     <div class="testimonial-detail">Frode bancaria</div>
                 </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-rating">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <div class="testimonial-text">"Pensavo di aver perso tutto in una truffa crypto. In 2 giorni mi hanno recuperato l'80% dei fondi. Professionali e trasparenti."</div>
+                    <div class="testimonial-author">Giovanni P.</div>
+                    <div class="testimonial-detail">Recupero fondi crypto</div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-rating">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <div class="testimonial-text">"Avevo fatto un bonifico su conto sbagliato. Con la loro assistenza e l'aiuto delle autorità, ho riaperto la pratica e riavuto i soldi in 3 giorni."</div>
+                    <div class="testimonial-author">Francesca L.</div>
+                    <div class="testimonial-detail">Bonifico errato</div>
+                </div>
             </div>
         </div>
 
@@ -1548,18 +1612,18 @@
                 </div>
                 <div class="timeline-step">
                     <div class="timeline-number">2</div>
-                    <h4>Avvio Pratica</h4>
-                    <p>Iniziamo le procedure di recupero</p>
+                    <h4>Verifica Fondi</h4>
+                    <p>Controlliamo se i tuoi fondi sono recuperabili</p>
                 </div>
                 <div class="timeline-step">
                     <div class="timeline-number">3</div>
-                    <h4>Recupero Fondi</h4>
-                    <p>I fondi vengono recuperati e verificati</p>
+                    <h4>Recupero con AI</h4>
+                    <p>Usiamo sistemi AI per tracciare e recuperare</p>
                 </div>
                 <div class="timeline-step">
                     <div class="timeline-number">4</div>
-                    <h4>Pagamento Solo a Successo</h4>
-                    <p>Paghi solo se recuperiamo i tuoi fondi</p>
+                    <h4>Paghi Solo a Successo</h4>
+                    <p>Commissione del 7% solo a recupero avvenuto</p>
                 </div>
             </div>
         </div>
@@ -1575,7 +1639,7 @@
                         <i class="fas fa-question-circle"></i> Come funziona il recupero fondi?
                     </div>
                     <div class="faq-answer">
-                        Compili il form di valutazione gratuita, analizziamo il tuo caso entro 24 ore e se procediamo, recuperiamo i fondi in 48-72 ore. Paghi solo a successo ottenuto.
+                        Compila il form gratis. Entro 24 ore analizzeremo il tuo caso per capire se i tuoi fondi sono ancora rintracciabili. Se lo sono, ti presenteremo una proposta di recupero. Se accetti, recuperiamo i fondi in 48-72 ore. La commissione del 7% la paghi solo a recupero avvenuto.
                     </div>
                 </div>
                 <div class="faq-item">
@@ -1591,7 +1655,15 @@
                         <i class="fas fa-question-circle"></i> Quanto tempo ci vuole?
                     </div>
                     <div class="faq-answer">
-                        La valutazione iniziale richiede 24 ore. Il recupero effettivo avviene in 48-72 ore dalla partenza della pratica.
+                        La valutazione iniziale richiede 24 ore. Il recupero effettivo avviene in 48-72 ore dalla partenza della pratica. Il 92% dei casi si risolve in questo lasso di tempo.
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <i class="fas fa-question-circle"></i> Come ritracciate i fondi?
+                    </div>
+                    <div class="faq-answer">
+                        Utilizziamo sistemi avanzati di intelligenza artificiale e collaboriamo con autorità europee (ESMA, ECB) per tracciare e recuperare i fondi persi in modo rapido ed efficiente.
                     </div>
                 </div>
                 <div class="faq-item">
@@ -1599,7 +1671,15 @@
                         <i class="fas fa-question-circle"></i> È sicuro affidarsi a voi?
                     </div>
                     <div class="faq-answer">
-                        Siamo un'azienda registrata in Svezia (Org.nr: SE556789123401) e operiamo in conformità con le normative europee. Tutti i dati sono protetti.
+                        Siamo un'azienda registrata in Svezia (Org.nr: SE556789123401) e operiamo in conformità con le normative europee. Tutti i dati sono protetti e crittografati (GDPR).
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <i class="fas fa-question-circle"></i> Cosa significa "No Win, No Fee"?
+                    </div>
+                    <div class="faq-answer">
+                        Significa che non devi pagare nulla in anticipo. La nostra commissione del 7% la paghi solo se recuperiamo effettivamente i tuoi fondi e li accreditiamo sul tuo conto.
                     </div>
                 </div>
             </div>
@@ -1780,7 +1860,7 @@
                             <i class="fas fa-clock" style="margin-right: 0.5rem;"></i> Pratica in fase di valutazione
                         </div>
                         <p style="font-size: 1.2rem; margin: 2rem 0;">
-                            I nostri esperti stanno analizzando il suo caso.<br>
+                            I nostri esperti stanno analizzando il suo caso per capire se i suoi fondi sono ancora rintracciabili.<br>
                             Riceverà aggiornamenti appena disponibili (generalmente entro 24 ore).
                         </p>
                         <div class="progress-bar" style="max-width: 300px; margin: 0 auto;">
@@ -1886,31 +1966,34 @@
             const lowerMsg = message.toLowerCase();
             
             if (lowerMsg.includes('come funziona')) {
-                return "Il nostro processo è studiato per essere semplice e trasparente. Innanzitutto, compili il form di valutazione gratuita. Entro 24 ore analizzeremo il suo caso e le forniremo un parere preliminare. Se riterremo di poter procedere, avvieremo le pratiche di recupero che, nella maggior parte dei casi, si concludono in 48-72 ore. Il pagamento della commissione di successo (7%) avviene solo a fondi effettivamente recuperati e accreditati sul suo conto.";
+                return "Compila il form gratis. Entro 24 ore analizzeremo il tuo caso per capire se i tuoi fondi sono ancora rintracciabili. Se lo sono, ti presenteremo una proposta di recupero. Se accetti, recuperiamo i fondi in 48-72 ore. La commissione del 7% la paghi solo a recupero avvenuto.";
             }
             else if (lowerMsg.includes('costo') || lowerMsg.includes('commissione') || lowerMsg.includes('prezzo')) {
-                return "Lavoriamo esclusivamente con la formula 'No Win, No Fee': non deve anticipare nulla. La nostra commissione è del 7% sull'importo recuperato, e viene corrisposta solo dopo che i fondi sono stati accreditati sul suo conto corrente. Non ci sono costi nascosti o spese accessorie. La valutazione iniziale è completamente gratuita.";
+                return "Lavoriamo con la formula 'No Win, No Fee': non devi anticipare nulla. La commissione è del 7% sull'importo recuperato, da pagare solo dopo l'accredito dei fondi sul tuo conto. La valutazione iniziale è sempre gratis.";
             }
             else if (lowerMsg.includes('tempo') || lowerMsg.includes('quanto ci vuole')) {
-                return "Siamo molto rapidi! 🚀 Dal momento in cui la pratica viene formalmente avviata, il processo di recupero richiede 48-72 ore. In casi particolarmente complessi potrebbe servire qualche giorno aggiuntivo, ma la maggior parte delle situazioni si risolve entro 3 giorni lavorativi. La valutazione iniziale è gratuita e richiede solo 24 ore.";
+                return "Siamo molto rapidi! La valutazione iniziale richiede 24 ore. Il recupero effettivo avviene in 48-72 ore. Il 92% dei casi si risolve in questo lasso di tempo.";
             }
             else if (lowerMsg.includes('dove') || lowerMsg.includes('sede')) {
-                return "La nostra sede principale è a Stoccolma, in Kungsgatan 15, nel cuore del distretto finanziario. Operiamo digitalmente in tutta Europa, quindi possiamo assisterla ovunque si trovi. Può contattarci via email all'indirizzo info@stockholmclaimpartners.se o telefonicamente al +46 8 123 456 78.";
+                return "La nostra sede è a Stoccolma, in Kungsgatan 15, nel cuore del distretto finanziario. Operiamo in tutta Europa digitalmente. Puoi contattarci via email o telefono.";
             }
             else if (lowerMsg.includes('documenti') || lowerMsg.includes('carta')) {
-                return "Per avviare la pratica, le chiederemo di fornire: un documento d'identità valido, prove della transazione (codice transazione/hash, screenshot), eventuali comunicazioni con la banca o la piattaforma coinvolta, e una breve descrizione dell'accaduto. La assisteremo noi nella raccolta di tutta la documentazione necessaria.";
+                return "Per avviare la pratica servono: documento d'identità, prove della transazione (codice transazione/hash, screenshot), e una breve descrizione dell'accaduto. Ti assistiamo noi nella raccolta.";
             }
-            else if (lowerMsg.includes('sicuro') || lowerMsg.includes('affidabile') || lowerMsg.includes('fiducia')) {
-                return "La sua sicurezza è la nostra priorità. Stockholm Claim Partners è un'azienda regolarmente registrata in Svezia (Org.nr: SE556789123401) e opera in piena conformità con le normative europee. Tutti i dati sono protetti da crittografia e utilizzati esclusivamente per la sua pratica. Può verificare la nostra posizione e i nostri contatti ufficiali nel footer del sito.";
+            else if (lowerMsg.includes('sicuro') || lowerMsg.includes('affidabile')) {
+                return "Siamo un'azienda registrata in Svezia (Org.nr: SE556789123401), operiamo con autorità europee (ESMA) e usiamo sistemi AI avanzati. Tutti i dati sono protetti e crittografati (GDPR).";
+            }
+            else if (lowerMsg.includes('ai') || lowerMsg.includes('intelligenza artificiale')) {
+                return "Utilizziamo sistemi di intelligenza artificiale all'avanguardia per tracciare e recuperare i fondi persi in modo più rapido e preciso. Questo ci permette di avere un tasso di successo del 92.7%.";
             }
             else if (lowerMsg.includes('grazie')) {
-                return "La ringrazio per il suo feedback. Resto a disposizione per qualsiasi altra domanda. Buona giornata!";
+                return "Prego! Sono qui per aiutarti. Se hai altre domande, chiedi pure.";
             }
             else if (lowerMsg.includes('ciao') || lowerMsg.includes('salve') || lowerMsg.includes('buongiorno')) {
-                return "Buongiorno, sono Emma. Come posso assisterla oggi?";
+                return "Buongiorno, sono Emma. Come posso assisterti oggi?";
             }
             else {
-                return "Grazie per la sua domanda. Per informazioni più dettagliate e personalizzate, le consiglio di parlare con un nostro operatore specializzato. Posso metterla in contatto con loro se lo desidera. Clicchi su 'contatti un operatore' in basso.";
+                return "Grazie per la domanda. Per informazioni più dettagliate, ti consiglio di parlare con un operatore umano. Clicca su 'contatti un operatore' in basso.";
             }
         }
 
