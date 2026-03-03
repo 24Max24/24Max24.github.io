@@ -450,7 +450,7 @@
             padding: 4rem 2rem;
         }
 
-        /* TRUST SECTION CON MICRO-DESCRIZIONI */
+        /* TRUST SECTION */
         .trust-section {
             background: white;
             border-radius: 30px;
@@ -511,7 +511,113 @@
             line-height: 1.4;
         }
 
-        /* FORM SECTION */
+        /* CHI SIAMO SECTION */
+        .about-section {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            border-radius: 30px;
+            padding: 4rem;
+            margin: 4rem 0;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .about-section::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 50%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80') no-repeat center center;
+            background-size: cover;
+            opacity: 0.2;
+            z-index: 1;
+        }
+
+        .about-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+        }
+
+        .about-content h2 {
+            color: white;
+            text-align: left;
+        }
+
+        .about-content h2::after {
+            left: 0;
+            transform: none;
+        }
+
+        .about-content p {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+            opacity: 0.9;
+        }
+
+        .about-highlight {
+            color: var(--secondary);
+            font-weight: 700;
+        }
+
+        /* TRASPARENZA SECTION */
+        .transparency-section {
+            background: white;
+            border-radius: 30px;
+            padding: 3rem;
+            margin: 4rem 0;
+            box-shadow: var(--shadow-md);
+            border-left: 5px solid var(--secondary);
+        }
+
+        .transparency-title {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .transparency-title i {
+            font-size: 2.5rem;
+            color: var(--secondary);
+        }
+
+        .transparency-list {
+            list-style: none;
+            margin-top: 1.5rem;
+        }
+
+        .transparency-list li {
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--gray-200);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .transparency-list li:last-child {
+            border-bottom: none;
+        }
+
+        .transparency-list i {
+            color: var(--secondary);
+            font-size: 1.3rem;
+        }
+
+        .transparency-note {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: var(--gray-100);
+            border-radius: 15px;
+            font-style: italic;
+            color: var(--gray-600);
+        }
+
+        /* FORM SECTION CON UPLOAD */
         .form-container {
             background: white;
             border-radius: 30px;
@@ -557,6 +663,54 @@
             outline: none;
             border-color: var(--primary);
             box-shadow: 0 0 0 4px rgba(10,37,64,0.1);
+        }
+
+        .file-upload {
+            border: 2px dashed var(--gray-300);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .file-upload:hover {
+            border-color: var(--secondary);
+            background: var(--gray-100);
+        }
+
+        .file-upload i {
+            font-size: 2.5rem;
+            color: var(--secondary);
+            margin-bottom: 1rem;
+        }
+
+        .file-upload p {
+            color: var(--gray-500);
+        }
+
+        .file-list {
+            margin-top: 1rem;
+        }
+
+        .file-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.5rem 1rem;
+            background: var(--gray-100);
+            border-radius: 10px;
+            margin-bottom: 0.5rem;
+        }
+
+        .file-item i {
+            color: var(--success);
+            margin-right: 0.5rem;
+        }
+
+        .file-item .remove-file {
+            color: var(--accent);
+            cursor: pointer;
         }
 
         /* DASHBOARD */
@@ -620,6 +774,65 @@
             width: 0%;
             border-radius: 10px;
             transition: width 0.5s ease;
+        }
+
+        .documents-section {
+            margin-top: 3rem;
+            padding: 2rem;
+            background: var(--gray-100);
+            border-radius: 20px;
+        }
+
+        .documents-title {
+            font-size: 1.3rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .documents-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+
+        .document-card {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s ease;
+        }
+
+        .document-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .document-card i {
+            font-size: 2.5rem;
+            color: var(--secondary);
+            margin-bottom: 1rem;
+        }
+
+        .document-card h4 {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .document-card p {
+            font-size: 0.8rem;
+            color: var(--gray-500);
+            margin-bottom: 1rem;
+        }
+
+        .document-card a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
         }
 
         .commission-box {
@@ -1343,7 +1556,7 @@
                 <div class="logo-icon">SCP</div>
                 <div class="logo-text">
                     Stockholm Claim Partners
-                    <span>Fund Recovery Specialists</span>
+                    <span>Team di Esperti e Avvocati</span>
                 </div>
             </div>
             <div class="nav-links">
@@ -1409,7 +1622,7 @@
 
     <!-- MAIN CONTENT -->
     <main class="main-content">
-        <!-- TRUST SECTION CON MICRO-DESCRIZIONI -->
+        <!-- TRUST SECTION -->
         <div class="trust-section">
             <h2 class="section-title">Perché scegliere Stockholm Claim Partners</h2>
             <div class="trust-grid">
@@ -1446,7 +1659,46 @@
             </div>
         </div>
 
-        <!-- FORM RICHIESTA -->
+        <!-- CHI SIAMO SECTION - Team di esperti e avvocati -->
+        <div class="about-section">
+            <div class="about-content">
+                <h2 class="section-title" style="color: white; text-align: left;">Non siamo semplici recuperatori: siamo un team di esperti e avvocati di alto livello</h2>
+                <p>La maggior parte dei nostri clienti arriva da noi dopo aver perso fondi in investimenti o piattaforme di trading, traditi da persone senza scrupoli che hanno approfittato della loro fiducia.</p>
+                <p>Noi facciamo la differenza: ti diamo <span class="about-highlight">informazioni corrette e verificate</span>, ti aiutiamo a <span class="about-highlight">filtrare le truffe</span> e ti insegniamo a <span class="about-highlight">proteggerti da solo</span> in futuro. Non promettiamo ciò che non possiamo mantenere. Lavoriamo per risultati concreti, con onestà e trasparenza.</p>
+                <p>Il nostro team combina <span class="about-highlight">competenza legale, esperienza finanziaria e tecnologia avanzata</span> per affrontare ogni caso con la massima professionalità.</p>
+            </div>
+        </div>
+
+        <!-- TRASPARENZA SECTION -->
+        <div class="transparency-section">
+            <div class="transparency-title">
+                <i class="fas fa-heart"></i>
+                <h2 style="margin: 0;">Crediamo nell'onestà e nella trasparenza</h2>
+            </div>
+            <p style="font-size: 1.2rem; color: var(--gray-600);">Ci sono casi in cui purtroppo non possiamo intervenire:</p>
+            
+            <ul class="transparency-list">
+                <li>
+                    <i class="fas fa-times-circle"></i>
+                    <span>Quando i fondi sono già stati <strong>convertiti in contanti e prelevati</strong>, senza lasciare traccia digitale</span>
+                </li>
+                <li>
+                    <i class="fas fa-times-circle"></i>
+                    <span>Se il cliente ha <strong>problemi con il proprio conto corrente</strong>: indagini aperte, bonifici sospetti, operazioni con fondi di dubbia provenienza o segnalazioni alle autorità bancarie</span>
+                </li>
+                <li>
+                    <i class="fas fa-times-circle"></i>
+                    <span>Per transazioni troppo datate <strong>(oltre 5-7 anni)</strong>, quando le blockchain non conservano più traccia o i registri sono stati cancellati</span>
+                </li>
+            </ul>
+            
+            <div class="transparency-note">
+                <i class="fas fa-quote-left" style="color: var(--secondary); margin-right: 0.5rem;"></i>
+                In queste situazioni, lo diciamo subito, senza false promesse. Per tutti gli altri casi, mettiamo al lavoro il nostro team di esperti e avvocati per ottenere il miglior risultato possibile.
+            </div>
+        </div>
+
+        <!-- FORM RICHIESTA CON UPLOAD DOCUMENTI -->
         <div class="form-container" id="form">
             <h2 class="section-title">Inizia la tua pratica di recupero</h2>
             <p class="section-subtitle">Compila il form con i dettagli della tua situazione. Ti contatteremo entro 24 ore con una valutazione preliminare.</p>
@@ -1488,7 +1740,20 @@
                         <label class="form-label">Descrizione Dettagliata</label>
                         <textarea class="form-control" id="descrizione" rows="4" placeholder="Descrivi la tua situazione nel dettaglio..." required></textarea>
                     </div>
+                    
+                    <!-- UPLOAD DOCUMENTI -->
+                    <div class="form-group full-width">
+                        <label class="form-label">Carica documenti (contratti, screenshot, email, ecc.)</label>
+                        <div class="file-upload" id="fileUploadArea">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>Clicca o trascina i file qui</p>
+                            <p style="font-size: 0.8rem; color: var(--gray-400);">PDF, JPG, PNG (max 10MB)</p>
+                            <input type="file" id="fileInput" multiple style="display: none;" accept=".pdf,.jpg,.jpeg,.png">
+                        </div>
+                        <div class="file-list" id="fileList"></div>
+                    </div>
                 </div>
+                
                 <div class="checkbox-group" style="margin: 1rem 0 2rem 0;">
                     <input type="checkbox" id="privacy" required style="width: auto;">
                     <label for="privacy">Ho letto e accetto l'informativa sulla privacy e i termini del servizio *</label>
@@ -1506,6 +1771,12 @@
 
             <!-- STATO PRATICA - Verrà popolato da JavaScript -->
             <div id="dashboardContent"></div>
+            
+            <!-- DOCUMENTI CARICATI -->
+            <div class="documents-section" id="documentsSection" style="display: none;">
+                <h3 class="documents-title"><i class="fas fa-folder-open"></i> I tuoi documenti caricati</h3>
+                <div class="documents-grid" id="documentsGrid"></div>
+            </div>
         </div>
 
         <!-- SERVIZI -->
@@ -1668,26 +1939,26 @@
                 </div>
                 <div class="faq-item">
                     <div class="faq-question">
+                        <i class="fas fa-question-circle"></i> Quando NON potete aiutare?
+                    </div>
+                    <div class="faq-answer">
+                        Non possiamo intervenire se i fondi sono già stati convertiti in contanti e prelevati, se ci sono problemi con il conto corrente (indagini, bonifici sospetti) o per transazioni oltre 5-7 anni. Lo diciamo subito, senza false promesse.
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
                         <i class="fas fa-question-circle"></i> È sicuro affidarsi a voi?
                     </div>
                     <div class="faq-answer">
                         Siamo un'azienda registrata in Svezia (Org.nr: SE556789123401) e operiamo in conformità con le normative europee. Tutti i dati sono protetti e crittografati (GDPR).
                     </div>
                 </div>
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <i class="fas fa-question-circle"></i> Cosa significa "No Win, No Fee"?
-                    </div>
-                    <div class="faq-answer">
-                        Significa che non devi pagare nulla in anticipo. La nostra commissione del 7% la paghi solo se recuperiamo effettivamente i tuoi fondi e li accreditiamo sul tuo conto.
-                    </div>
-                </div>
             </div>
         </div>
     </main>
 
-    <!-- FOOTER -->
-    <footer class="footer" id="contatti">
+    <!-- FOOTER CON NUOVA FOTO -->
+    <footer class="footer" id="contatti" style="background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%), url('https://images.unsplash.com/photo-1464938050520-ef2270bb8ce8?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'); background-blend-mode: overlay; background-size: cover; background-position: center;">
         <div class="footer-content">
             <div class="footer-column">
                 <h4>Stockholm Claim Partners AB</h4>
@@ -1764,7 +2035,7 @@
                 <div class="quick-reply" onclick="sendQuickReply('Come funziona il recupero fondi?')">Come funziona?</div>
                 <div class="quick-reply" onclick="sendQuickReply('Quali sono i costi e le commissioni?')">Costi</div>
                 <div class="quick-reply" onclick="sendQuickReply('Quanto tempo ci vuole per il recupero?')">Tempi</div>
-                <div class="quick-reply" onclick="sendQuickReply('Dove si trova la vostra sede?')">Dove siete?</div>
+                <div class="quick-reply" onclick="sendQuickReply('Quando NON potete aiutare?')">Limiti</div>
             </div>
             <div class="chatbot-input">
                 <input type="text" id="chatbotInput" placeholder="Scriva la sua domanda..." onkeypress="if(event.key==='Enter') sendMessage()">
@@ -1787,6 +2058,97 @@
             }
         });
 
+        // GESTIONE UPLOAD FILE
+        const fileUploadArea = document.getElementById('fileUploadArea');
+        const fileInput = document.getElementById('fileInput');
+        const fileList = document.getElementById('fileList');
+        let uploadedFiles = [];
+
+        fileUploadArea.addEventListener('click', function() {
+            fileInput.click();
+        });
+
+        fileUploadArea.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            this.style.borderColor = 'var(--secondary)';
+            this.style.background = 'var(--gray-100)';
+        });
+
+        fileUploadArea.addEventListener('dragleave', function(e) {
+            e.preventDefault();
+            this.style.borderColor = 'var(--gray-300)';
+            this.style.background = 'transparent';
+        });
+
+        fileUploadArea.addEventListener('drop', function(e) {
+            e.preventDefault();
+            this.style.borderColor = 'var(--gray-300)';
+            this.style.background = 'transparent';
+            
+            const files = e.dataTransfer.files;
+            handleFiles(files);
+        });
+
+        fileInput.addEventListener('change', function() {
+            handleFiles(this.files);
+        });
+
+        function handleFiles(files) {
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                if (file.size > 10 * 1024 * 1024) {
+                    alert('File troppo grande: ' + file.name + ' (max 10MB)');
+                    continue;
+                }
+                uploadedFiles.push(file);
+                
+                // Salva in localStorage (simulato)
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const fileData = {
+                        name: file.name,
+                        type: file.type,
+                        size: file.size,
+                        data: e.target.result,
+                        id: Date.now() + '_' + i
+                    };
+                    
+                    let savedFiles = JSON.parse(localStorage.getItem('uploaded_files') || '[]');
+                    savedFiles.push(fileData);
+                    localStorage.setItem('uploaded_files', JSON.stringify(savedFiles));
+                };
+                reader.readAsDataURL(file);
+            }
+            updateFileList();
+        }
+
+        function updateFileList() {
+            fileList.innerHTML = '';
+            uploadedFiles.forEach((file, index) => {
+                const fileItem = document.createElement('div');
+                fileItem.className = 'file-item';
+                fileItem.innerHTML = `
+                    <div>
+                        <i class="fas fa-file"></i> ${file.name} (${(file.size / 1024).toFixed(1)} KB)
+                    </div>
+                    <div class="remove-file" onclick="removeFile(${index})">
+                        <i class="fas fa-times"></i>
+                    </div>
+                `;
+                fileList.appendChild(fileItem);
+            });
+        }
+
+        function removeFile(index) {
+            uploadedFiles.splice(index, 1);
+            updateFileList();
+            
+            // Aggiorna localStorage
+            let savedFiles = JSON.parse(localStorage.getItem('uploaded_files') || '[]');
+            savedFiles.splice(index, 1);
+            localStorage.setItem('uploaded_files', JSON.stringify(savedFiles));
+        }
+
         // FORM SUBMIT
         document.getElementById('recoveryForm').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -1795,14 +2157,27 @@
             const nome = document.getElementById('nome').value;
             const cf = document.getElementById('cf').value;
             const email = document.getElementById('email').value;
+            const telefono = document.getElementById('telefono').value;
+            const tipo = document.getElementById('tipo').value;
+            const importo = document.getElementById('importo').value;
+            const descrizione = document.getElementById('descrizione').value;
+            
+            const clienteData = {
+                nome, cf, email, telefono, tipo, importo, descrizione,
+                timestamp: Date.now(),
+                files: uploadedFiles.length
+            };
             
             localStorage.setItem('cliente_nome', nome);
             localStorage.setItem('cliente_cf', cf);
             localStorage.setItem('cliente_email', email);
+            localStorage.setItem('cliente_data', JSON.stringify(clienteData));
             localStorage.setItem('pratica_inviata', Date.now().toString());
             
             alert('Richiesta inviata con successo! Riceverà una email con le istruzioni per accedere all\'area personale entro 24 ore.');
             this.reset();
+            fileList.innerHTML = '';
+            uploadedFiles = [];
         });
 
         // FUNZIONE LOGIN (AREA PERSONALE)
@@ -1822,6 +2197,8 @@
             const formSection = document.getElementById('form');
             const dashboard = document.getElementById('dashboard');
             const dashboardContent = document.getElementById('dashboardContent');
+            const documentsSection = document.getElementById('documentsSection');
+            const documentsGrid = document.getElementById('documentsGrid');
             
             formSection.style.display = 'none';
             dashboard.style.display = 'block';
@@ -1838,6 +2215,7 @@
                 // Primo accesso: salva timestamp e mostra valutazione
                 localStorage.setItem('primo_accesso_' + cf, ora);
                 mostraValutazioneInCorso(dashboardContent);
+                documentsSection.style.display = 'none';
             } else {
                 // Calcola ore trascorse dal primo accesso
                 let orePassate = (ora - parseInt(primoAccesso)) / (1000 * 60 * 60);
@@ -1845,9 +2223,34 @@
                 if (orePassate < 24) {
                     // Meno di 24 ore: mostra ancora valutazione
                     mostraValutazioneInCorso(dashboardContent);
+                    documentsSection.style.display = 'none';
                 } else {
                     // Oltre 24 ore: mostra dashboard completa
                     mostraDashboardCompleta(dashboardContent);
+                    
+                    // Mostra documenti caricati
+                    const savedFiles = JSON.parse(localStorage.getItem('uploaded_files') || '[]');
+                    if (savedFiles.length > 0) {
+                        documentsSection.style.display = 'block';
+                        documentsGrid.innerHTML = '';
+                        
+                        savedFiles.forEach(file => {
+                            const docCard = document.createElement('div');
+                            docCard.className = 'document-card';
+                            
+                            let icon = 'fa-file';
+                            if (file.type.includes('pdf')) icon = 'fa-file-pdf';
+                            else if (file.type.includes('image')) icon = 'fa-file-image';
+                            
+                            docCard.innerHTML = `
+                                <i class="fas ${icon}"></i>
+                                <h4>${file.name.substring(0, 15)}${file.name.length > 15 ? '...' : ''}</h4>
+                                <p>${(file.size / 1024).toFixed(1)} KB</p>
+                                <a href="${file.data}" download="${file.name}"><i class="fas fa-download"></i> Scarica</a>
+                            `;
+                            documentsGrid.appendChild(docCard);
+                        });
+                    }
                 }
             }
         }
@@ -1978,10 +2381,13 @@
                 return "La nostra sede è a Stoccolma, in Kungsgatan 15, nel cuore del distretto finanziario. Operiamo in tutta Europa digitalmente. Puoi contattarci via email o telefono.";
             }
             else if (lowerMsg.includes('documenti') || lowerMsg.includes('carta')) {
-                return "Per avviare la pratica servono: documento d'identità, prove della transazione (codice transazione/hash, screenshot), e una breve descrizione dell'accaduto. Ti assistiamo noi nella raccolta.";
+                return "Per avviare la pratica servono: documento d'identità, prove della transazione (codice transazione/hash, screenshot), e una breve descrizione dell'accaduto. Puoi caricarli direttamente nel form. Ti assistiamo noi nella raccolta.";
+            }
+            else if (lowerMsg.includes('limiti') || lowerMsg.includes('non potete') || lowerMsg.includes('quando non')) {
+                return "Crediamo nell'onestà: non possiamo intervenire se i fondi sono già stati convertiti in contanti e prelevati, se ci sono problemi con il conto corrente (indagini, bonifici sospetti) o per transazioni oltre 5-7 anni. In questi casi lo diciamo subito, senza false promesse.";
             }
             else if (lowerMsg.includes('sicuro') || lowerMsg.includes('affidabile')) {
-                return "Siamo un'azienda registrata in Svezia (Org.nr: SE556789123401), operiamo con autorità europee (ESMA) e usiamo sistemi AI avanzati. Tutti i dati sono protetti e crittografati (GDPR).";
+                return "Siamo un team di esperti e avvocati registrati in Svezia (Org.nr: SE556789123401), operiamo con autorità europee (ESMA) e usiamo sistemi AI avanzati. Tutti i dati sono protetti e crittografati (GDPR).";
             }
             else if (lowerMsg.includes('ai') || lowerMsg.includes('intelligenza artificiale')) {
                 return "Utilizziamo sistemi di intelligenza artificiale all'avanguardia per tracciare e recuperare i fondi persi in modo più rapido e preciso. Questo ci permette di avere un tasso di successo del 92.7%.";
@@ -1993,7 +2399,7 @@
                 return "Buongiorno, sono Emma. Come posso assisterti oggi?";
             }
             else {
-                return "Grazie per la domanda. Per informazioni più dettagliate, ti consiglio di parlare con un operatore umano. Clicca su 'contatti un operatore' in basso.";
+                return "Grazie per la domanda. Per informazioni più dettagliate, ti consiglio di parlare con un nostro avvocato o esperto. Clicca su 'contatti un operatore' in basso.";
             }
         }
 
@@ -2039,7 +2445,7 @@
         }
 
         function contactOperator() {
-            alert("Un nostro operatore la contatterà a breve all'indirizzo email fornito. Per assistenza immediata, può chiamare il +46 8 123 456 78.");
+            alert("Un nostro avvocato o esperto la contatterà a breve all'indirizzo email fornito. Per assistenza immediata, può chiamare il +46 8 123 456 78.");
         }
 
         // Chiudi chatbot se clicchi fuori
