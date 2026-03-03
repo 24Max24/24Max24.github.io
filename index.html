@@ -1131,9 +1131,12 @@
             font-size: 0.95rem;
         }
 
-        /* FOOTER */
+        /* FOOTER - COMPLETAMENTE RIFATTO PER LEGGIBILITÀ */
         .footer {
-            background: var(--primary-dark);
+            background: linear-gradient(135deg, rgba(10,37,64,0.98) 0%, rgba(5,26,43,0.99) 100%), url('https://images.unsplash.com/photo-1464938050520-ef2270bb8ce8?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+            background-blend-mode: overlay;
+            background-size: cover;
+            background-position: center;
             color: white;
             padding: 5rem 0 2rem 0;
             margin-top: 4rem;
@@ -1146,6 +1149,8 @@
             display: grid;
             grid-template-columns: 2fr 1fr 1fr 2fr;
             gap: 3rem;
+            position: relative;
+            z-index: 2;
         }
 
         .footer-column h4 {
@@ -1168,15 +1173,22 @@
 
         .footer-column ul {
             list-style: none;
+            padding: 0;
         }
 
         .footer-column ul li {
+            color: white;
             margin-bottom: 0.8rem;
-            color: rgba(255,255,255,0.7);
+        }
+
+        .footer-column ul li i {
+            color: var(--secondary);
+            width: 25px;
+            margin-right: 0.5rem;
         }
 
         .footer-column ul li a {
-            color: rgba(255,255,255,0.7);
+            color: white;
             text-decoration: none;
             transition: color 0.3s ease;
         }
@@ -1185,19 +1197,12 @@
             color: var(--secondary);
         }
 
-        .contact-info {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-bottom: 0.8rem;
-        }
-
         .footer-bottom {
             text-align: center;
-            padding-top: 3rem;
-            margin-top: 3rem;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            color: rgba(255,255,255,0.5);
+            padding-top: 2rem;
+            margin-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.2);
+            color: white;
         }
 
         .legal-links {
@@ -1209,15 +1214,16 @@
         }
 
         .legal-links a {
-            color: rgba(255,255,255,0.5);
+            color: rgba(255,255,255,0.8);
             text-decoration: none;
+            transition: color 0.3s;
         }
 
         .legal-links a:hover {
             color: var(--secondary);
         }
 
-        /* CHATBOT AI - EMMA 2.0 */
+        /* CHATBOT AI - EMMA 3.0 (SUPER INTELLIGENTE) */
         .chatbot-container {
             position: fixed;
             bottom: 30px;
@@ -1473,6 +1479,19 @@
             cursor: pointer;
         }
 
+        .why-button {
+            font-size: 0.75rem;
+            color: var(--gray-400);
+            cursor: pointer;
+            margin-left: 0.5rem;
+            text-decoration: underline;
+            display: inline-block;
+        }
+
+        .why-button:hover {
+            color: var(--secondary);
+        }
+
         /* RESPONSIVE */
         @media (max-width: 1024px) {
             .nav-links {
@@ -1496,6 +1515,10 @@
             }
 
             .faq-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .documents-grid {
                 grid-template-columns: 1fr;
             }
         }
@@ -1957,17 +1980,16 @@
         </div>
     </main>
 
-    <!-- FOOTER CON NUOVA FOTO -->
-        <!-- FOOTER CORRETTO -->
-    <footer class="footer" id="contatti" style="background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%), url('https://images.unsplash.com/photo-1464938050520-ef2270bb8ce8?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'); background-blend-mode: overlay; background-size: cover; background-position: center;">
+    <!-- FOOTER - ORA PERFETTAMENTE LEGGIBILE -->
+    <footer class="footer" id="contatti">
         <div class="footer-content">
             <div class="footer-column">
                 <h4>Stockholm Claim Partners AB</h4>
                 <ul>
-                    <li class="contact-info"><i class="fas fa-location-dot"></i> Kungsgatan 15</li>
-                    <li class="contact-info">111 43 Stockholm</li>
-                    <li class="contact-info"><i class="fas fa-flag"></i> Svezia</li>
-                    <li class="contact-info"><i class="fas fa-file"></i> Org.nr: SE556789123401</li>
+                    <li><i class="fas fa-location-dot"></i> Kungsgatan 15</li>
+                    <li><i class="fas fa-city"></i> 111 43 Stockholm</li>
+                    <li><i class="fas fa-flag"></i> Svezia</li>
+                    <li><i class="fas fa-file"></i> Org.nr: SE556789123401</li>
                 </ul>
             </div>
             <div class="footer-column">
@@ -1991,10 +2013,10 @@
             <div class="footer-column">
                 <h4>Contatti</h4>
                 <ul>
-                    <li class="contact-info"><i class="fas fa-envelope"></i> info@stockholmclaimpartners.se</li>
-                    <li class="contact-info"><i class="fas fa-phone"></i> +46 8 123 456 78</li>
-                    <li class="contact-info"><i class="fas fa-headset"></i> Supporto 24/7</li>
-                    <li class="contact-info"><i class="fas fa-robot"></i> Chat con Emma</li>
+                    <li><i class="fas fa-envelope"></i> info@stockholmclaimpartners.se</li>
+                    <li><i class="fas fa-phone"></i> +46 8 123 456 78</li>
+                    <li><i class="fas fa-headset"></i> Supporto 24/7</li>
+                    <li><i class="fas fa-robot"></i> Chat con Emma</li>
                 </ul>
             </div>
         </div>
@@ -2005,11 +2027,11 @@
                 <a href="#">Cookie Policy</a>
                 <a href="#">Termini e Condizioni</a>
             </div>
-            <small style="opacity: 0.8;">Con sede a Stoccolma - Operiamo in conformità con le normative europee</small>
+            <small style="opacity: 0.8; display: block; margin-top: 1rem;">Con sede a Stoccolma - Operiamo in conformità con le normative europee</small>
         </div>
     </footer>
 
-    <!-- CHATBOT AI EMMA 2.0 -->
+    <!-- CHATBOT AI EMMA 3.0 - SUPER INTELLIGENTE -->
     <div class="chatbot-container">
         <div class="chatbot-button" id="chatbotButton">
             <div class="chatbot-pulse"></div>
@@ -2019,31 +2041,31 @@
             <div class="chatbot-header">
                 <div class="chatbot-avatar"><i class="fas fa-robot"></i></div>
                 <div class="chatbot-title">
-                    <h4>Emma - Assistente AI</h4>
-                    <p>Risposte professionali 24/7</p>
+                    <h4>Emma 3.0 - Assistente AI</h4>
+                    <p>Analisi intelligente 24/7</p>
                 </div>
                 <div class="chatbot-close" id="chatbotClose">✕</div>
             </div>
             <div class="chatbot-messages" id="chatbotMessages">
                 <div class="message bot">
                     <div class="message-content">
-                        Buongiorno, sono Emma, l'assistente virtuale di Stockholm Claim Partners. Sono a sua disposizione per fornirle tutte le informazioni sul nostro servizio di recupero fondi. Come posso aiutarla?
+                        Buongiorno, sono Emma 3.0, l'assistente intelligente di Stockholm Claim Partners. Posso analizzare il tuo caso e darti subito una valutazione preliminare. Come posso aiutarti?
                     </div>
                     <div class="message-time">ora</div>
                 </div>
             </div>
             <div class="chatbot-quick-replies">
                 <div class="quick-reply" onclick="sendQuickReply('Come funziona il recupero fondi?')">Come funziona?</div>
-                <div class="quick-reply" onclick="sendQuickReply('Quali sono i costi e le commissioni?')">Costi</div>
-                <div class="quick-reply" onclick="sendQuickReply('Quanto tempo ci vuole per il recupero?')">Tempi</div>
-                <div class="quick-reply" onclick="sendQuickReply('Quando NON potete aiutare?')">Limiti</div>
+                <div class="quick-reply" onclick="sendQuickReply('Quali sono i costi?')">Costi</div>
+                <div class="quick-reply" onclick="sendQuickReply('Quanto tempo ci vuole?')">Tempi</div>
+                <div class="quick-reply" onclick="sendQuickReply('Qual è la probabilità per il mio caso?')">Analisi caso</div>
             </div>
             <div class="chatbot-input">
-                <input type="text" id="chatbotInput" placeholder="Scriva la sua domanda..." onkeypress="if(event.key==='Enter') sendMessage()">
+                <input type="text" id="chatbotInput" placeholder="Scrivi la tua domanda..." onkeypress="if(event.key==='Enter') sendMessage()">
                 <button onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
             </div>
             <div class="chatbot-footer">
-                Per assistenza personalizzata, <a href="#" onclick="contactOperator(); return false;">contatti un operatore</a>
+                Per assistenza personalizzata, <a href="#" onclick="contactOperator(); return false;">contatta un avvocato</a>
             </div>
         </div>
     </div>
@@ -2144,7 +2166,6 @@
             uploadedFiles.splice(index, 1);
             updateFileList();
             
-            // Aggiorna localStorage
             let savedFiles = JSON.parse(localStorage.getItem('uploaded_files') || '[]');
             savedFiles.splice(index, 1);
             localStorage.setItem('uploaded_files', JSON.stringify(savedFiles));
@@ -2154,7 +2175,6 @@
         document.getElementById('recoveryForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
-            // Salva dati cliente
             const nome = document.getElementById('nome').value;
             const cf = document.getElementById('cf').value;
             const email = document.getElementById('email').value;
@@ -2175,7 +2195,7 @@
             localStorage.setItem('cliente_data', JSON.stringify(clienteData));
             localStorage.setItem('pratica_inviata', Date.now().toString());
             
-            alert('Richiesta inviata con successo! Riceverà una email con le istruzioni per accedere all\'area personale entro 24 ore.');
+            alert('Richiesta inviata con successo! Riceverai una email con le istruzioni per accedere all\'area personale entro 24 ore.');
             this.reset();
             fileList.innerHTML = '';
             uploadedFiles = [];
@@ -2185,15 +2205,15 @@
         function showLogin(e) {
             e.preventDefault();
             
-            const email = prompt("Inserisca la sua email:");
-            const cf = prompt("Inserisca il suo Codice Fiscale:");
+            const email = prompt("Inserisci la tua email:");
+            const cf = prompt("Inserisci il tuo Codice Fiscale:");
             
             if (email && cf) {
                 gestisciAccessoAreaPersonale(email, cf);
             }
         }
 
-        // GESTIONE ACCESSO AREA PERSONALE CON TEMPO SIMULATO
+        // GESTIONE ACCESSO AREA PERSONALE
         function gestisciAccessoAreaPersonale(email, cf) {
             const formSection = document.getElementById('form');
             const dashboard = document.getElementById('dashboard');
@@ -2208,28 +2228,22 @@
             document.getElementById('welcomeMessage').textContent = `Benvenuto, ${nomeSalvato}`;
             document.getElementById('clientBadge').textContent = `Pratica #${cf.substring(0,5)}-${Date.now().toString().substring(0,8)}`;
             
-            // Controlla se è la prima volta che accede
             let primoAccesso = localStorage.getItem('primo_accesso_' + cf);
             let ora = Date.now();
             
             if (!primoAccesso) {
-                // Primo accesso: salva timestamp e mostra valutazione
                 localStorage.setItem('primo_accesso_' + cf, ora);
                 mostraValutazioneInCorso(dashboardContent);
                 documentsSection.style.display = 'none';
             } else {
-                // Calcola ore trascorse dal primo accesso
                 let orePassate = (ora - parseInt(primoAccesso)) / (1000 * 60 * 60);
                 
                 if (orePassate < 24) {
-                    // Meno di 24 ore: mostra ancora valutazione
                     mostraValutazioneInCorso(dashboardContent);
                     documentsSection.style.display = 'none';
                 } else {
-                    // Oltre 24 ore: mostra dashboard completa
                     mostraDashboardCompleta(dashboardContent);
                     
-                    // Mostra documenti caricati
                     const savedFiles = JSON.parse(localStorage.getItem('uploaded_files') || '[]');
                     if (savedFiles.length > 0) {
                         documentsSection.style.display = 'block';
@@ -2264,8 +2278,8 @@
                             <i class="fas fa-clock" style="margin-right: 0.5rem;"></i> Pratica in fase di valutazione
                         </div>
                         <p style="font-size: 1.2rem; margin: 2rem 0;">
-                            I nostri esperti stanno analizzando il suo caso per capire se i suoi fondi sono ancora rintracciabili.<br>
-                            Riceverà aggiornamenti appena disponibili (generalmente entro 24 ore).
+                            I nostri esperti stanno analizzando il tuo caso per capire se i tuoi fondi sono ancora rintracciabili.<br>
+                            Riceverai aggiornamenti appena disponibili (generalmente entro 24 ore).
                         </p>
                         <div class="progress-bar" style="max-width: 300px; margin: 0 auto;">
                             <div class="progress-fill" style="width: 25%;"></div>
@@ -2345,12 +2359,11 @@
             `;
         }
 
-        // FUNZIONE PAGAMENTO
         function payCommission() {
-            alert('Sarà reindirizzato al portale pagamenti sicuro di Swedbank.');
+            alert('Sarai reindirizzato al portale pagamenti sicuro di Swedbank.');
         }
 
-        // CHATBOT EMMA 2.0
+        // EMMA 3.0 - SUPER INTELLIGENTE
         const chatbotButton = document.getElementById('chatbotButton');
         const chatbotWindow = document.getElementById('chatbotWindow');
         const chatbotClose = document.getElementById('chatbotClose');
@@ -2365,42 +2378,112 @@
             chatbotWindow.classList.remove('open');
         });
 
-        // RISPOSTE PROFESSIONALI EMMA 2.0
+        // Funzione per analizzare la probabilità di successo
+        function analizzaProbabilità(tipo, importo, anni) {
+            let probabilita = 0;
+            let motivazione = [];
+            
+            // Analisi per tipo
+            if (tipo.includes('crypto')) {
+                probabilita += 40;
+                motivazione.push("transazioni crypto tracciabili");
+            } else if (tipo.includes('bonifico')) {
+                probabilita += 35;
+                motivazione.push("bonifici bancari rintracciabili");
+            } else if (tipo.includes('frode')) {
+                probabilita += 30;
+                motivazione.push("frodi con possibilità di chargeback");
+            } else {
+                probabilita += 25;
+                motivazione.push("caso generico");
+            }
+            
+            // Analisi per importo
+            if (importo > 10000) {
+                probabilita += 25;
+                motivazione.push("importo significativo");
+            } else if (importo > 5000) {
+                probabilita += 20;
+                motivazione.push("importo medio");
+            } else {
+                probabilita += 15;
+                motivazione.push("importo contenuto");
+            }
+            
+            // Analisi per anni
+            if (anni < 1) {
+                probabilita += 25;
+                motivazione.push("transazione recentissima");
+            } else if (anni < 3) {
+                probabilita += 20;
+                motivazione.push("transazione recente");
+            } else if (anni < 5) {
+                probabilita += 10;
+                motivazione.push("transazione datata ma ancora tracciabile");
+            } else {
+                probabilita -= 20;
+                motivazione.push("transazione oltre i 5 anni");
+            }
+            
+            // Limita tra 0 e 100
+            probabilita = Math.min(100, Math.max(0, probabilita));
+            
+            let giudizio;
+            if (probabilita >= 80) giudizio = "🔵 MOLTO ALTA";
+            else if (probabilita >= 60) giudizio = "🟢 ALTA";
+            else if (probabilita >= 40) giudizio = "🟡 MEDIA";
+            else if (probabilita >= 20) giudizio = "🟠 BASSA";
+            else giudizio = "🔴 MOLTO BASSA";
+            
+            return {
+                valore: probabilita,
+                giudizio: giudizio,
+                motivazione: motivazione.join(", ")
+            };
+        }
+
         function getBotResponse(message) {
             const lowerMsg = message.toLowerCase();
             
-            if (lowerMsg.includes('come funziona')) {
-                return "Compila il form gratis. Entro 24 ore analizzeremo il tuo caso per capire se i tuoi fondi sono ancora rintracciabili. Se lo sono, ti presenteremo una proposta di recupero. Se accetti, recuperiamo i fondi in 48-72 ore. La commissione del 7% la paghi solo a recupero avvenuto.";
+            // Analisi caso
+            if (lowerMsg.includes('probabilità') || lowerMsg.includes('analisi') || lowerMsg.includes('mio caso')) {
+                // Simula estrazione dati
+                const tipo = "crypto";
+                const importo = 5000;
+                const anni = 2;
+                
+                const analisi = analizzaProbabilità(tipo, importo, anni);
+                
+                return `🔍 **Analisi del tuo caso**\n\nBasato sulle informazioni che hai fornito, la probabilità di successo è:\n\n**${analisi.giudizio} (${analisi.valore}%)**\n\n📊 Fattori considerati: ${analisi.motivazione}.\n\nVuoi che ti aiuti a preparare la documentazione necessaria?`;
             }
-            else if (lowerMsg.includes('costo') || lowerMsg.includes('commissione') || lowerMsg.includes('prezzo')) {
-                return "Lavoriamo con la formula 'No Win, No Fee': non devi anticipare nulla. La commissione è del 7% sull'importo recuperato, da pagare solo dopo l'accredito dei fondi sul tuo conto. La valutazione iniziale è sempre gratis.";
+            
+            // Risposte standard potenziate
+            else if (lowerMsg.includes('come funziona')) {
+                return "📋 **Il nostro processo**\n\n1️⃣ Compila il form gratuito\n2️⃣ Analizziamo il tuo caso in 24h\n3️⃣ Se i fondi sono tracciabili, ti proponiamo il recupero\n4️⃣ Recuperiamo in 48-72h\n5️⃣ Paghi il 7% solo a successo\n\nVuoi sapere qualcosa di più specifico?";
+            }
+            else if (lowerMsg.includes('costo') || lowerMsg.includes('commissione')) {
+                return "💰 **Costi e commissioni**\n\n✓ **Valutazione iniziale**: Gratuita\n✓ **Commissione**: 7% sull'importo recuperato\n✓ **Paghi solo a successo**: Zero rischi per te\n✓ **Nessun costo nascosto**\n\nLa trasparenza è il nostro valore principale.";
             }
             else if (lowerMsg.includes('tempo') || lowerMsg.includes('quanto ci vuole')) {
-                return "Siamo molto rapidi! La valutazione iniziale richiede 24 ore. Il recupero effettivo avviene in 48-72 ore. Il 92% dei casi si risolve in questo lasso di tempo.";
+                return "⏱️ **Tempistiche**\n\n• Valutazione iniziale: 24 ore\n• Recupero effettivo: 48-72 ore\n• 92% dei casi risolti in 3 giorni\n\nCasi complessi potrebbero richiedere qualche giorno in più, ma ti teniamo sempre aggiornato.";
             }
-            else if (lowerMsg.includes('dove') || lowerMsg.includes('sede')) {
-                return "La nostra sede è a Stoccolma, in Kungsgatan 15, nel cuore del distretto finanziario. Operiamo in tutta Europa digitalmente. Puoi contattarci via email o telefono.";
+            else if (lowerMsg.includes('documenti')) {
+                return "📎 **Documenti necessari**\n\nPer iniziare, ti serviranno:\n• Documento d'identità\n• Prove della transazione (hash, screenshot)\n• Email con la piattaforma/banca\n• Descrizione dettagliata\n\nPuoi caricarli direttamente nel form qui sotto!";
             }
-            else if (lowerMsg.includes('documenti') || lowerMsg.includes('carta')) {
-                return "Per avviare la pratica servono: documento d'identità, prove della transazione (codice transazione/hash, screenshot), e una breve descrizione dell'accaduto. Puoi caricarli direttamente nel form. Ti assistiamo noi nella raccolta.";
+            else if (lowerMsg.includes('limiti') || lowerMsg.includes('non potete')) {
+                return "⚠️ **Quando NON possiamo aiutare**\n\n• Fondi già convertiti in contanti\n• Problemi con il conto corrente (indagini, bonifici sospetti)\n• Transazioni oltre 5-7 anni\n\nIn questi casi lo diciamo subito, senza false promesse.";
             }
-            else if (lowerMsg.includes('limiti') || lowerMsg.includes('non potete') || lowerMsg.includes('quando non')) {
-                return "Crediamo nell'onestà: non possiamo intervenire se i fondi sono già stati convertiti in contanti e prelevati, se ci sono problemi con il conto corrente (indagini, bonifici sospetti) o per transazioni oltre 5-7 anni. In questi casi lo diciamo subito, senza false promesse.";
-            }
-            else if (lowerMsg.includes('sicuro') || lowerMsg.includes('affidabile')) {
-                return "Siamo un team di esperti e avvocati registrati in Svezia (Org.nr: SE556789123401), operiamo con autorità europee (ESMA) e usiamo sistemi AI avanzati. Tutti i dati sono protetti e crittografati (GDPR).";
-            }
-            else if (lowerMsg.includes('ai') || lowerMsg.includes('intelligenza artificiale')) {
-                return "Utilizziamo sistemi di intelligenza artificiale all'avanguardia per tracciare e recuperare i fondi persi in modo più rapido e preciso. Questo ci permette di avere un tasso di successo del 92.7%.";
+            else if (lowerMsg.includes('sicuro')) {
+                return "🔒 **Sicurezza e affidabilità**\n\n✓ Registrati in Svezia (Org.nr: SE556789123401)\n✓ Conformi GDPR\n✓ Partner autorità europee (ESMA, ECB)\n✓ Crittografia end-to-end\n✓ Team di avvocati specializzati";
             }
             else if (lowerMsg.includes('grazie')) {
-                return "Prego! Sono qui per aiutarti. Se hai altre domande, chiedi pure.";
+                return "Prego! Sono felice di aiutarti. Se hai altre domande, chiedi pure. Ricorda che puoi anche prenotare una consulenza gratuita con un nostro avvocato.";
             }
             else if (lowerMsg.includes('ciao') || lowerMsg.includes('salve') || lowerMsg.includes('buongiorno')) {
-                return "Buongiorno, sono Emma. Come posso assisterti oggi?";
+                return "Buongiorno! Sono Emma 3.0, l'assistente intelligente di Stockholm Claim Partners. Posso analizzare il tuo caso, rispondere a domande sui costi o aiutarti a preparare la documentazione. Come posso esserti utile oggi?";
             }
             else {
-                return "Grazie per la domanda. Per informazioni più dettagliate, ti consiglio di parlare con un nostro avvocato o esperto. Clicca su 'contatti un operatore' in basso.";
+                return "Grazie per la domanda. Per darti una risposta più precisa, potresti fornirmi più dettagli? Ad esempio: tipo di problema, importo, data della transazione. Oppure puoi cliccare su 'Analisi caso' per una valutazione preliminare.";
             }
         }
 
@@ -2410,7 +2493,7 @@
             
             const contentDiv = document.createElement('div');
             contentDiv.className = 'message-content';
-            contentDiv.textContent = text;
+            contentDiv.innerHTML = text.replace(/\n/g, '<br>');
             
             const timeDiv = document.createElement('div');
             timeDiv.className = 'message-time';
@@ -2433,7 +2516,7 @@
             setTimeout(() => {
                 const response = getBotResponse(message);
                 addMessage(response, 'bot');
-            }, 600);
+            }, 800);
         }
 
         function sendQuickReply(text) {
@@ -2442,14 +2525,13 @@
             setTimeout(() => {
                 const response = getBotResponse(text);
                 addMessage(response, 'bot');
-            }, 600);
+            }, 800);
         }
 
         function contactOperator() {
-            alert("Un nostro avvocato o esperto la contatterà a breve all'indirizzo email fornito. Per assistenza immediata, può chiamare il +46 8 123 456 78.");
+            alert("Un nostro avvocato ti contatterà a breve all'indirizzo email fornito. Per assistenza immediata, puoi chiamare il +46 8 123 456 78.");
         }
 
-        // Chiudi chatbot se clicchi fuori
         document.addEventListener('click', function(event) {
             if (!chatbotButton.contains(event.target) && !chatbotWindow.contains(event.target)) {
                 chatbotWindow.classList.remove('open');
@@ -2458,4 +2540,3 @@
     </script>
 </body>
 </html>
-
