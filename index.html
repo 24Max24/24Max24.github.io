@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TM&Partners | Recupero Fondi Professionale</title>
+    <title>Stockholm Claim Partners | Recupero Fondi Professionale</title>
     <style>
         /* IMPOSTAZIONI GENERALI */
         * {
@@ -19,16 +19,16 @@
             line-height: 1.6;
         }
 
-        /* COLORI PROFESSIONALI */
+        /* COLORI PROFESSIONALI - Nordic Theme */
         :root {
-            --primary: #0f3b5e;
-            --primary-dark: #0a2a42;
+            --primary: #0a3147;      /* Blu nordico profondo */
+            --primary-dark: #052236;
             --primary-light: #1e4f7a;
-            --secondary: #c89f4c;
+            --secondary: #c49a6c;     /* Oro/ambra nordico */
             --secondary-light: #d8b16a;
-            --accent: #e74c3c;
-            --success: #27ae60;
-            --warning: #f39c12;
+            --accent: #8b3d3d;        /* Rosso borgogna */
+            --success: #2e7d5e;
+            --warning: #b68b40;
             --gray-100: #f8fafc;
             --gray-200: #e2e8f0;
             --gray-300: #cbd5e1;
@@ -39,7 +39,7 @@
             --gray-800: #1e293b;
             --white: #ffffff;
             --shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
-            --shadow-hover: 0 20px 50px rgba(0, 59, 94, 0.15);
+            --shadow-hover: 0 20px 50px rgba(10, 49, 71, 0.15);
         }
 
         /* HEADER E NAVIGAZIONE */
@@ -73,26 +73,30 @@
             font-weight: 700;
             background: var(--secondary);
             color: var(--primary);
-            width: 50px;
-            height: 50px;
+            width: 60px;
+            height: 60px;
             display: flex;
             align-items: center;
             justify-content: center;
             border-radius: 12px;
             transform: rotate(-5deg);
+            font-family: 'Georgia', serif;
         }
 
         .logo-text {
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             font-weight: 600;
             letter-spacing: -0.5px;
+            line-height: 1.2;
         }
 
         .logo-text span {
             color: var(--secondary);
             font-weight: 300;
-            font-size: 1rem;
+            font-size: 0.9rem;
             display: block;
+            letter-spacing: 1px;
+            text-transform: uppercase;
         }
 
         .nav-links {
@@ -170,7 +174,7 @@
             left: -5%;
             width: 400px;
             height: 400px;
-            background: rgba(200,159,76,0.1);
+            background: rgba(196,154,108,0.1);
             border-radius: 50%;
         }
 
@@ -178,6 +182,17 @@
             position: relative;
             z-index: 2;
             max-width: 600px;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.1);
+            padding: 0.5rem 1.2rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid rgba(255,255,255,0.2);
+            backdrop-filter: blur(5px);
         }
 
         .hero h1 {
@@ -219,6 +234,48 @@
         .stat-label {
             font-size: 0.9rem;
             opacity: 0.8;
+        }
+
+        .btn-primary {
+            background: var(--secondary);
+            color: var(--primary-dark);
+            border: none;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: inline-block;
+            text-decoration: none;
+        }
+
+        .btn-primary:hover {
+            background: var(--secondary-light);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid var(--secondary);
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            margin-left: 1rem;
+        }
+
+        .btn-secondary:hover {
+            background: var(--secondary);
+            color: var(--primary);
+            transform: translateY(-2px);
         }
 
         /* SEZIONE FORM RICHIESTA */
@@ -280,66 +337,7 @@
         .form-control:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(15,59,94,0.1);
-        }
-
-        .form-control.error {
-            border-color: var(--accent);
-        }
-
-        .error-message {
-            color: var(--accent);
-            font-size: 0.85rem;
-            margin-top: 0.3rem;
-        }
-
-        .checkbox-group {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin: 1rem 0;
-        }
-
-        .checkbox-group input {
-            width: 20px;
-            height: 20px;
-            accent-color: var(--primary);
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-            color: white;
-            border: none;
-            padding: 1rem 2rem;
-            border-radius: 50px;
-            font-weight: 600;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            width: 100%;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-hover);
-        }
-
-        .btn-secondary {
-            background: var(--secondary);
-            color: var(--primary);
-            border: none;
-            padding: 0.8rem 1.5rem;
-            border-radius: 50px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .btn-secondary:hover {
-            background: var(--secondary-light);
-            transform: translateY(-2px);
+            box-shadow: 0 0 0 4px rgba(10,49,71,0.1);
         }
 
         /* AREA PERSONALE */
@@ -587,6 +585,41 @@
             font-weight: 700;
         }
 
+        /* TRUST SECTION */
+        .trust-section {
+            background: white;
+            border-radius: 30px;
+            padding: 3rem;
+            margin: 4rem 0;
+            text-align: center;
+            border: 1px solid var(--gray-200);
+        }
+
+        .trust-logos {
+            display: flex;
+            justify-content: center;
+            gap: 4rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .trust-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .trust-icon {
+            font-size: 2.5rem;
+            color: var(--primary);
+        }
+
+        .trust-text {
+            font-weight: 600;
+            color: var(--gray-600);
+        }
+
         /* FOOTER */
         .footer {
             background: var(--primary-dark);
@@ -608,6 +641,18 @@
             color: var(--secondary);
             margin-bottom: 1.5rem;
             font-size: 1.2rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        .footer-column h4::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background: var(--secondary);
         }
 
         .footer-column ul {
@@ -616,6 +661,7 @@
 
         .footer-column ul li {
             margin-bottom: 0.8rem;
+            color: rgba(255,255,255,0.7);
         }
 
         .footer-column ul li a {
@@ -626,6 +672,13 @@
 
         .footer-column ul li a:hover {
             color: var(--secondary);
+        }
+
+        .contact-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.8rem;
         }
 
         .footer-bottom {
@@ -668,6 +721,18 @@
             }
         }
 
+        /* STOCCOLMA BADGE */
+        .stockholm-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255,255,255,0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
         /* RESPONSIVE */
         @media (max-width: 768px) {
             .nav-links {
@@ -703,6 +768,11 @@
                 gap: 1rem;
                 text-align: center;
             }
+
+            .btn-secondary {
+                margin-left: 0;
+                margin-top: 1rem;
+            }
         }
     </style>
 </head>
@@ -711,10 +781,10 @@
     <header class="header">
         <div class="nav-container">
             <div class="logo">
-                <div class="logo-icon">TM</div>
+                <div class="logo-icon">SCP</div>
                 <div class="logo-text">
-                    TM&Partners
-                    <span>Fund Recovery Specialists</span>
+                    Stockholm Claim Partners
+                    <span>Fund Recovery Specialists - Stoccolma, Svezia</span>
                 </div>
             </div>
             <div class="nav-links">
@@ -739,30 +809,60 @@
         <!-- HERO SECTION -->
         <section class="hero">
             <div class="hero-content">
+                <div class="stockholm-badge">
+                    <span>🇸🇪</span> Con sede a Stoccolma - Operiamo in tutta Europa
+                </div>
                 <h1>
                     Recupero Fondi Professionale
                     <span>No Win, No Fee</span>
                 </h1>
                 <p>Recuperiamo i tuoi fondi persi in transazioni crypto, frodi o errori bancari. Zero costi anticipati, paghi solo a successo ottenuto.</p>
+                <div style="margin: 2rem 0;">
+                    <a href="#form" class="btn-primary">INIZIA LA TUA PRATICA</a>
+                    <a href="#contatti" class="btn-secondary">CONSULENZA GRATUITA</a>
+                </div>
                 <div class="hero-stats">
                     <div class="stat-item">
-                        <div class="stat-number">€15M+</div>
-                        <div class="stat-label">Fondi Recuperati</div>
+                        <div class="stat-number">€18.2M+</div>
+                        <div class="stat-label">Fondi Recuperati (2025)</div>
                     </div>
                     <div class="stat-item">
-                        <div class="stat-number">98%</div>
+                        <div class="stat-number">97.8%</div>
                         <div class="stat-label">Tasso Successo</div>
                     </div>
                     <div class="stat-item">
-                        <div class="stat-number">1.200+</div>
+                        <div class="stat-number">1.423</div>
                         <div class="stat-label">Clienti Soddisfatti</div>
                     </div>
                 </div>
             </div>
         </section>
 
+        <!-- TRUST SECTION -->
+        <div class="trust-section">
+            <h2 style="color: var(--primary); margin-bottom: 2rem;">Perché scegliere Stockholm Claim Partners</h2>
+            <div class="trust-logos">
+                <div class="trust-item">
+                    <div class="trust-icon">🇸🇪</div>
+                    <div class="trust-text">Sede a Stoccolma</div>
+                </div>
+                <div class="trust-item">
+                    <div class="trust-icon">⚖️</div>
+                    <div class="trust-text">Conformità UE</div>
+                </div>
+                <div class="trust-item">
+                    <div class="trust-icon">🔒</div>
+                    <div class="trust-text">Dati Sicuri</div>
+                </div>
+                <div class="trust-item">
+                    <div class="trust-icon">💶</div>
+                    <div class="trust-text">No Win, No Fee</div>
+                </div>
+            </div>
+        </div>
+
         <!-- FORM RICHIESTA -->
-        <div class="form-container" id="requestForm">
+        <div class="form-container" id="form">
             <h2 class="section-title">Inizia la tua pratica di recupero</h2>
             <p class="section-subtitle">Compila il form con i dettagli della tua situazione. Ti contatteremo entro 24 ore con una valutazione preliminare.</p>
             
@@ -803,14 +903,12 @@
                         <label class="form-label">Descrizione Dettagliata</label>
                         <textarea class="form-control" id="descrizione" rows="4" placeholder="Descrivi la tua situazione nel dettaglio..." required></textarea>
                     </div>
-                    <div class="form-group full-width">
-                        <div class="checkbox-group">
-                            <input type="checkbox" id="privacy" required>
-                            <label for="privacy">Ho letto e accetto l'informativa sulla privacy e i termini del servizio *</label>
-                        </div>
-                    </div>
                 </div>
-                <button type="submit" class="btn-primary">INVIA RICHIESTA DI RECUPERO</button>
+                <div class="checkbox-group" style="margin: 1rem 0 2rem 0;">
+                    <input type="checkbox" id="privacy" required style="width: auto;">
+                    <label for="privacy">Ho letto e accetto l'informativa sulla privacy e i termini del servizio *</label>
+                </div>
+                <button type="submit" class="btn-primary" style="width: 100%;">INVIA RICHIESTA DI RECUPERO</button>
             </form>
         </div>
 
@@ -850,7 +948,7 @@
                         <div class="commission-amount" id="commissionAmount">€ 2.316,85</div>
                         <div class="commission-note">Da saldare entro 7 giorni dall'accredito finale</div>
                     </div>
-                    <button class="btn-secondary" onclick="payCommission()">PAGA ORA</button>
+                    <button class="btn-secondary" onclick="payCommission()" style="background: var(--secondary); color: var(--primary); border: none;">PAGA ORA</button>
                 </div>
             </div>
 
@@ -935,15 +1033,15 @@
     </main>
 
     <!-- FOOTER -->
-    <footer class="footer">
+    <footer class="footer" id="contatti">
         <div class="footer-content">
             <div class="footer-column">
-                <h4>TM&Partners</h4>
+                <h4>Stockholm Claim Partners AB</h4>
                 <ul>
-                    <li>Jakobs Torg 3</li>
-                    <li>111 52 Stockholm</li>
-                    <li>Svezia</li>
-                    <li>P.IVA: SE969715168701</li>
+                    <li class="contact-info">📍 Kungsgatan 15</li>
+                    <li class="contact-info">111 43 Stockholm</li>
+                    <li class="contact-info">🇸🇪 Svezia</li>
+                    <li class="contact-info">📄 Org.nr: SE556789123401</li>
                 </ul>
             </div>
             <div class="footer-column">
@@ -967,15 +1065,16 @@
             <div class="footer-column">
                 <h4>Contatti</h4>
                 <ul>
-                    <li>info@tmpartners.se</li>
-                    <li>+46 8 123 456</li>
-                    <li>Supporto 24/7</li>
-                    <li>Chat dal vivo</li>
+                    <li class="contact-info">📧 info@stockholmclaimpartners.se</li>
+                    <li class="contact-info">📞 +46 8 123 456 78</li>
+                    <li class="contact-info">💬 Supporto 24/7</li>
+                    <li class="contact-info">🤖 Chat dal vivo</li>
                 </ul>
             </div>
         </div>
         <div class="footer-bottom">
-            © 2026 TM&Partners Consulting AB - Tutti i diritti riservati
+            © 2026 Stockholm Claim Partners AB - Tutti i diritti riservati<br>
+            <small style="opacity: 0.7;">Con sede a Stoccolma - Operiamo in conformità con le normative europee</small>
         </div>
     </footer>
 
@@ -992,23 +1091,15 @@
                 if (!input.value) {
                     input.classList.add('error');
                     isValid = false;
-                    
-                    // Aggiungi messaggio errore
-                    let errorMsg = input.parentNode.querySelector('.error-message');
-                    if (!errorMsg) {
-                        errorMsg = document.createElement('div');
-                        errorMsg.className = 'error-message';
-                        errorMsg.textContent = 'Campo obbligatorio';
-                        input.parentNode.appendChild(errorMsg);
-                    }
                 } else {
                     input.classList.remove('error');
-                    const errorMsg = input.parentNode.querySelector('.error-message');
-                    if (errorMsg) errorMsg.remove();
                 }
             });
             
-            if (!isValid) return;
+            if (!isValid) {
+                alert('Per favore compila tutti i campi obbligatori');
+                return;
+            }
             
             // Mostra notifica
             const notification = document.getElementById('notification');
@@ -1027,7 +1118,7 @@
         function showLogin(e) {
             e.preventDefault();
             
-            const formSection = document.getElementById('requestForm');
+            const formSection = document.getElementById('form');
             const dashboard = document.getElementById('dashboard');
             
             formSection.style.display = 'none';
@@ -1035,7 +1126,7 @@
             
             // Popola dati esempio
             document.getElementById('welcomeMessage').textContent = 'Benvenuto, Mario Rossi';
-            document.getElementById('clientBadge').textContent = 'Pratica #CB-IT-0226-98412';
+            document.getElementById('clientBadge').textContent = 'Pratica #SCP-ST-0226-98412';
             document.getElementById('recoveryAmount').textContent = '€ 44.240,89';
             document.getElementById('recoveredAmount').textContent = '€ 33.180,67';
             document.getElementById('commissionAmount').textContent = '€ 2.316,85';
@@ -1046,15 +1137,13 @@
 
         // Funzione per pagamento commissione
         function payCommission() {
-            alert('Reindirizzamento al portale pagamenti sicuro...');
+            alert('Reindirizzamento al portale pagamenti sicuro di Swedbank...');
         }
 
         // Rimuovi errori durante la digitazione
         document.querySelectorAll('.form-control').forEach(input => {
             input.addEventListener('input', function() {
                 this.classList.remove('error');
-                const errorMsg = this.parentNode.querySelector('.error-message');
-                if (errorMsg) errorMsg.remove();
             });
         });
     </script>
