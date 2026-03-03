@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Stockholm Claim Partners | Recupero Fondi Professionale</title>
     <style>
-        /* IMPOSTAZIONI GENERALI */
+        /* RESET E IMPOSTAZIONI GENERALI */
         * {
             margin: 0;
             padding: 0;
@@ -13,44 +13,97 @@
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background-color: #f8fafc;
-            color: #1e293b;
+            font-family: 'Inter', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: #fafbfc;
+            color: #1e2b3a;
             line-height: 1.6;
+            overflow-x: hidden;
         }
 
-        /* COLORI PROFESSIONALI - Nordic Theme */
+        /* VARIABILI COLORE - Nordic Premium */
         :root {
-            --primary: #0a3147;      /* Blu nordico profondo */
-            --primary-dark: #052236;
-            --primary-light: #1e4f7a;
-            --secondary: #c49a6c;     /* Oro/ambra nordico */
-            --secondary-light: #d8b16a;
-            --accent: #8b3d3d;        /* Rosso borgogna */
+            --primary: #0a2540;        /* Blu notte profondo */
+            --primary-light: #1e3b5a;
+            --primary-dark: #051a2b;
+            --secondary: #c9a959;       /* Oro nordico */
+            --secondary-light: #dabe7a;
+            --accent: #8b3d3d;
             --success: #2e7d5e;
             --warning: #b68b40;
             --gray-100: #f8fafc;
-            --gray-200: #e2e8f0;
-            --gray-300: #cbd5e1;
-            --gray-400: #94a3b8;
-            --gray-500: #64748b;
-            --gray-600: #475569;
-            --gray-700: #334155;
-            --gray-800: #1e293b;
+            --gray-200: #eef2f6;
+            --gray-300: #dde3e9;
+            --gray-400: #9aa9b9;
+            --gray-500: #6b7a8c;
+            --gray-600: #4a5a6e;
+            --gray-700: #2c3e50;
+            --gray-800: #1e2b3a;
             --white: #ffffff;
-            --shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
-            --shadow-hover: 0 20px 50px rgba(10, 49, 71, 0.15);
+            --shadow-sm: 0 5px 20px rgba(0,0,0,0.05);
+            --shadow-md: 0 10px 40px rgba(0,37,74,0.08);
+            --shadow-lg: 0 20px 60px rgba(0,37,74,0.12);
+            --shadow-hover: 0 30px 70px rgba(201,169,89,0.15);
         }
 
-        /* HEADER E NAVIGAZIONE */
+        /* TIPOGRAFIA */
+        h1, h2, h3, h4 {
+            font-weight: 700;
+            line-height: 1.3;
+            letter-spacing: -0.02em;
+        }
+
+        h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+        }
+
+        h2 {
+            font-size: clamp(2rem, 4vw, 2.8rem);
+            color: var(--primary);
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 1rem;
+            position: relative;
+            padding-bottom: 1rem;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: var(--secondary);
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--gray-500);
+            max-width: 700px;
+            margin: 0 auto 3rem auto;
+            font-size: 1.1rem;
+        }
+
+        /* HEADER */
         .header {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            color: white;
-            padding: 1rem 0;
-            position: sticky;
+            position: fixed;
             top: 0;
+            left: 0;
+            width: 100%;
             z-index: 1000;
-            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            padding: 1.5rem 0;
+            background: transparent;
+        }
+
+        .header.scrolled {
+            background: rgba(10,37,64,0.98);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            box-shadow: var(--shadow-md);
         }
 
         .nav-container {
@@ -69,31 +122,33 @@
         }
 
         .logo-icon {
-            font-size: 2rem;
-            font-weight: 700;
+            font-size: 1.8rem;
+            font-weight: 800;
             background: var(--secondary);
             color: var(--primary);
-            width: 60px;
-            height: 60px;
+            width: 55px;
+            height: 55px;
             display: flex;
             align-items: center;
             justify-content: center;
             border-radius: 12px;
-            transform: rotate(-5deg);
+            transform: rotate(-3deg);
             font-family: 'Georgia', serif;
+            box-shadow: var(--shadow-md);
         }
 
         .logo-text {
-            font-size: 1.6rem;
-            font-weight: 600;
-            letter-spacing: -0.5px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
             line-height: 1.2;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
         }
 
         .logo-text span {
             color: var(--secondary);
-            font-weight: 300;
-            font-size: 0.9rem;
+            font-weight: 400;
+            font-size: 0.85rem;
             display: block;
             letter-spacing: 1px;
             text-transform: uppercase;
@@ -106,23 +161,34 @@
         }
 
         .nav-links a {
-            color: rgba(255,255,255,0.9);
+            color: rgba(255,255,255,0.95);
             text-decoration: none;
             font-weight: 500;
             font-size: 0.95rem;
             text-transform: uppercase;
             letter-spacing: 0.5px;
             transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--secondary);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 100%;
         }
 
         .nav-links a:hover {
             color: var(--secondary);
-        }
-
-        .nav-links a.active {
-            color: var(--secondary);
-            border-bottom: 2px solid var(--secondary);
-            padding-bottom: 0.25rem;
         }
 
         .btn-login {
@@ -131,109 +197,120 @@
             padding: 0.6rem 1.5rem !important;
             border-radius: 50px;
             font-weight: 600 !important;
+            box-shadow: 0 4px 15px rgba(201,169,89,0.3);
         }
 
         .btn-login:hover {
             background: var(--secondary-light);
-            color: var(--primary-dark) !important;
+            transform: translateY(-2px);
         }
 
-        /* MAIN CONTENT */
-        .main-content {
-            max-width: 1400px;
-            margin: 2rem auto;
-            padding: 0 2rem;
+        .btn-login::after {
+            display: none;
         }
 
-        /* HERO SECTION */
+        /* HERO SECTION CON IMMAGINE */
         .hero {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-            border-radius: 30px;
-            padding: 4rem;
-            color: white;
-            margin-bottom: 3rem;
             position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            color: white;
             overflow: hidden;
         }
 
-        .hero::before {
-            content: "";
+        .hero-background {
             position: absolute;
-            top: -50%;
-            right: -10%;
-            width: 600px;
-            height: 600px;
-            background: rgba(255,255,255,0.03);
-            border-radius: 50%;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
         }
 
-        .hero::after {
-            content: "";
+        .hero-background img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center 30%;
+        }
+
+        .hero-overlay {
             position: absolute;
-            bottom: -30%;
-            left: -5%;
-            width: 400px;
-            height: 400px;
-            background: rgba(196,154,108,0.1);
-            border-radius: 50%;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(10,37,64,0.95) 0%, rgba(10,37,64,0.8) 50%, rgba(201,169,89,0.3) 100%);
+            z-index: -1;
         }
 
         .hero-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            width: 100%;
             position: relative;
             z-index: 2;
-            max-width: 600px;
         }
 
         .hero-badge {
-            display: inline-block;
-            background: rgba(255,255,255,0.1);
-            padding: 0.5rem 1.2rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            padding: 0.7rem 1.5rem;
             border-radius: 50px;
-            font-size: 0.9rem;
-            margin-bottom: 1.5rem;
+            margin-bottom: 2rem;
             border: 1px solid rgba(255,255,255,0.2);
-            backdrop-filter: blur(5px);
+            font-size: 0.95rem;
         }
 
         .hero h1 {
-            font-size: 3.2rem;
-            font-weight: 700;
-            line-height: 1.2;
+            font-size: clamp(2.8rem, 6vw, 4.5rem);
             margin-bottom: 1.5rem;
+            max-width: 800px;
         }
 
         .hero h1 span {
             color: var(--secondary);
             display: block;
-            font-size: 2rem;
+            font-size: 0.7em;
             font-weight: 400;
+            margin-top: 0.5rem;
+            letter-spacing: 2px;
         }
 
         .hero p {
             font-size: 1.2rem;
-            margin-bottom: 2rem;
+            margin-bottom: 2.5rem;
+            max-width: 600px;
             opacity: 0.9;
         }
 
         .hero-stats {
             display: flex;
             gap: 3rem;
-            margin-top: 2rem;
+            margin-top: 3rem;
         }
 
         .stat-item {
-            text-align: center;
+            text-align: left;
         }
 
         .stat-number {
-            font-size: 2rem;
+            font-size: 2.2rem;
             font-weight: 700;
             color: var(--secondary);
+            line-height: 1;
         }
 
         .stat-label {
             font-size: 0.9rem;
             opacity: 0.8;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .btn-primary {
@@ -250,19 +327,20 @@
             letter-spacing: 1px;
             display: inline-block;
             text-decoration: none;
+            box-shadow: 0 10px 25px rgba(201,169,89,0.3);
         }
 
         .btn-primary:hover {
             background: var(--secondary-light);
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 20px 35px rgba(201,169,89,0.4);
         }
 
         .btn-secondary {
             background: transparent;
             color: white;
             border: 2px solid var(--secondary);
-            padding: 0.8rem 2rem;
+            padding: 0.9rem 2.2rem;
             border-radius: 50px;
             font-weight: 600;
             cursor: pointer;
@@ -275,31 +353,63 @@
         .btn-secondary:hover {
             background: var(--secondary);
             color: var(--primary);
-            transform: translateY(-2px);
+            transform: translateY(-3px);
         }
 
-        /* SEZIONE FORM RICHIESTA */
-        .section-title {
-            font-size: 2.2rem;
-            font-weight: 700;
-            color: var(--primary);
+        /* MAIN CONTENT */
+        .main-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        /* TRUST SECTION */
+        .trust-section {
+            background: white;
+            border-radius: 30px;
+            padding: 3rem;
+            margin: 4rem 0;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--gray-200);
+        }
+
+        .trust-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .trust-item {
+            text-align: center;
+            padding: 1.5rem;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .trust-item:hover {
+            background: var(--gray-100);
+            transform: translateY(-5px);
+        }
+
+        .trust-icon {
+            font-size: 2.8rem;
             margin-bottom: 1rem;
-            text-align: center;
         }
 
-        .section-subtitle {
-            text-align: center;
-            color: var(--gray-500);
-            max-width: 700px;
-            margin: 0 auto 3rem auto;
+        .trust-text {
+            font-weight: 600;
+            color: var(--gray-700);
         }
 
+        /* FORM SECTION */
         .form-container {
             background: white;
             border-radius: 30px;
             padding: 3rem;
-            box-shadow: var(--shadow);
-            margin-bottom: 4rem;
+            box-shadow: var(--shadow-lg);
+            margin: 4rem 0;
+            border: 1px solid var(--gray-200);
         }
 
         .form-grid {
@@ -337,17 +447,17 @@
         .form-control:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(10,49,71,0.1);
+            box-shadow: 0 0 0 4px rgba(10,37,64,0.1);
         }
 
-        /* AREA PERSONALE */
+        /* DASHBOARD */
         .dashboard-container {
             display: none;
             background: white;
             border-radius: 30px;
             padding: 2rem;
-            box-shadow: var(--shadow);
-            margin-top: 2rem;
+            box-shadow: var(--shadow-lg);
+            margin: 4rem 0;
         }
 
         .dashboard-header {
@@ -357,20 +467,6 @@
             margin-bottom: 2rem;
             padding-bottom: 1.5rem;
             border-bottom: 2px solid var(--gray-200);
-        }
-
-        .welcome-message {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: var(--primary);
-        }
-
-        .client-badge {
-            background: var(--gray-100);
-            padding: 0.5rem 1.5rem;
-            border-radius: 50px;
-            font-weight: 500;
-            color: var(--gray-600);
         }
 
         .case-status {
@@ -395,26 +491,10 @@
             border-left: 5px solid var(--success);
         }
 
-        .status-title {
-            font-size: 1.2rem;
-            color: var(--gray-500);
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
         .amount-large {
             font-size: 2.5rem;
             font-weight: 700;
             color: var(--primary);
-            margin-bottom: 0.5rem;
-        }
-
-        .amount-large small {
-            font-size: 1rem;
-            color: var(--gray-400);
-            font-weight: 400;
         }
 
         .progress-bar {
@@ -433,69 +513,6 @@
             transition: width 0.5s ease;
         }
 
-        /* TABELLA TRANSAZIONI */
-        .transactions-section {
-            margin-top: 2rem;
-        }
-
-        .transactions-title {
-            font-size: 1.3rem;
-            font-weight: 600;
-            color: var(--primary);
-            margin-bottom: 1.5rem;
-        }
-
-        .transactions-table {
-            width: 100%;
-            border-collapse: collapse;
-            background: white;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
-        }
-
-        .transactions-table th {
-            background: var(--primary);
-            color: white;
-            font-weight: 600;
-            font-size: 0.9rem;
-            padding: 1.2rem 1rem;
-            text-align: left;
-        }
-
-        .transactions-table td {
-            padding: 1.2rem 1rem;
-            border-bottom: 1px solid var(--gray-200);
-            color: var(--gray-600);
-        }
-
-        .transactions-table tr:hover td {
-            background: var(--gray-100);
-        }
-
-        .status-badge {
-            padding: 0.4rem 1rem;
-            border-radius: 50px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            display: inline-block;
-        }
-
-        .status-badge.pending {
-            background: #fff3cd;
-            color: #856404;
-        }
-
-        .status-badge.completed {
-            background: #d4edda;
-            color: #155724;
-        }
-
-        .status-badge.processing {
-            background: #cce5ff;
-            color: #004085;
-        }
-
         .commission-box {
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
             border-radius: 20px;
@@ -505,8 +522,6 @@
         }
 
         .commission-box h3 {
-            font-size: 1.3rem;
-            margin-bottom: 1rem;
             color: var(--secondary);
         }
 
@@ -521,12 +536,7 @@
             font-weight: 700;
         }
 
-        .commission-note {
-            opacity: 0.8;
-            font-size: 0.9rem;
-        }
-
-        /* CARDS SERVIZI */
+        /* SERVIZI */
         .services-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -539,30 +549,25 @@
             border-radius: 25px;
             padding: 2.5rem 2rem;
             text-align: center;
-            box-shadow: var(--shadow);
+            box-shadow: var(--shadow-md);
             transition: all 0.3s ease;
             border: 1px solid var(--gray-200);
         }
 
         .service-card:hover {
-            transform: translateY(-10px);
+            transform: translateY(-15px);
             box-shadow: var(--shadow-hover);
+            border-color: var(--secondary);
         }
 
         .service-icon {
-            font-size: 3rem;
+            font-size: 3.5rem;
             margin-bottom: 1.5rem;
         }
 
         .service-card h3 {
-            font-size: 1.5rem;
             color: var(--primary);
             margin-bottom: 1rem;
-        }
-
-        .service-card p {
-            color: var(--gray-500);
-            margin-bottom: 1.5rem;
         }
 
         .service-features {
@@ -585,46 +590,58 @@
             font-weight: 700;
         }
 
-        /* TRUST SECTION */
-        .trust-section {
-            background: white;
-            border-radius: 30px;
-            padding: 3rem;
+        /* TIMELINE */
+        .timeline-section {
+            background: var(--primary);
+            color: white;
+            padding: 5rem 0;
             margin: 4rem 0;
+            border-radius: 30px;
+        }
+
+        .timeline-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 3rem auto 0;
+            padding: 0 2rem;
+        }
+
+        .timeline-step {
             text-align: center;
-            border: 1px solid var(--gray-200);
+            position: relative;
         }
 
-        .trust-logos {
-            display: flex;
-            justify-content: center;
-            gap: 4rem;
-            margin-top: 2rem;
-            flex-wrap: wrap;
-        }
-
-        .trust-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .trust-icon {
-            font-size: 2.5rem;
+        .timeline-number {
+            width: 60px;
+            height: 60px;
+            background: var(--secondary);
             color: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin: 0 auto 1.5rem;
         }
 
-        .trust-text {
-            font-weight: 600;
-            color: var(--gray-600);
+        .timeline-step h4 {
+            margin-bottom: 0.5rem;
+            color: var(--secondary);
+        }
+
+        .timeline-step p {
+            opacity: 0.8;
+            font-size: 0.95rem;
         }
 
         /* FOOTER */
         .footer {
             background: var(--primary-dark);
             color: white;
-            padding: 4rem 0 2rem 0;
+            padding: 5rem 0 2rem 0;
             margin-top: 4rem;
         }
 
@@ -633,7 +650,7 @@
             margin: 0 auto;
             padding: 0 2rem;
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: 2fr 1fr 1fr 2fr;
             gap: 3rem;
         }
 
@@ -683,64 +700,303 @@
 
         .footer-bottom {
             text-align: center;
-            padding-top: 2rem;
+            padding-top: 3rem;
             margin-top: 3rem;
             border-top: 1px solid rgba(255,255,255,0.1);
             color: rgba(255,255,255,0.5);
-            font-size: 0.9rem;
         }
 
-        /* NOTIFICHE */
-        .notification {
+        /* CHATBOT AI - EMMA */
+        .chatbot-container {
             position: fixed;
-            top: 100px;
+            bottom: 30px;
             right: 30px;
-            background: white;
-            border-radius: 15px;
-            padding: 1.5rem;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-            max-width: 400px;
-            z-index: 2000;
-            display: none;
-            border-left: 5px solid var(--success);
+            z-index: 1000;
+            font-family: 'Inter', sans-serif;
         }
 
-        .notification.show {
-            display: block;
-            animation: slideIn 0.5s ease;
+        .chatbot-button {
+            width: 70px;
+            height: 70px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(10,37,64,0.3);
+            border: 2px solid var(--secondary);
+            transition: all 0.3s ease;
+            position: relative;
         }
 
-        @keyframes slideIn {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
+        .chatbot-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 15px 40px rgba(201,169,89,0.4);
+        }
+
+        .chatbot-button img {
+            width: 40px;
+            height: 40px;
+            filter: brightness(0) invert(1);
+        }
+
+        .chatbot-pulse {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 2px solid var(--secondary);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
                 opacity: 1;
             }
+            100% {
+                transform: scale(1.5);
+                opacity: 0;
+            }
         }
 
-        /* STOCCOLMA BADGE */
-        .stockholm-badge {
-            display: inline-flex;
+        .chatbot-window {
+            position: absolute;
+            bottom: 90px;
+            right: 0;
+            width: 380px;
+            background: white;
+            border-radius: 25px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+            overflow: hidden;
+            display: none;
+            border: 1px solid var(--gray-200);
+        }
+
+        .chatbot-window.open {
+            display: block;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .chatbot-header {
+            background: var(--primary);
+            color: white;
+            padding: 1.5rem;
+            display: flex;
             align-items: center;
-            gap: 0.5rem;
-            background: rgba(255,255,255,0.1);
-            padding: 0.5rem 1rem;
-            border-radius: 50px;
+            gap: 1rem;
+        }
+
+        .chatbot-avatar {
+            width: 50px;
+            height: 50px;
+            background: var(--secondary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+        }
+
+        .chatbot-title {
+            flex: 1;
+        }
+
+        .chatbot-title h4 {
+            font-size: 1.2rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .chatbot-title p {
+            font-size: 0.85rem;
+            opacity: 0.8;
+        }
+
+        .chatbot-close {
+            cursor: pointer;
+            font-size: 1.5rem;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+        }
+
+        .chatbot-close:hover {
+            opacity: 1;
+        }
+
+        .chatbot-messages {
+            height: 300px;
+            overflow-y: auto;
+            padding: 1.5rem;
+            background: #f8fafc;
+        }
+
+        .message {
             margin-bottom: 1rem;
-            font-size: 0.9rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .message.bot {
+            align-items: flex-start;
+        }
+
+        .message.user {
+            align-items: flex-end;
+        }
+
+        .message-content {
+            max-width: 80%;
+            padding: 0.8rem 1.2rem;
+            border-radius: 18px;
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+
+        .bot .message-content {
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-bottom-left-radius: 5px;
+        }
+
+        .user .message-content {
+            background: var(--primary);
+            color: white;
+            border-bottom-right-radius: 5px;
+        }
+
+        .message-time {
+            font-size: 0.7rem;
+            color: var(--gray-400);
+            margin-top: 0.3rem;
+            margin-left: 0.5rem;
+        }
+
+        .chatbot-quick-replies {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            padding: 1rem;
+            background: white;
+            border-top: 1px solid var(--gray-200);
+        }
+
+        .quick-reply {
+            background: var(--gray-100);
+            border: 1px solid var(--gray-300);
+            border-radius: 50px;
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--gray-700);
+        }
+
+        .quick-reply:hover {
+            background: var(--secondary);
+            color: var(--primary);
+            border-color: var(--secondary);
+        }
+
+        .chatbot-input {
+            display: flex;
+            padding: 1rem;
+            background: white;
+            border-top: 1px solid var(--gray-200);
+        }
+
+        .chatbot-input input {
+            flex: 1;
+            padding: 0.8rem 1rem;
+            border: 1px solid var(--gray-300);
+            border-radius: 50px;
+            outline: none;
+            font-family: inherit;
+        }
+
+        .chatbot-input input:focus {
+            border-color: var(--primary);
+        }
+
+        .chatbot-input button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            margin-left: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .chatbot-input button:hover {
+            background: var(--secondary);
+            color: var(--primary);
+        }
+
+        .chatbot-footer {
+            padding: 0.8rem;
+            text-align: center;
+            background: var(--gray-100);
+            font-size: 0.8rem;
+            color: var(--gray-500);
+            border-top: 1px solid var(--gray-200);
+        }
+
+        .chatbot-footer a {
+            color: var(--secondary);
+            text-decoration: none;
+            font-weight: 600;
         }
 
         /* RESPONSIVE */
+        @media (max-width: 1024px) {
+            .nav-links {
+                gap: 1.5rem;
+            }
+            
+            .trust-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .timeline-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
         @media (max-width: 768px) {
             .nav-links {
                 display: none;
             }
             
-            .hero h1 {
-                font-size: 2.2rem;
+            .hero-stats {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .btn-secondary {
+                margin-left: 0;
+                margin-top: 1rem;
             }
             
             .form-grid {
@@ -759,32 +1015,32 @@
                 grid-template-columns: 1fr;
             }
             
-            .footer-content {
-                grid-template-columns: 1fr 1fr;
-            }
-            
             .commission-details {
                 flex-direction: column;
                 gap: 1rem;
                 text-align: center;
             }
-
-            .btn-secondary {
-                margin-left: 0;
-                margin-top: 1rem;
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .chatbot-window {
+                width: 320px;
+                right: 0;
             }
         }
     </style>
 </head>
 <body>
     <!-- HEADER -->
-    <header class="header">
+    <header class="header" id="header">
         <div class="nav-container">
             <div class="logo">
                 <div class="logo-icon">SCP</div>
                 <div class="logo-text">
                     Stockholm Claim Partners
-                    <span>Fund Recovery Specialists - Stoccolma, Svezia</span>
+                    <span>Fund Recovery Specialists</span>
                 </div>
             </div>
             <div class="nav-links">
@@ -798,50 +1054,48 @@
         </div>
     </header>
 
-    <!-- NOTIFICA -->
-    <div class="notification" id="notification">
-        <strong style="color: var(--success); font-size: 1.2rem;">✓ Richiesta Inviata!</strong>
-        <p style="margin-top: 0.5rem;">La tua pratica è stata registrata. Controlla la tua area personale per i dettagli.</p>
-    </div>
+    <!-- HERO CON IMMAGINE PALAZZI NORDICI -->
+    <section class="hero">
+        <div class="hero-background">
+            <img src="https://images.unsplash.com/photo-1534239143101-1b1c627395c5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" alt="Stoccolma architettura moderna">
+        </div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <div class="hero-badge">
+                <span>🇸🇪</span> Con sede a Stoccolma - Operiamo in tutta Europa
+            </div>
+            <h1>
+                Recupero Fondi Professionale
+                <span>No Win, No Fee</span>
+            </h1>
+            <p>Recuperiamo i tuoi fondi persi in transazioni crypto, frodi o errori bancari. Zero costi anticipati, paghi solo a successo ottenuto.</p>
+            <div>
+                <a href="#form" class="btn-primary">INIZIA LA TUA PRATICA</a>
+                <a href="#contatti" class="btn-secondary">CONSULENZA GRATUITA</a>
+            </div>
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <div class="stat-number">€18.2M+</div>
+                    <div class="stat-label">Fondi Recuperati (2025)</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">97.8%</div>
+                    <div class="stat-label">Tasso Successo</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">1.423</div>
+                    <div class="stat-label">Clienti Soddisfatti</div>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <!-- MAIN CONTENT -->
     <main class="main-content">
-        <!-- HERO SECTION -->
-        <section class="hero">
-            <div class="hero-content">
-                <div class="stockholm-badge">
-                    <span>🇸🇪</span> Con sede a Stoccolma - Operiamo in tutta Europa
-                </div>
-                <h1>
-                    Recupero Fondi Professionale
-                    <span>No Win, No Fee</span>
-                </h1>
-                <p>Recuperiamo i tuoi fondi persi in transazioni crypto, frodi o errori bancari. Zero costi anticipati, paghi solo a successo ottenuto.</p>
-                <div style="margin: 2rem 0;">
-                    <a href="#form" class="btn-primary">INIZIA LA TUA PRATICA</a>
-                    <a href="#contatti" class="btn-secondary">CONSULENZA GRATUITA</a>
-                </div>
-                <div class="hero-stats">
-                    <div class="stat-item">
-                        <div class="stat-number">€18.2M+</div>
-                        <div class="stat-label">Fondi Recuperati (2025)</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number">97.8%</div>
-                        <div class="stat-label">Tasso Successo</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number">1.423</div>
-                        <div class="stat-label">Clienti Soddisfatti</div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
         <!-- TRUST SECTION -->
         <div class="trust-section">
-            <h2 style="color: var(--primary); margin-bottom: 2rem;">Perché scegliere Stockholm Claim Partners</h2>
-            <div class="trust-logos">
+            <h2 class="section-title">Perché scegliere Stockholm Claim Partners</h2>
+            <div class="trust-grid">
                 <div class="trust-item">
                     <div class="trust-icon">🇸🇪</div>
                     <div class="trust-text">Sede a Stoccolma</div>
@@ -1030,6 +1284,35 @@
                 </div>
             </div>
         </section>
+
+        <!-- TIMELINE PROCESSO -->
+        <div class="timeline-section">
+            <h2 class="section-title" style="color: white;">Come funziona</h2>
+            <p class="section-subtitle" style="color: rgba(255,255,255,0.8);">Il nostro processo in 4 semplici passi</p>
+            
+            <div class="timeline-grid">
+                <div class="timeline-step">
+                    <div class="timeline-number">1</div>
+                    <h4>Valutazione Gratuita</h4>
+                    <p>Analizziamo il tuo caso senza alcun costo</p>
+                </div>
+                <div class="timeline-step">
+                    <div class="timeline-number">2</div>
+                    <h4>Avvio Pratica</h4>
+                    <p>Iniziamo le procedure di recupero</p>
+                </div>
+                <div class="timeline-step">
+                    <div class="timeline-number">3</div>
+                    <h4>Recupero Fondi</h4>
+                    <p>I fondi vengono recuperati e verificati</p>
+                </div>
+                <div class="timeline-step">
+                    <div class="timeline-number">4</div>
+                    <h4>Pagamento Solo a Successo</h4>
+                    <p>Paghi solo se recuperiamo i tuoi fondi</p>
+                </div>
+            </div>
+        </div>
     </main>
 
     <!-- FOOTER -->
@@ -1068,18 +1351,67 @@
                     <li class="contact-info">📧 info@stockholmclaimpartners.se</li>
                     <li class="contact-info">📞 +46 8 123 456 78</li>
                     <li class="contact-info">💬 Supporto 24/7</li>
-                    <li class="contact-info">🤖 Chat dal vivo</li>
+                    <li class="contact-info">🤖 Chat con Emma</li>
                 </ul>
             </div>
         </div>
         <div class="footer-bottom">
             © 2026 Stockholm Claim Partners AB - Tutti i diritti riservati<br>
-            <small style="opacity: 0.7;">Con sede a Stoccolma - Operiamo in conformità con le normative europee</small>
+            <small>Con sede a Stoccolma - Operiamo in conformità con le normative europee</small>
         </div>
     </footer>
 
+    <!-- CHATBOT AI EMMA -->
+    <div class="chatbot-container">
+        <div class="chatbot-button" id="chatbotButton">
+            <div class="chatbot-pulse"></div>
+            <span style="font-size: 2rem;">🤖</span>
+        </div>
+        <div class="chatbot-window" id="chatbotWindow">
+            <div class="chatbot-header">
+                <div class="chatbot-avatar">🤖</div>
+                <div class="chatbot-title">
+                    <h4>Emma - Assistente AI</h4>
+                    <p>Risposte immediate 24/7</p>
+                </div>
+                <div class="chatbot-close" id="chatbotClose">✕</div>
+            </div>
+            <div class="chatbot-messages" id="chatbotMessages">
+                <div class="message bot">
+                    <div class="message-content">
+                        Ciao! Sono Emma, l'assistente virtuale di Stockholm Claim Partners. Come posso aiutarti oggi?
+                    </div>
+                    <div class="message-time">ora</div>
+                </div>
+            </div>
+            <div class="chatbot-quick-replies">
+                <div class="quick-reply" onclick="sendQuickReply('Come funziona il recupero fondi?')">Come funziona?</div>
+                <div class="quick-reply" onclick="sendQuickReply('Quali sono i costi?')">Costi</div>
+                <div class="quick-reply" onclick="sendQuickReply('Quanto tempo ci vuole?')">Tempi</div>
+                <div class="quick-reply" onclick="sendQuickReply('Dove siete?')">Dove siete?</div>
+            </div>
+            <div class="chatbot-input">
+                <input type="text" id="chatbotInput" placeholder="Scrivi una domanda..." onkeypress="if(event.key==='Enter') sendMessage()">
+                <button onclick="sendMessage()">➤</button>
+            </div>
+            <div class="chatbot-footer">
+                Parlare con un <a href="#" onclick="alert('Un operatore ti contatterà presto'); return false;">operatore umano</a>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // Gestione form richiesta
+        // HEADER SCROLL EFFECT
+        window.addEventListener('scroll', function() {
+            const header = document.getElementById('header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // FORM SUBMIT
         document.getElementById('recoveryForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
@@ -1101,50 +1433,126 @@
                 return;
             }
             
-            // Mostra notifica
-            const notification = document.getElementById('notification');
-            notification.classList.add('show');
-            
-            // Nascondi dopo 5 secondi
-            setTimeout(() => {
-                notification.classList.remove('show');
-            }, 5000);
-            
-            // Resetta form
+            alert('Richiesta inviata con successo! Ti contatteremo entro 24 ore.');
             this.reset();
         });
 
-        // Funzione per mostrare area personale (simulazione login)
+        // FUNZIONE LOGIN (AREA PERSONALE)
         function showLogin(e) {
             e.preventDefault();
             
             const formSection = document.getElementById('form');
             const dashboard = document.getElementById('dashboard');
             
-            formSection.style.display = 'none';
-            dashboard.style.display = 'block';
-            
-            // Popola dati esempio
-            document.getElementById('welcomeMessage').textContent = 'Benvenuto, Mario Rossi';
-            document.getElementById('clientBadge').textContent = 'Pratica #SCP-ST-0226-98412';
-            document.getElementById('recoveryAmount').textContent = '€ 44.240,89';
-            document.getElementById('recoveredAmount').textContent = '€ 33.180,67';
-            document.getElementById('commissionAmount').textContent = '€ 2.316,85';
-            
-            // Simula progresso
-            document.getElementById('progressFill').style.width = '75%';
+            if (formSection && dashboard) {
+                formSection.style.display = 'none';
+                dashboard.style.display = 'block';
+                
+                document.getElementById('welcomeMessage').textContent = 'Benvenuto, Mario Rossi';
+                document.getElementById('clientBadge').textContent = 'Pratica #SCP-ST-0226-98412';
+            }
         }
 
-        // Funzione per pagamento commissione
+        // FUNZIONE PAGAMENTO
         function payCommission() {
             alert('Reindirizzamento al portale pagamenti sicuro di Swedbank...');
         }
 
-        // Rimuovi errori durante la digitazione
-        document.querySelectorAll('.form-control').forEach(input => {
-            input.addEventListener('input', function() {
-                this.classList.remove('error');
-            });
+        // CHATBOT LOGIC
+        const chatbotButton = document.getElementById('chatbotButton');
+        const chatbotWindow = document.getElementById('chatbotWindow');
+        const chatbotClose = document.getElementById('chatbotClose');
+        const chatbotMessages = document.getElementById('chatbotMessages');
+        const chatbotInput = document.getElementById('chatbotInput');
+
+        chatbotButton.addEventListener('click', function() {
+            chatbotWindow.classList.toggle('open');
+        });
+
+        chatbotClose.addEventListener('click', function() {
+            chatbotWindow.classList.remove('open');
+        });
+
+        // RISPOSTE AUTOMATICHE AI
+        function getBotResponse(message) {
+            const lowerMsg = message.toLowerCase();
+            
+            if (lowerMsg.includes('come funziona') || lowerMsg.includes('processo')) {
+                return "Il nostro processo è semplice: 1) Valutazione gratuita del caso 2) Avvio pratica di recupero 3) Recupero fondi 4) Paghi solo a successo. Vuoi sapere altro su un passaggio specifico?";
+            }
+            else if (lowerMsg.includes('costo') || lowerMsg.includes('prezzo') || lowerMsg.includes('commissione')) {
+                return "Lavoriamo con la formula 'No Win, No Fee': paghi una commissione del 7% solo se recuperiamo i tuoi fondi con successo. La valutazione iniziale è sempre gratuita.";
+            }
+            else if (lowerMsg.includes('tempo') || lowerMsg.includes('quanto ci vuole')) {
+                return "I tempi variano in base alla complessità del caso. In media, il recupero richiede 2-6 settimane. Casi semplici possono risolversi in pochi giorni.";
+            }
+            else if (lowerMsg.includes('dove siete') || lowerMsg.includes('sede')) {
+                return "La nostra sede principale è a Stoccolma, in Kungsgatan 15. Operiamo in tutta Europa digitalmente. Puoi contattarci via email o telefono.";
+            }
+            else if (lowerMsg.includes('documenti') || lowerMsg.includes('carte')) {
+                return "Di solito servono: documento d'identità, prove della transazione (hash, screenshot), email di conferma e qualsiasi comunicazione con la banca/platform. Ti guideremo noi nella raccolta.";
+            }
+            else if (lowerMsg.includes('sicuro') || lowerMsg.includes('affidabile')) {
+                return "Assolutamente! Siamo un'azienda registrata in Svezia (Org.nr: SE556789123401) e operiamo in conformità con le normative europee. Tutti i dati sono protetti e crittografati.";
+            }
+            else if (lowerMsg.includes('grazie')) {
+                return "Prego! Sono qui per aiutarti. Se hai altre domande, chiedi pure!";
+            }
+            else if (lowerMsg.includes('ciao') || lowerMsg.includes('salve') || lowerMsg.includes('hey')) {
+                return "Ciao! Sono Emma, come posso assisterti oggi?";
+            }
+            else {
+                return "Grazie per la domanda. Per informazioni più dettagliate, ti consiglio di parlare con un operatore umano. Posso metterti in contatto con loro se vuoi. Clicca su 'operatore umano' in basso.";
+            }
+        }
+
+        function addMessage(text, sender) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}`;
+            
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'message-content';
+            contentDiv.textContent = text;
+            
+            const timeDiv = document.createElement('div');
+            timeDiv.className = 'message-time';
+            timeDiv.textContent = 'ora';
+            
+            messageDiv.appendChild(contentDiv);
+            messageDiv.appendChild(timeDiv);
+            
+            chatbotMessages.appendChild(messageDiv);
+            chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+        }
+
+        function sendMessage() {
+            const message = chatbotInput.value.trim();
+            if (message === '') return;
+            
+            addMessage(message, 'user');
+            chatbotInput.value = '';
+            
+            // Simula risposta AI
+            setTimeout(() => {
+                const response = getBotResponse(message);
+                addMessage(response, 'bot');
+            }, 500);
+        }
+
+        function sendQuickReply(text) {
+            addMessage(text, 'user');
+            
+            setTimeout(() => {
+                const response = getBotResponse(text);
+                addMessage(response, 'bot');
+            }, 500);
+        }
+
+        // Chiudi chatbot se clicchi fuori
+        document.addEventListener('click', function(event) {
+            if (!chatbotButton.contains(event.target) && !chatbotWindow.contains(event.target)) {
+                chatbotWindow.classList.remove('open');
+            }
         });
     </script>
 </body>
