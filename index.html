@@ -373,6 +373,56 @@
             transform: translateY(-5px);
         }
 
+        /* CTA STICKY */
+        .sticky-cta {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--secondary);
+            color: var(--primary-dark);
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.2rem;
+            box-shadow: 0 10px 40px rgba(201,169,89,0.5);
+            z-index: 999;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            border: 2px solid white;
+            animation: pulse-cta 2s infinite;
+            white-space: nowrap;
+        }
+
+        @keyframes pulse-cta {
+            0% {
+                box-shadow: 0 10px 40px rgba(201,169,89,0.5);
+            }
+            50% {
+                box-shadow: 0 10px 60px rgba(201,169,89,0.8);
+            }
+            100% {
+                box-shadow: 0 10px 40px rgba(201,169,89,0.5);
+            }
+        }
+
+        .sticky-cta:hover {
+            background: var(--secondary-light);
+            transform: translateX(-50%) scale(1.05);
+        }
+
+        @media (max-width: 768px) {
+            .sticky-cta {
+                font-size: 1rem;
+                padding: 0.8rem 1.5rem;
+                white-space: normal;
+                text-align: center;
+                width: 90%;
+            }
+        }
+
         /* MAIN CONTENT */
         .main-content {
             max-width: 1400px;
@@ -380,7 +430,7 @@
             padding: 4rem 2rem;
         }
 
-        /* TRUST SECTION */
+        /* TRUST SECTION CON MICRO-DESCRIZIONI */
         .trust-section {
             background: white;
             border-radius: 30px;
@@ -415,23 +465,30 @@
             color: var(--secondary);
         }
 
-        .trust-text {
-            font-weight: 600;
-            color: var(--gray-700);
-            font-size: 1.1rem;
-        }
-
         .trust-icon i {
             color: var(--primary);
             background: var(--secondary);
             padding: 1rem;
             border-radius: 50%;
-            width: 70px;
-            height: 70px;
+            width: 80px;
+            height: 80px;
             display: flex;
             align-items: center;
             justify-content: center;
             margin: 0 auto;
+        }
+
+        .trust-text {
+            font-weight: 700;
+            color: var(--gray-700);
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .trust-description {
+            font-size: 0.9rem;
+            color: var(--gray-500);
+            line-height: 1.4;
         }
 
         /* FORM SECTION */
@@ -675,6 +732,66 @@
             font-weight: 700;
         }
 
+        /* TESTIMONIANZE */
+        .testimonials-section {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            border-radius: 30px;
+            padding: 4rem 3rem;
+            margin: 4rem 0;
+            color: white;
+        }
+
+        .testimonials-section .section-title {
+            color: white;
+        }
+
+        .testimonials-section .section-title::after {
+            background: var(--secondary);
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .testimonial-card {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: all 0.3s ease;
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255,255,255,0.15);
+        }
+
+        .testimonial-rating {
+            color: var(--secondary);
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .testimonial-author {
+            font-weight: 700;
+            color: var(--secondary);
+        }
+
+        .testimonial-detail {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
         /* TIMELINE */
         .timeline-section {
             background: var(--primary);
@@ -721,6 +838,52 @@
 
         .timeline-step p {
             opacity: 0.8;
+            font-size: 0.95rem;
+        }
+
+        /* FAQ SECTION */
+        .faq-section {
+            background: white;
+            border-radius: 30px;
+            padding: 3rem;
+            margin: 4rem 0;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--gray-200);
+        }
+
+        .faq-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .faq-item {
+            padding: 1.5rem;
+            border-radius: 15px;
+            background: var(--gray-100);
+            transition: all 0.3s ease;
+        }
+
+        .faq-item:hover {
+            background: var(--gray-200);
+        }
+
+        .faq-question {
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .faq-question i {
+            color: var(--secondary);
+        }
+
+        .faq-answer {
+            color: var(--gray-600);
             font-size: 0.95rem;
         }
 
@@ -791,6 +954,23 @@
             margin-top: 3rem;
             border-top: 1px solid rgba(255,255,255,0.1);
             color: rgba(255,255,255,0.5);
+        }
+
+        .legal-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .legal-links a {
+            color: rgba(255,255,255,0.5);
+            text-decoration: none;
+        }
+
+        .legal-links a:hover {
+            color: var(--secondary);
         }
 
         /* CHATBOT AI - EMMA 2.0 */
@@ -1066,6 +1246,14 @@
             .footer-content {
                 grid-template-columns: 1fr 1fr;
             }
+
+            .testimonials-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .faq-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
         @media (max-width: 768px) {
@@ -1138,6 +1326,11 @@
         </div>
     </header>
 
+    <!-- CTA STICKY -->
+    <a href="#form" class="sticky-cta">
+        <i class="fas fa-file-signature"></i> RICHIEDI VALUTAZIONE GRATUITA
+    </a>
+
     <!-- HERO CON IMMAGINE PALAZZI NORDICI -->
     <section class="hero">
         <div class="hero-background">
@@ -1181,25 +1374,29 @@
 
     <!-- MAIN CONTENT -->
     <main class="main-content">
-        <!-- TRUST SECTION -->
+        <!-- TRUST SECTION CON MICRO-DESCRIZIONI -->
         <div class="trust-section">
             <h2 class="section-title">Perché scegliere Stockholm Claim Partners</h2>
             <div class="trust-grid">
                 <div class="trust-item">
                     <div class="trust-icon"><i class="fas fa-city"></i></div>
                     <div class="trust-text">Sede a Stoccolma</div>
+                    <div class="trust-description">Nel cuore del distretto finanziario scandinavo</div>
                 </div>
                 <div class="trust-item">
                     <div class="trust-icon"><i class="fas fa-scale-balanced"></i></div>
                     <div class="trust-text">Conformità UE</div>
+                    <div class="trust-description">Operiamo secondo le normative europee</div>
                 </div>
                 <div class="trust-item">
                     <div class="trust-icon"><i class="fas fa-shield-haltered"></i></div>
                     <div class="trust-text">Dati Sicuri</div>
+                    <div class="trust-description">Crittografia end-to-end e GDPR</div>
                 </div>
                 <div class="trust-item">
                     <div class="trust-icon"><i class="fas fa-hand-holding-heart"></i></div>
                     <div class="trust-text">No Win, No Fee</div>
+                    <div class="trust-description">Paghi solo se recuperiamo i tuoi fondi</div>
                 </div>
             </div>
         </div>
@@ -1305,6 +1502,39 @@
             </div>
         </section>
 
+        <!-- TESTIMONIANZE -->
+        <div class="testimonials-section">
+            <h2 class="section-title">Cosa dicono i nostri clienti</h2>
+            <p class="section-subtitle" style="color: rgba(255,255,255,0.8);">Esperienze reali di chi si è affidato a noi</p>
+            
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-rating">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <div class="testimonial-text">"Recuperati €12.000 in 3 giorni. Professionali, veloci e trasparenti. Li consiglio a chiunque abbia perso fondi in crypto."</div>
+                    <div class="testimonial-author">Mario R.</div>
+                    <div class="testimonial-detail">Recupero transazioni crypto</div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-rating">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <div class="testimonial-text">"Avevo perso l'accesso al mio wallet con 2FA. In 48 ore me lo hanno riaperto. Servizio eccellente e assistenza sempre disponibile."</div>
+                    <div class="testimonial-author">Laura F.</div>
+                    <div class="testimonial-detail">Recupero accesso wallet</div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-rating">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <div class="testimonial-text">"Finalmente un servizio serio per il recupero fondi. Zero costi anticipati e hanno recuperato tutto. Grazie Stockholm Claim Partners!"</div>
+                    <div class="testimonial-author">Alessandro T.</div>
+                    <div class="testimonial-detail">Frode bancaria</div>
+                </div>
+            </div>
+        </div>
+
         <!-- TIMELINE PROCESSO -->
         <div class="timeline-section">
             <h2 class="section-title" style="color: white;">Come funziona</h2>
@@ -1330,6 +1560,47 @@
                     <div class="timeline-number">4</div>
                     <h4>Pagamento Solo a Successo</h4>
                     <p>Paghi solo se recuperiamo i tuoi fondi</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- FAQ SECTION -->
+        <div class="faq-section">
+            <h2 class="section-title">Domande frequenti</h2>
+            <p class="section-subtitle">Risposte alle domande più comuni</p>
+            
+            <div class="faq-grid">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <i class="fas fa-question-circle"></i> Come funziona il recupero fondi?
+                    </div>
+                    <div class="faq-answer">
+                        Compili il form di valutazione gratuita, analizziamo il tuo caso entro 24 ore e se procediamo, recuperiamo i fondi in 48-72 ore. Paghi solo a successo ottenuto.
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <i class="fas fa-question-circle"></i> Quali sono i costi?
+                    </div>
+                    <div class="faq-answer">
+                        Zero costi anticipati. La commissione è del 7% sull'importo recuperato, da pagare solo dopo l'accredito dei fondi sul tuo conto.
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <i class="fas fa-question-circle"></i> Quanto tempo ci vuole?
+                    </div>
+                    <div class="faq-answer">
+                        La valutazione iniziale richiede 24 ore. Il recupero effettivo avviene in 48-72 ore dalla partenza della pratica.
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <i class="fas fa-question-circle"></i> È sicuro affidarsi a voi?
+                    </div>
+                    <div class="faq-answer">
+                        Siamo un'azienda registrata in Svezia (Org.nr: SE556789123401) e operiamo in conformità con le normative europee. Tutti i dati sono protetti.
+                    </div>
                 </div>
             </div>
         </div>
@@ -1376,8 +1647,13 @@
             </div>
         </div>
         <div class="footer-bottom">
-            © 2026 Stockholm Claim Partners AB - Tutti i diritti riservati<br>
-            <small>Con sede a Stoccolma - Operiamo in conformità con le normative europee</small>
+            © 2026 Stockholm Claim Partners AB - Tutti i diritti riservati
+            <div class="legal-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Cookie Policy</a>
+                <a href="#">Termini e Condizioni</a>
+            </div>
+            <small style="opacity: 0.5;">Con sede a Stoccolma - Operiamo in conformità con le normative europee</small>
         </div>
     </footer>
 
@@ -1472,6 +1748,7 @@
             
             const nomeSalvato = localStorage.getItem('cliente_nome') || 'Cliente';
             document.getElementById('welcomeMessage').textContent = `Benvenuto, ${nomeSalvato}`;
+            document.getElementById('clientBadge').textContent = `Pratica #${cf.substring(0,5)}-${Date.now().toString().substring(0,8)}`;
             
             // Controlla se è la prima volta che accede
             let primoAccesso = localStorage.getItem('primo_accesso_' + cf);
