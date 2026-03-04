@@ -549,7 +549,7 @@
             line-height: 1.4;
         }
 
-        /* CHI SIAMO SECTION */
+        /* CHI SIAMO SECTION - NUOVA VERSIONE */
         .about-section {
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
             border-radius: 30px;
@@ -567,9 +567,9 @@
             right: 0;
             width: 50%;
             height: 100%;
-            background: url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80') no-repeat center center;
+            background: url('https://images.unsplash.com/photo-1589829545856-d10d557cf95f?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80') no-repeat center center;
             background-size: cover;
-            opacity: 0.2;
+            opacity: 0.15;
             z-index: 1;
         }
 
@@ -582,23 +582,35 @@
         .about-content h2 {
             color: white;
             text-align: left;
+            font-size: 2.5rem;
         }
 
         .about-content h2::after {
             left: 0;
             transform: none;
+            background: var(--secondary);
+            width: 100px;
         }
 
         .about-content p {
-            font-size: 1.1rem;
-            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
             line-height: 1.8;
-            opacity: 0.9;
+            opacity: 0.95;
         }
 
         .about-highlight {
             color: var(--secondary);
             font-weight: 700;
+            font-size: 1.3rem;
+        }
+
+        .about-quote {
+            font-style: italic;
+            font-size: 1.1rem;
+            border-left: 4px solid var(--secondary);
+            padding-left: 2rem;
+            margin-top: 2rem;
         }
 
         /* TRASPARENZA SECTION */
@@ -1602,7 +1614,7 @@
                 <div class="logo-icon">SCP</div>
                 <div class="logo-text">
                     Stockholm Claim Partners
-                    <span>Team di Esperti e Avvocati</span>
+                    <span>Team di Avvocati e Professionisti</span>
                 </div>
             </div>
             <button class="mobile-menu-btn" id="mobileMenuBtn">
@@ -1708,13 +1720,16 @@
             </div>
         </div>
 
-        <!-- CHI SIAMO SECTION -->
+        <!-- CHI SIAMO SECTION - NUOVA VERSIONE CON FRASE SCELTA -->
         <div class="about-section">
             <div class="about-content">
-                <h2 class="section-title" style="color: white; text-align: left;">Non siamo semplici recuperatori: siamo un team di esperti e avvocati di alto livello</h2>
+                <h2 class="section-title" style="color: white; text-align: left;">Dietro ogni pratica c'è un team di avvocati e professionisti pronti a lottare per i tuoi diritti</h2>
                 <p>La maggior parte dei nostri clienti arriva da noi dopo aver perso fondi in investimenti o piattaforme di trading, traditi da persone senza scrupoli che hanno approfittato della loro fiducia.</p>
-                <p>Noi facciamo la differenza: ti diamo <span class="about-highlight">informazioni corrette e verificate</span>, ti aiutiamo a <span class="about-highlight">filtrare le truffe</span> e ti insegniamo a <span class="about-highlight">proteggerti da solo</span> in futuro. Non promettiamo ciò che non possiamo mantenere. Lavoriamo per risultati concreti, con onestà e trasparenza.</p>
-                <p>Il nostro team combina <span class="about-highlight">competenza legale, esperienza finanziaria e tecnologia avanzata</span> per affrontare ogni caso con la massima professionalità.</p>
+                <p>Noi facciamo la differenza: ti diamo <span class="about-highlight">informazioni corrette e verificate</span>, ti aiutiamo a <span class="about-highlight">filtrare le truffe</span> e ti insegniamo a <span class="about-highlight">proteggerti da solo</span> in futuro.</p>
+                <p>Non promettiamo ciò che non possiamo mantenere. Lavoriamo per risultati concreti, con onestà e trasparenza. Il nostro team combina competenza legale, esperienza finanziaria e tecnologia avanzata per affrontare ogni caso con la massima professionalità.</p>
+                <div class="about-quote">
+                    "Ogni cliente è una storia, ogni storia merita giustizia."
+                </div>
             </div>
         </div>
 
