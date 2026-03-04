@@ -211,6 +211,44 @@
             display: none;
         }
 
+        /* MENU HAMBURGER PER MOBILE */
+        .mobile-menu-btn {
+            display: none;
+            font-size: 1.8rem;
+            color: white;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: var(--primary-dark);
+                flex-direction: column;
+                padding: 2rem;
+                gap: 1.5rem;
+                border-top: 1px solid rgba(255,255,255,0.1);
+            }
+            
+            .nav-links.active {
+                display: flex;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .btn-login {
+                width: 100%;
+                text-align: center;
+            }
+        }
+
         /* HERO SECTION CON IMMAGINE */
         .hero {
             position: relative;
@@ -1131,7 +1169,7 @@
             font-size: 0.95rem;
         }
 
-        /* FOOTER - NUOVA IMMAGINE SCURA E LEGGIBILE */
+        /* FOOTER */
         .footer {
             background: linear-gradient(135deg, rgba(10,37,64,0.92) 0%, rgba(5,26,43,0.95) 100%), url('https://images.unsplash.com/photo-1545259741-2c3fdd6c2b3f?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
             background-blend-mode: overlay;
@@ -1225,7 +1263,7 @@
             color: var(--secondary);
         }
 
-        /* CHATBOT AI - EMMA 3.0 SUPER INTELLIGENTE */
+        /* CHATBOT AI - EMMA 3.0 */
         .chatbot-container {
             position: fixed;
             bottom: 30px;
@@ -1485,21 +1523,8 @@
             cursor: pointer;
         }
 
-        .analisi-box {
-            background: rgba(201,169,89,0.1);
-            border-left: 3px solid var(--secondary);
-            padding: 1rem;
-            margin: 1rem 0;
-            border-radius: 10px;
-            font-size: 0.9rem;
-        }
-
         /* RESPONSIVE */
         @media (max-width: 1024px) {
-            .nav-links {
-                gap: 1.5rem;
-            }
-            
             .trust-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
@@ -1526,10 +1551,6 @@
         }
 
         @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-            }
-            
             .hero-stats {
                 flex-direction: column;
                 gap: 1rem;
@@ -1584,7 +1605,10 @@
                     <span>Team di Esperti e Avvocati</span>
                 </div>
             </div>
-            <div class="nav-links">
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="nav-links" id="navLinks">
                 <a href="#" class="active">Home</a>
                 <a href="#">Servizi</a>
                 <a href="#">Come Funziona</a>
@@ -1684,7 +1708,7 @@
             </div>
         </div>
 
-        <!-- CHI SIAMO SECTION - Team di esperti e avvocati -->
+        <!-- CHI SIAMO SECTION -->
         <div class="about-section">
             <div class="about-content">
                 <h2 class="section-title" style="color: white; text-align: left;">Non siamo semplici recuperatori: siamo un team di esperti e avvocati di alto livello</h2>
@@ -1798,7 +1822,7 @@
             <div id="dashboardContent"></div>
             
             <!-- DOCUMENTI CARICATI -->
-            <div class="documents-section" id="documentsSection" style="display: none;">
+            <div class="documents-section" id="documentsSection">
                 <h3 class="documents-title"><i class="fas fa-folder-open"></i> I tuoi documenti caricati</h3>
                 <div class="documents-grid" id="documentsGrid"></div>
             </div>
@@ -1982,7 +2006,7 @@
         </div>
     </main>
 
-    <!-- FOOTER - NUOVA IMMAGINE SCURA E LEGGIBILE -->
+    <!-- FOOTER -->
     <footer class="footer" id="contatti">
         <div class="footer-content">
             <div class="footer-column">
@@ -2033,7 +2057,7 @@
         </div>
     </footer>
 
-    <!-- CHATBOT AI EMMA 3.0 - SUPER INTELLIGENTE -->
+    <!-- CHATBOT AI EMMA 3.0 -->
     <div class="chatbot-container">
         <div class="chatbot-button" id="chatbotButton">
             <div class="chatbot-pulse"></div>
@@ -2081,6 +2105,21 @@
     </div>
 
     <script>
+        // MENU MOBILE
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navLinks = document.getElementById('navLinks');
+
+        mobileMenuBtn.addEventListener('click', function() {
+            navLinks.classList.toggle('active');
+        });
+
+        // Chiudi menu quando si clicca su un link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+            });
+        });
+
         // HEADER SCROLL EFFECT
         window.addEventListener('scroll', function() {
             const header = document.getElementById('header');
@@ -2135,6 +2174,7 @@
                 }
                 uploadedFiles.push(file);
                 
+                // Salva in localStorage
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     const fileData = {
@@ -2227,7 +2267,7 @@
             }
         }
 
-        // GESTIONE ACCESSO AREA PERSONALE
+        // GESTIONE ACCESSO AREA PERSONALE CORRETTA
         function gestisciAccessoAreaPersonale(email, cf) {
             const formSection = document.getElementById('form');
             const dashboard = document.getElementById('dashboard');
@@ -2242,22 +2282,27 @@
             document.getElementById('welcomeMessage').textContent = `Benvenuto, ${nomeSalvato}`;
             document.getElementById('clientBadge').textContent = `Pratica #${cf.substring(0,5)}-${Date.now().toString().substring(0,8)}`;
             
-            let primoAccesso = localStorage.getItem('primo_accesso_' + cf);
+            // LEGGI IL TIMESTAMP DI QUANDO E' STATO INVIATO IL FORM
+            let praticaInviata = localStorage.getItem('pratica_inviata');
             let ora = Date.now();
             
-            if (!primoAccesso) {
-                localStorage.setItem('primo_accesso_' + cf, ora);
-                mostraValutazioneInCorso(dashboardContent);
+            if (!praticaInviata) {
+                // Nessuna pratica inviata
+                mostraNessunaPratica(dashboardContent);
                 documentsSection.style.display = 'none';
             } else {
-                let orePassate = (ora - parseInt(primoAccesso)) / (1000 * 60 * 60);
+                // Calcola ore trascorse dall'invio della pratica
+                let orePassate = (ora - parseInt(praticaInviata)) / (1000 * 60 * 60);
                 
                 if (orePassate < 24) {
+                    // Meno di 24 ore: mostra valutazione
                     mostraValutazioneInCorso(dashboardContent);
                     documentsSection.style.display = 'none';
                 } else {
+                    // Oltre 24 ore: mostra dashboard completa
                     mostraDashboardCompleta(dashboardContent);
                     
+                    // Mostra documenti caricati
                     const savedFiles = JSON.parse(localStorage.getItem('uploaded_files') || '[]');
                     if (savedFiles.length > 0) {
                         documentsSection.style.display = 'block';
@@ -2279,9 +2324,28 @@
                             `;
                             documentsGrid.appendChild(docCard);
                         });
+                    } else {
+                        documentsSection.style.display = 'none';
                     }
                 }
             }
+        }
+
+        function mostraNessunaPratica(container) {
+            container.innerHTML = `
+                <div class="case-status">
+                    <div class="status-card pending" style="grid-column: span 2; text-align: center;">
+                        <div class="status-title" style="justify-content: center;">
+                            <i class="fas fa-info-circle" style="margin-right: 0.5rem;"></i> Nessuna pratica attiva
+                        </div>
+                        <p style="font-size: 1.2rem; margin: 2rem 0;">
+                            Non hai ancora inviato nessuna richiesta di recupero.<br>
+                            Compila il form qui sotto per iniziare.
+                        </p>
+                        <a href="#form" class="btn-primary" style="display: inline-block; margin-top: 1rem; text-decoration: none;">INIZIA LA TUA PRATICA</a>
+                    </div>
+                </div>
+            `;
         }
 
         function mostraValutazioneInCorso(container) {
@@ -2411,7 +2475,7 @@
                 tipo = 'wallet';
             }
             
-            // Estrai importo (semplificato)
+            // Estrai importo
             const importoMatch = lowerText.match(/(\d+[.]?\d*)/g);
             if (importoMatch) {
                 importo = parseFloat(importoMatch[0]);
@@ -2449,7 +2513,7 @@
             // Analisi per importo
             if (importo > 10000) {
                 probabilita += 25;
-                motivazioni.push("importo significativo (maggiore attenzione delle autorità)");
+                motivazioni.push("importo significativo");
             } else if (importo > 5000) {
                 probabilita += 20;
                 motivazioni.push("importo medio-buono");
@@ -2461,16 +2525,16 @@
             // Analisi per anni
             if (anni < 1) {
                 probabilita += 25;
-                motivazioni.push("transazione recentissima (tracce fresche)");
+                motivazioni.push("transazione recentissima");
             } else if (anni < 3) {
                 probabilita += 20;
-                motivazioni.push("transazione recente (dati ancora accessibili)");
+                motivazioni.push("transazione recente");
             } else if (anni < 5) {
                 probabilita += 10;
                 motivazioni.push("transazione datata ma ancora tracciabile");
             } else {
                 probabilita -= 20;
-                motivazioni.push("transazione oltre i 5 anni (limite di tempo)");
+                motivazioni.push("transazione oltre i 5 anni");
             }
             
             probabilita = Math.min(100, Math.max(0, probabilita));
@@ -2519,7 +2583,7 @@
                        `💡 **Suggerimento:** ${analisi.valore >= 60 ? 'Il caso è promettente! Ti consiglio di compilare il form qui sotto per iniziare subito.' : 'Vale comunque la pena provare, a volte casi simili hanno successo con la documentazione giusta.'}`;
             }
             
-            // Altre risposte intelligenti
+            // Altre risposte
             else if (lowerMsg.includes('come funziona')) {
                 return "📋 **IL NOSTRO PROCESSO**\n\n" +
                        "1️⃣ **Valutazione gratuita** (24h)\n" +
@@ -2570,7 +2634,7 @@
                        "✓ Team di avvocati specializzati";
             }
             else if (lowerMsg.includes('grazie')) {
-                return "Prego! Sono felice di aiutarti. Ricorda che puoi sempre chiedermi un'analisi del tuo caso specifico scrivendo 'analizza il mio caso' seguito dai dettagli (tipo, importo, anni).";
+                return "Prego! Sono felice di aiutarti. Ricorda che puoi sempre chiedermi un'analisi del tuo caso specifico scrivendo 'analizza il mio caso' seguito dai dettagli.";
             }
             else if (lowerMsg.includes('ciao') || lowerMsg.includes('salve') || lowerMsg.includes('buongiorno')) {
                 return "👋 Ciao! Sono Emma 3.0, l'assistente intelligente di Stockholm Claim Partners. Posso analizzare il tuo caso, rispondere a qualsiasi domanda o aiutarti a preparare la documentazione. Come posso esserti utile oggi?";
@@ -2625,6 +2689,7 @@
             alert("📞 Un nostro avvocato ti contatterà a breve all'indirizzo email fornito. Per assistenza immediata, puoi chiamare il +46 8 123 456 78.");
         }
 
+        // Chiudi chatbot se clicchi fuori
         document.addEventListener('click', function(event) {
             if (!chatbotButton.contains(event.target) && !chatbotWindow.contains(event.target)) {
                 chatbotWindow.classList.remove('open');
