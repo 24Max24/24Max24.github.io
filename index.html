@@ -1131,12 +1131,12 @@
             font-size: 0.95rem;
         }
 
-        /* FOOTER - COMPLETAMENTE RIFATTO PER LEGGIBILITÀ */
+        /* FOOTER - NUOVA IMMAGINE SCURA E LEGGIBILE */
         .footer {
-            background: linear-gradient(135deg, rgba(10,37,64,0.98) 0%, rgba(5,26,43,0.99) 100%), url('https://images.unsplash.com/photo-1464938050520-ef2270bb8ce8?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+            background: linear-gradient(135deg, rgba(10,37,64,0.92) 0%, rgba(5,26,43,0.95) 100%), url('https://images.unsplash.com/photo-1545259741-2c3fdd6c2b3f?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
             background-blend-mode: overlay;
             background-size: cover;
-            background-position: center;
+            background-position: center 70%;
             color: white;
             padding: 5rem 0 2rem 0;
             margin-top: 4rem;
@@ -1179,6 +1179,8 @@
         .footer-column ul li {
             color: white;
             margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
         }
 
         .footer-column ul li i {
@@ -1214,7 +1216,7 @@
         }
 
         .legal-links a {
-            color: rgba(255,255,255,0.8);
+            color: rgba(255,255,255,0.9);
             text-decoration: none;
             transition: color 0.3s;
         }
@@ -1223,7 +1225,7 @@
             color: var(--secondary);
         }
 
-        /* CHATBOT AI - EMMA 3.0 (SUPER INTELLIGENTE) */
+        /* CHATBOT AI - EMMA 3.0 SUPER INTELLIGENTE */
         .chatbot-container {
             position: fixed;
             bottom: 30px;
@@ -1276,7 +1278,7 @@
             position: absolute;
             bottom: 90px;
             right: 0;
-            width: 380px;
+            width: 400px;
             background: white;
             border-radius: 25px;
             box-shadow: 0 20px 50px rgba(0,0,0,0.2);
@@ -1302,7 +1304,7 @@
         }
 
         .chatbot-header {
-            background: var(--primary);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
             color: white;
             padding: 1.5rem;
             display: flex;
@@ -1311,14 +1313,14 @@
         }
 
         .chatbot-avatar {
-            width: 50px;
-            height: 50px;
+            width: 55px;
+            height: 55px;
             background: var(--secondary);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.8rem;
+            font-size: 2rem;
             color: var(--primary);
         }
 
@@ -1327,20 +1329,20 @@
         }
 
         .chatbot-title h4 {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             margin-bottom: 0.2rem;
             color: white;
         }
 
         .chatbot-title p {
             font-size: 0.85rem;
-            opacity: 0.8;
+            opacity: 0.9;
         }
 
         .chatbot-close {
             cursor: pointer;
             font-size: 1.5rem;
-            opacity: 0.7;
+            opacity: 0.8;
             transition: opacity 0.3s ease;
         }
 
@@ -1349,7 +1351,7 @@
         }
 
         .chatbot-messages {
-            height: 300px;
+            height: 350px;
             overflow-y: auto;
             padding: 1.5rem;
             background: #f8fafc;
@@ -1370,17 +1372,18 @@
         }
 
         .message-content {
-            max-width: 80%;
+            max-width: 85%;
             padding: 0.8rem 1.2rem;
             border-radius: 18px;
             font-size: 0.95rem;
-            line-height: 1.4;
+            line-height: 1.5;
         }
 
         .bot .message-content {
             background: white;
             border: 1px solid var(--gray-200);
             border-bottom-left-radius: 5px;
+            box-shadow: var(--shadow-sm);
         }
 
         .user .message-content {
@@ -1403,17 +1406,19 @@
             padding: 1rem;
             background: white;
             border-top: 1px solid var(--gray-200);
+            border-bottom: 1px solid var(--gray-200);
         }
 
         .quick-reply {
             background: var(--gray-100);
             border: 1px solid var(--gray-300);
             border-radius: 50px;
-            padding: 0.5rem 1rem;
+            padding: 0.6rem 1.2rem;
             font-size: 0.85rem;
             cursor: pointer;
             transition: all 0.3s ease;
             color: var(--gray-700);
+            font-weight: 500;
         }
 
         .quick-reply:hover {
@@ -1426,7 +1431,6 @@
             display: flex;
             padding: 1rem;
             background: white;
-            border-top: 1px solid var(--gray-200);
         }
 
         .chatbot-input input {
@@ -1436,10 +1440,12 @@
             border-radius: 50px;
             outline: none;
             font-family: inherit;
+            font-size: 0.95rem;
         }
 
         .chatbot-input input:focus {
             border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(10,37,64,0.1);
         }
 
         .chatbot-input button {
@@ -1467,8 +1473,8 @@
             padding: 0.8rem;
             text-align: center;
             background: var(--gray-100);
-            font-size: 0.8rem;
-            color: var(--gray-500);
+            font-size: 0.85rem;
+            color: var(--gray-600);
             border-top: 1px solid var(--gray-200);
         }
 
@@ -1479,17 +1485,13 @@
             cursor: pointer;
         }
 
-        .why-button {
-            font-size: 0.75rem;
-            color: var(--gray-400);
-            cursor: pointer;
-            margin-left: 0.5rem;
-            text-decoration: underline;
-            display: inline-block;
-        }
-
-        .why-button:hover {
-            color: var(--secondary);
+        .analisi-box {
+            background: rgba(201,169,89,0.1);
+            border-left: 3px solid var(--secondary);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 10px;
+            font-size: 0.9rem;
         }
 
         /* RESPONSIVE */
@@ -1980,7 +1982,7 @@
         </div>
     </main>
 
-    <!-- FOOTER - ORA PERFETTAMENTE LEGGIBILE -->
+    <!-- FOOTER - NUOVA IMMAGINE SCURA E LEGGIBILE -->
     <footer class="footer" id="contatti">
         <div class="footer-content">
             <div class="footer-column">
@@ -1995,19 +1997,19 @@
             <div class="footer-column">
                 <h4>Servizi</h4>
                 <ul>
-                    <li><a href="#">Recupero Crypto</a></li>
-                    <li><a href="#">Frodi Bancarie</a></li>
-                    <li><a href="#">Wallet Persi</a></li>
-                    <li><a href="#">Transazioni Bloccate</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Recupero Crypto</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Frodi Bancarie</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Wallet Persi</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Transazioni Bloccate</a></li>
                 </ul>
             </div>
             <div class="footer-column">
                 <h4>Link Utili</h4>
                 <ul>
-                    <li><a href="#">Come Funziona</a></li>
-                    <li><a href="#">Casi di Successo</a></li>
-                    <li><a href="#">FAQ</a></li>
-                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Come Funziona</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Casi di Successo</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> FAQ</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Privacy Policy</a></li>
                 </ul>
             </div>
             <div class="footer-column">
@@ -2016,7 +2018,7 @@
                     <li><i class="fas fa-envelope"></i> info@stockholmclaimpartners.se</li>
                     <li><i class="fas fa-phone"></i> +46 8 123 456 78</li>
                     <li><i class="fas fa-headset"></i> Supporto 24/7</li>
-                    <li><i class="fas fa-robot"></i> Chat con Emma</li>
+                    <li><i class="fas fa-robot"></i> Chat con Emma 3.0</li>
                 </ul>
             </div>
         </div>
@@ -2027,7 +2029,7 @@
                 <a href="#">Cookie Policy</a>
                 <a href="#">Termini e Condizioni</a>
             </div>
-            <small style="opacity: 0.8; display: block; margin-top: 1rem;">Con sede a Stoccolma - Operiamo in conformità con le normative europee</small>
+            <small style="opacity: 0.9; display: block; margin-top: 1rem;">Con sede a Stoccolma - Operiamo in conformità con le normative europee</small>
         </div>
     </footer>
 
@@ -2039,26 +2041,34 @@
         </div>
         <div class="chatbot-window" id="chatbotWindow">
             <div class="chatbot-header">
-                <div class="chatbot-avatar"><i class="fas fa-robot"></i></div>
+                <div class="chatbot-avatar"><i class="fas fa-brain"></i></div>
                 <div class="chatbot-title">
-                    <h4>Emma 3.0 - Assistente AI</h4>
-                    <p>Analisi intelligente 24/7</p>
+                    <h4>Emma 3.0 - AI Super Intelligente</h4>
+                    <p>Analisi avanzata 24/7</p>
                 </div>
                 <div class="chatbot-close" id="chatbotClose">✕</div>
             </div>
             <div class="chatbot-messages" id="chatbotMessages">
                 <div class="message bot">
                     <div class="message-content">
-                        Buongiorno, sono Emma 3.0, l'assistente intelligente di Stockholm Claim Partners. Posso analizzare il tuo caso e darti subito una valutazione preliminare. Come posso aiutarti?
+                        👋 Ciao! Sono Emma 3.0, l'assistente intelligente di Stockholm Claim Partners. 
+                        <br><br>
+                        Posso:
+                        <br>• Analizzare la probabilità del tuo caso
+                        <br>• Consigliarti i documenti necessari
+                        <br>• Rilevare potenziali anomalie
+                        <br>• Rispondere a qualsiasi domanda
+                        <br><br>
+                        Come posso aiutarti oggi?
                     </div>
                     <div class="message-time">ora</div>
                 </div>
             </div>
             <div class="chatbot-quick-replies">
-                <div class="quick-reply" onclick="sendQuickReply('Come funziona il recupero fondi?')">Come funziona?</div>
-                <div class="quick-reply" onclick="sendQuickReply('Quali sono i costi?')">Costi</div>
-                <div class="quick-reply" onclick="sendQuickReply('Quanto tempo ci vuole?')">Tempi</div>
-                <div class="quick-reply" onclick="sendQuickReply('Qual è la probabilità per il mio caso?')">Analisi caso</div>
+                <div class="quick-reply" onclick="sendQuickReply('Come funziona il recupero?')">📋 Come funziona</div>
+                <div class="quick-reply" onclick="sendQuickReply('Quali sono i costi?')">💰 Costi</div>
+                <div class="quick-reply" onclick="sendQuickReply('Quanto tempo ci vuole?')">⏱️ Tempi</div>
+                <div class="quick-reply" onclick="sendQuickReply('Analizza il mio caso con 5000€ persi in crypto 2 anni fa')">🔍 Analisi caso</div>
             </div>
             <div class="chatbot-input">
                 <input type="text" id="chatbotInput" placeholder="Scrivi la tua domanda..." onkeypress="if(event.key==='Enter') sendMessage()">
@@ -2125,7 +2135,6 @@
                 }
                 uploadedFiles.push(file);
                 
-                // Salva in localStorage (simulato)
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     const fileData = {
@@ -2150,9 +2159,14 @@
             uploadedFiles.forEach((file, index) => {
                 const fileItem = document.createElement('div');
                 fileItem.className = 'file-item';
+                
+                let icon = 'fa-file';
+                if (file.type.includes('pdf')) icon = 'fa-file-pdf';
+                else if (file.type.includes('image')) icon = 'fa-file-image';
+                
                 fileItem.innerHTML = `
                     <div>
-                        <i class="fas fa-file"></i> ${file.name} (${(file.size / 1024).toFixed(1)} KB)
+                        <i class="fas ${icon}"></i> ${file.name} (${(file.size / 1024).toFixed(1)} KB)
                     </div>
                     <div class="remove-file" onclick="removeFile(${index})">
                         <i class="fas fa-times"></i>
@@ -2195,7 +2209,7 @@
             localStorage.setItem('cliente_data', JSON.stringify(clienteData));
             localStorage.setItem('pratica_inviata', Date.now().toString());
             
-            alert('Richiesta inviata con successo! Riceverai una email con le istruzioni per accedere all\'area personale entro 24 ore.');
+            alert('✅ Richiesta inviata con successo! Riceverai una email con le istruzioni per accedere all\'area personale entro 24 ore.');
             this.reset();
             fileList.innerHTML = '';
             uploadedFiles = [];
@@ -2378,112 +2392,191 @@
             chatbotWindow.classList.remove('open');
         });
 
-        // Funzione per analizzare la probabilità di successo
-        function analizzaProbabilità(tipo, importo, anni) {
+        // Funzione avanzata per analizzare la probabilità di successo
+        function analizzaProbabilità(testo) {
+            const lowerText = testo.toLowerCase();
+            
+            let tipo = 'generico';
+            let importo = 5000;
+            let anni = 2;
+            
+            // Estrai tipo
+            if (lowerText.includes('crypto') || lowerText.includes('bitcoin') || lowerText.includes('ethereum')) {
+                tipo = 'crypto';
+            } else if (lowerText.includes('bonifico') || lowerText.includes('banca')) {
+                tipo = 'bonifico';
+            } else if (lowerText.includes('frode') || lowerText.includes('truffa')) {
+                tipo = 'frode';
+            } else if (lowerText.includes('wallet') || lowerText.includes('accesso')) {
+                tipo = 'wallet';
+            }
+            
+            // Estrai importo (semplificato)
+            const importoMatch = lowerText.match(/(\d+[.]?\d*)/g);
+            if (importoMatch) {
+                importo = parseFloat(importoMatch[0]);
+            }
+            
+            // Estrai anni
+            if (lowerText.includes('anno') || lowerText.includes('anni')) {
+                const anniMatch = lowerText.match(/(\d+)\s*anni/);
+                if (anniMatch) {
+                    anni = parseInt(anniMatch[1]);
+                }
+            }
+            
             let probabilita = 0;
-            let motivazione = [];
+            let motivazioni = [];
             
             // Analisi per tipo
-            if (tipo.includes('crypto')) {
+            if (tipo === 'crypto') {
                 probabilita += 40;
-                motivazione.push("transazioni crypto tracciabili");
-            } else if (tipo.includes('bonifico')) {
+                motivazioni.push("transazioni crypto tracciabili sulla blockchain");
+            } else if (tipo === 'bonifico') {
                 probabilita += 35;
-                motivazione.push("bonifici bancari rintracciabili");
-            } else if (tipo.includes('frode')) {
+                motivazioni.push("bonifici bancari rintracciabili tramite autorità");
+            } else if (tipo === 'frode') {
+                probabilita += 45;
+                motivazioni.push("frodi con possibilità di chargeback e tracciamento");
+            } else if (tipo === 'wallet') {
                 probabilita += 30;
-                motivazione.push("frodi con possibilità di chargeback");
+                motivazioni.push("recupero accesso wallet con tecniche forensi");
             } else {
                 probabilita += 25;
-                motivazione.push("caso generico");
+                motivazioni.push("caso generico analizzabile");
             }
             
             // Analisi per importo
             if (importo > 10000) {
                 probabilita += 25;
-                motivazione.push("importo significativo");
+                motivazioni.push("importo significativo (maggiore attenzione delle autorità)");
             } else if (importo > 5000) {
                 probabilita += 20;
-                motivazione.push("importo medio");
+                motivazioni.push("importo medio-buono");
             } else {
                 probabilita += 15;
-                motivazione.push("importo contenuto");
+                motivazioni.push("importo contenuto");
             }
             
             // Analisi per anni
             if (anni < 1) {
                 probabilita += 25;
-                motivazione.push("transazione recentissima");
+                motivazioni.push("transazione recentissima (tracce fresche)");
             } else if (anni < 3) {
                 probabilita += 20;
-                motivazione.push("transazione recente");
+                motivazioni.push("transazione recente (dati ancora accessibili)");
             } else if (anni < 5) {
                 probabilita += 10;
-                motivazione.push("transazione datata ma ancora tracciabile");
+                motivazioni.push("transazione datata ma ancora tracciabile");
             } else {
                 probabilita -= 20;
-                motivazione.push("transazione oltre i 5 anni");
+                motivazioni.push("transazione oltre i 5 anni (limite di tempo)");
             }
             
-            // Limita tra 0 e 100
             probabilita = Math.min(100, Math.max(0, probabilita));
             
             let giudizio;
-            if (probabilita >= 80) giudizio = "🔵 MOLTO ALTA";
-            else if (probabilita >= 60) giudizio = "🟢 ALTA";
-            else if (probabilita >= 40) giudizio = "🟡 MEDIA";
-            else if (probabilita >= 20) giudizio = "🟠 BASSA";
-            else giudizio = "🔴 MOLTO BASSA";
+            let colore;
+            if (probabilita >= 80) { giudizio = "MOLTO ALTA"; colore = "🟢"; }
+            else if (probabilita >= 60) { giudizio = "ALTA"; colore = "🟢"; }
+            else if (probabilita >= 40) { giudizio = "MEDIA"; colore = "🟡"; }
+            else if (probabilita >= 20) { giudizio = "BASSA"; colore = "🟠"; }
+            else { giudizio = "MOLTO BASSA"; colore = "🔴"; }
             
             return {
                 valore: probabilita,
                 giudizio: giudizio,
-                motivazione: motivazione.join(", ")
+                colore: colore,
+                motivazioni: motivazioni,
+                tipo: tipo,
+                importo: importo,
+                anni: anni
             };
         }
 
         function getBotResponse(message) {
             const lowerMsg = message.toLowerCase();
             
-            // Analisi caso
-            if (lowerMsg.includes('probabilità') || lowerMsg.includes('analisi') || lowerMsg.includes('mio caso')) {
-                // Simula estrazione dati
-                const tipo = "crypto";
-                const importo = 5000;
-                const anni = 2;
+            // Analisi caso personalizzata
+            if (lowerMsg.includes('analizza') || lowerMsg.includes('probabilità') || lowerMsg.includes('mio caso')) {
+                const analisi = analizzaProbabilità(message);
                 
-                const analisi = analizzaProbabilità(tipo, importo, anni);
+                let documentiConsigliati = [];
+                if (analisi.tipo === 'crypto') {
+                    documentiConsigliati = ["Hash della transazione", "Screenshot del wallet", "Email di conferma"];
+                } else if (analisi.tipo === 'bonifico') {
+                    documentiConsigliati = ["IBAN del beneficiario", "Ricevuta del bonifico", "Estratto conto"];
+                } else if (analisi.tipo === 'frode') {
+                    documentiConsigliati = ["Comunicazioni con il truffatore", "Screenshot delle chat", "Denuncia alle autorità"];
+                } else {
+                    documentiConsigliati = ["Documento d'identità", "Descrizione dettagliata", "Prove della transazione"];
+                }
                 
-                return `🔍 **Analisi del tuo caso**\n\nBasato sulle informazioni che hai fornito, la probabilità di successo è:\n\n**${analisi.giudizio} (${analisi.valore}%)**\n\n📊 Fattori considerati: ${analisi.motivazione}.\n\nVuoi che ti aiuti a preparare la documentazione necessaria?`;
+                return `🔍 **ANALISI DETTAGLIATA DEL CASO**\n\n` +
+                       `📊 **Probabilità di successo:** ${analisi.colore} **${analisi.giudizio} (${analisi.valore}%)**\n\n` +
+                       `📋 **Fattori considerati:**\n• ${analisi.motivazioni.join('\n• ')}\n\n` +
+                       `📎 **Documenti consigliati:**\n• ${documentiConsigliati.join('\n• ')}\n\n` +
+                       `💡 **Suggerimento:** ${analisi.valore >= 60 ? 'Il caso è promettente! Ti consiglio di compilare il form qui sotto per iniziare subito.' : 'Vale comunque la pena provare, a volte casi simili hanno successo con la documentazione giusta.'}`;
             }
             
-            // Risposte standard potenziate
+            // Altre risposte intelligenti
             else if (lowerMsg.includes('come funziona')) {
-                return "📋 **Il nostro processo**\n\n1️⃣ Compila il form gratuito\n2️⃣ Analizziamo il tuo caso in 24h\n3️⃣ Se i fondi sono tracciabili, ti proponiamo il recupero\n4️⃣ Recuperiamo in 48-72h\n5️⃣ Paghi il 7% solo a successo\n\nVuoi sapere qualcosa di più specifico?";
+                return "📋 **IL NOSTRO PROCESSO**\n\n" +
+                       "1️⃣ **Valutazione gratuita** (24h)\n" +
+                       "2️⃣ **Analisi fondi** con AI\n" +
+                       "3️⃣ **Proposta di recupero**\n" +
+                       "4️⃣ **Recupero in 48-72h**\n" +
+                       "5️⃣ **Paghi 7% solo a successo**\n\n" +
+                       "Posso analizzare il tuo caso specifico se vuoi!";
             }
             else if (lowerMsg.includes('costo') || lowerMsg.includes('commissione')) {
-                return "💰 **Costi e commissioni**\n\n✓ **Valutazione iniziale**: Gratuita\n✓ **Commissione**: 7% sull'importo recuperato\n✓ **Paghi solo a successo**: Zero rischi per te\n✓ **Nessun costo nascosto**\n\nLa trasparenza è il nostro valore principale.";
+                return "💰 **COSTI E COMMISSIONI**\n\n" +
+                       "✓ **Valutazione iniziale:** Gratuita\n" +
+                       "✓ **Commissione:** 7% sull'importo recuperato\n" +
+                       "✓ **Paghi solo a successo**\n" +
+                       "✓ **Nessun costo nascosto**\n\n" +
+                       "Esempio: se recuperiamo €10.000, paghi €700 solo dopo che i soldi sono sul tuo conto.";
             }
             else if (lowerMsg.includes('tempo') || lowerMsg.includes('quanto ci vuole')) {
-                return "⏱️ **Tempistiche**\n\n• Valutazione iniziale: 24 ore\n• Recupero effettivo: 48-72 ore\n• 92% dei casi risolti in 3 giorni\n\nCasi complessi potrebbero richiedere qualche giorno in più, ma ti teniamo sempre aggiornato.";
+                return "⏱️ **TEMPISTICHE**\n\n" +
+                       "• **Valutazione iniziale:** 24 ore\n" +
+                       "• **Recupero effettivo:** 48-72 ore\n" +
+                       "• **92% dei casi** risolti entro 3 giorni\n\n" +
+                       "Casi complessi: fino a 7 giorni, ma ti teniamo aggiornato ogni step.";
             }
             else if (lowerMsg.includes('documenti')) {
-                return "📎 **Documenti necessari**\n\nPer iniziare, ti serviranno:\n• Documento d'identità\n• Prove della transazione (hash, screenshot)\n• Email con la piattaforma/banca\n• Descrizione dettagliata\n\nPuoi caricarli direttamente nel form qui sotto!";
+                return "📎 **DOCUMENTI NECESSARI**\n\n" +
+                       "Di solito servono:\n" +
+                       "• Documento d'identità\n" +
+                       "• Codice fiscale\n" +
+                       "• Prove della transazione (hash, screenshot)\n" +
+                       "• Email con la piattaforma/banca\n" +
+                       "• Descrizione dettagliata\n\n" +
+                       "Puoi caricarli direttamente nel form qui sotto!";
             }
             else if (lowerMsg.includes('limiti') || lowerMsg.includes('non potete')) {
-                return "⚠️ **Quando NON possiamo aiutare**\n\n• Fondi già convertiti in contanti\n• Problemi con il conto corrente (indagini, bonifici sospetti)\n• Transazioni oltre 5-7 anni\n\nIn questi casi lo diciamo subito, senza false promesse.";
+                return "⚠️ **QUANDO NON POSSIAMO AIUTARE**\n\n" +
+                       "• Fondi già convertiti in contanti e prelevati\n" +
+                       "• Problemi con il conto corrente (indagini, bonifici sospetti)\n" +
+                       "• Transazioni oltre 5-7 anni\n\n" +
+                       "In questi casi lo diciamo subito, senza false promesse.";
             }
             else if (lowerMsg.includes('sicuro')) {
-                return "🔒 **Sicurezza e affidabilità**\n\n✓ Registrati in Svezia (Org.nr: SE556789123401)\n✓ Conformi GDPR\n✓ Partner autorità europee (ESMA, ECB)\n✓ Crittografia end-to-end\n✓ Team di avvocati specializzati";
+                return "🔒 **SICUREZZA E AFFIDABILITÀ**\n\n" +
+                       "✓ Registrati in Svezia (Org.nr: SE556789123401)\n" +
+                       "✓ Conformi GDPR\n" +
+                       "✓ Partner autorità europee (ESMA, ECB)\n" +
+                       "✓ Crittografia end-to-end\n" +
+                       "✓ Team di avvocati specializzati";
             }
             else if (lowerMsg.includes('grazie')) {
-                return "Prego! Sono felice di aiutarti. Se hai altre domande, chiedi pure. Ricorda che puoi anche prenotare una consulenza gratuita con un nostro avvocato.";
+                return "Prego! Sono felice di aiutarti. Ricorda che puoi sempre chiedermi un'analisi del tuo caso specifico scrivendo 'analizza il mio caso' seguito dai dettagli (tipo, importo, anni).";
             }
             else if (lowerMsg.includes('ciao') || lowerMsg.includes('salve') || lowerMsg.includes('buongiorno')) {
-                return "Buongiorno! Sono Emma 3.0, l'assistente intelligente di Stockholm Claim Partners. Posso analizzare il tuo caso, rispondere a domande sui costi o aiutarti a preparare la documentazione. Come posso esserti utile oggi?";
+                return "👋 Ciao! Sono Emma 3.0, l'assistente intelligente di Stockholm Claim Partners. Posso analizzare il tuo caso, rispondere a qualsiasi domanda o aiutarti a preparare la documentazione. Come posso esserti utile oggi?";
             }
             else {
-                return "Grazie per la domanda. Per darti una risposta più precisa, potresti fornirmi più dettagli? Ad esempio: tipo di problema, importo, data della transazione. Oppure puoi cliccare su 'Analisi caso' per una valutazione preliminare.";
+                return "Grazie per la domanda. Per darti una risposta più precisa, potresti fornirmi più dettagli? Ad esempio: tipo di problema, importo, data della transazione. Oppure puoi chiedermi di 'analizzare il mio caso' per una valutazione preliminare.";
             }
         }
 
@@ -2516,7 +2609,7 @@
             setTimeout(() => {
                 const response = getBotResponse(message);
                 addMessage(response, 'bot');
-            }, 800);
+            }, 1000);
         }
 
         function sendQuickReply(text) {
@@ -2525,11 +2618,11 @@
             setTimeout(() => {
                 const response = getBotResponse(text);
                 addMessage(response, 'bot');
-            }, 800);
+            }, 1000);
         }
 
         function contactOperator() {
-            alert("Un nostro avvocato ti contatterà a breve all'indirizzo email fornito. Per assistenza immediata, puoi chiamare il +46 8 123 456 78.");
+            alert("📞 Un nostro avvocato ti contatterà a breve all'indirizzo email fornito. Per assistenza immediata, puoi chiamare il +46 8 123 456 78.");
         }
 
         document.addEventListener('click', function(event) {
