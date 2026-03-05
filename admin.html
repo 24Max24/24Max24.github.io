@@ -73,5 +73,69 @@
             }
         }
     </script>
+    <!-- Aggiungi QUESTO alla fine di index.html, prima di </body> -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+    const SUPABASE_URL = 'https://zylxndpjbnejrfgyltly.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp5bHhuZHBqYm5lanJmZ3lsdGx5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3Mzg3NjAsImV4cCI6MjA4ODMxNDc2MH0.LBjmM5DGwGQJdb0OOD7c7CEmgNc3KAP3YPWJcpOxLnY';
+    
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    
+    async function inviaRichiesta(event) {
+        event.preventDefault();
+        
+        // CERCA I CAMPI IN MODO PIÙ INTELLIGENTE
+        const nomeInput = document.querySelector('input[placeholder*="nome"], input[placeholder*="Nome"], input[name*="nome"], input[id*="nome"]');
+        const emailInput = document.querySelector('input[type="email"]');
+        const telefonoInput = document.querySelector('input[type="tel"], input[placeholder*="telefono"], input[placeholder*="Telefono"]');
+        const descrizioneInput = document.querySelector('textarea');
+        const importoInput = document.querySelector('input[placeholder*="importo"], input[placeholder*="Importo"], input[type="number"]');
+        
+        // Raccogli i valori
+        const richiesta = {
+            nome: nomeInput ? nomeInput.value : 'Non specificato',
+            email: emailInput ? emailInput.value : 'Non specificata',
+            telefono: telefonoInput ? telefonoInput.value : '',
+            descrizione: descrizioneInput ? descrizioneInput.value : '',
+            importo: importoInput ? parseFloat(importoInput.value) || 0 : 0,
+            stato: 'in_valutazione',
+            percentuale: 25,
+            data_invio: new Date().toISOString()
+        };
+        
+        console.log('📤 Invio richiesta:', richiesta);
+        
+        // Controlla se i campi principali sono vuoti
+        if (!richiesta.nome || richiesta.nome === 'Non specificato') {
+            alert('Per favore inserisci il tuo nome');
+            return;
+        }
+        
+        if (!richiesta.email || richiesta.email === 'Non specificata') {
+            alert('Per favore inserisci la tua email');
+            return;
+        }
+        
+        const { error } = await supabaseClient
+            .from('richieste')
+            .insert([richiesta]);
+        
+        if (error) {
+            console.error('❌ Errore:', error);
+            alert('Errore: ' + error.message);
+        } else {
+            alert('✅ Richiesta inviata con successo!');
+            event.target.reset();
+        }
+    }
+    
+    window.addEventListener('load', function() {
+        const form = document.querySelector('form');
+        if (form) {
+            form.onsubmit = inviaRichiesta;
+            console.log('✅ Form collegato');
+        }
+    });
+</script>
 </body>
 </html>
