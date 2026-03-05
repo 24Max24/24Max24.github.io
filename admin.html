@@ -81,61 +81,44 @@
     
     const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
     
-    async function inviaRichiesta(event) {
-        event.preventDefault();
-        
-        // CERCA I CAMPI IN MODO PIÙ INTELLIGENTE
-        const nomeInput = document.querySelector('input[placeholder*="nome"], input[placeholder*="Nome"], input[name*="nome"], input[id*="nome"]');
-        const emailInput = document.querySelector('input[type="email"]');
-        const telefonoInput = document.querySelector('input[type="tel"], input[placeholder*="telefono"], input[placeholder*="Telefono"]');
-        const descrizioneInput = document.querySelector('textarea');
-        const importoInput = document.querySelector('input[placeholder*="importo"], input[placeholder*="Importo"], input[type="number"]');
-        
-        // Raccogli i valori
-        const richiesta = {
-            nome: nomeInput ? nomeInput.value : 'Non specificato',
-            email: emailInput ? emailInput.value : 'Non specificata',
-            telefono: telefonoInput ? telefonoInput.value : '',
-            descrizione: descrizioneInput ? descrizioneInput.value : '',
-            importo: importoInput ? parseFloat(importoInput.value) || 0 : 0,
-            stato: 'in_valutazione',
-            percentuale: 25,
-            data_invio: new Date().toISOString()
-        };
-        
-        console.log('📤 Invio richiesta:', richiesta);
-        
-        // Controlla se i campi principali sono vuoti
-        if (!richiesta.nome || richiesta.nome === 'Non specificato') {
-            alert('Per favore inserisci il tuo nome');
-            return;
-        }
-        
-        if (!richiesta.email || richiesta.email === 'Non specificata') {
-            alert('Per favore inserisci la tua email');
-            return;
-        }
-        
-        const { error } = await supabaseClient
+    async function caricaDati() {
+    try {
+        const { data, error } = await supabaseClient
             .from('richieste')
-            .insert([richiesta]);
+            .select('*')
+            .order('data_invio', { ascending: false });
         
-        if (error) {
-            console.error('❌ Errore:', error);
-            alert('Errore: ' + error.message);
+        if (error) throw error;
+        
+        if (data && data.length > 0) {
+            let html = '<table border="1" cellpadding="8" style="width:100%; border-collapse: collapse;">';
+            html += '<tr style="background:#1a2b4c; color:white;">';
+            html += '<th>Data</th><th>Nome</th><th>Codice Fiscale</th><th>Email</th><th>Telefono</th><th>Tipo</th><th>Importo</th><th>Descrizione</th><th>Stato</th>';
+            html += '</tr>';
+            
+            data.forEach(r => {
+                const dataInvio = new Date(r.data_invio).toLocaleString('it-IT');
+                html += `<tr>
+                    <td>${dataInvio}</td>
+                    <td><strong>${r.nome || ''}</strong></td>
+                    <td>${r.codice_fiscale || ''}</td>
+                    <td>${r.email || ''}</td>
+                    <td>${r.telefono || ''}</td>
+                    <td>${r.tipo_problema || ''}</td>
+                    <td>€${r.importo || 0}</td>
+                    <td>${(r.descrizione || '').substring(0, 30)}...</td>
+                    <td>${r.stato || 'in_valutazione'}</td>
+                </tr>`;
+            });
+            html += '</table>';
+            document.getElementById('dati').innerHTML = html;
         } else {
-            alert('✅ Richiesta inviata con successo!');
-            event.target.reset();
+            document.getElementById('dati').innerHTML = '<p>Nessuna richiesta</p>';
         }
+    } catch (error) {
+        document.getElementById('dati').innerHTML = 'Errore: ' + error.message;
     }
-    
-    window.addEventListener('load', function() {
-        const form = document.querySelector('form');
-        if (form) {
-            form.onsubmit = inviaRichiesta;
-            console.log('✅ Form collegato');
-        }
-    });
+}
 </script>
 </body>
 </html>
