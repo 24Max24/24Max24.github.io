@@ -2806,45 +2806,46 @@
     
     const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
     
-    async function inviaRichiesta(event) {
-        event.preventDefault();
-        
-        // Raccoglie i dati dal form
-        const richiesta = {
-            nome: document.querySelector('input[placeholder*="nome"]')?.value || '',
-            email: document.querySelector('input[type="email"]')?.value || '',
-            telefono: document.querySelector('input[type="tel"]')?.value || '',
-            descrizione: document.querySelector('textarea')?.value || '',
-            importo: parseFloat(document.querySelector('input[placeholder*="importo"]')?.value || 0),
-            stato: 'in_valutazione',
-            percentuale: 25,
-            data_invio: new Date().toISOString()
-        };
-        
-        // Salva su Supabase
-        const { error } = await supabase
+    async function caricaDati() {
+    try {
+        const { data, error } = await supabaseClient
             .from('richieste')
-            .insert([richiesta]);
+            .select('*')
+            .order('data_invio', { ascending: false });
         
-        if (error) {
-            alert('Errore: ' + error.message);
+        if (error) throw error;
+        
+        if (data && data.length > 0) {
+            let html = '<table border="1" cellpadding="8" style="width:100%; border-collapse: collapse;">';
+            html += '<tr style="background:#1a2b4c; color:white;">';
+            html += '<th>Data</th><th>Nome</th><th>Email</th><th>Telefono</th><th>Importo</th><th>Descrizione</th><th>Stato</th>';
+            html += '</tr>';
+            
+            data.forEach(r => {
+                const dataInvio = new Date(r.data_invio).toLocaleString('it-IT');
+                html += `<tr>
+                    <td>${dataInvio}</td>
+                    <td><strong>${r.nome || ''}</strong></td>
+                    <td>${r.email || ''}</td>
+                    <td>${r.telefono || ''}</td>
+                    <td>€${r.importo || 0}</td>
+                    <td>${(r.descrizione || '').substring(0, 50)}${(r.descrizione || '').length > 50 ? '...' : ''}</td>
+                    <td><span style="background:${r.stato === 'completato' ? '#28a745' : r.stato === 'non_recuperabile' ? '#dc3545' : '#ffc107'}; color:white; padding:3px 8px; border-radius:10px;">${r.stato || 'in_valutazione'}</span></td>
+                </tr>`;
+            });
+            html += '</table>';
+            document.getElementById('dati').innerHTML = html;
         } else {
-            alert('✅ Richiesta inviata con successo!');
-            event.target.reset();
+            document.getElementById('dati').innerHTML = '<p style="text-align:center; padding:40px;">📭 Nessuna richiesta trovata</p>';
         }
+    } catch (error) {
+        document.getElementById('dati').innerHTML = '<p style="color:red;">Errore: ' + error.message + '</p>';
     }
-    
-    // Collega la funzione al form quando la pagina è caricata
-    window.addEventListener('load', function() {
-        const form = document.querySelector('form');
-        if (form) {
-            form.onsubmit = inviaRichiesta;
-            console.log('✅ Form collegato a Supabase');
-        }
-    });
+}
 </script>
 </body>
 </html>
+
 
 
 
