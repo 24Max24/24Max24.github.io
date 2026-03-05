@@ -1,42 +1,35 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Admin Dashboard</title>
-    <style>
-        body { font-family: Arial; padding: 20px; background: #f0f2f5; }
-        .login-box { max-width: 300px; margin: 100px auto; background: white; padding: 20px; border-radius: 8px; }
-        input, button { width: 100%; padding: 10px; margin: 5px 0; }
-        button { background: #0066cc; color: white; border: none; cursor: pointer; }
-        table { width: 100%; background: white; border-collapse: collapse; }
-        th { background: #1a2b4c; color: white; padding: 10px; }
-        td { padding: 10px; border-bottom: 1px solid #ddd; }
-    </style>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <title>Admin</title>
 </head>
 <body>
-    <div id="loginDiv" class="login-box">
+    <div id="login">
         <h2>Login Admin</h2>
         <input type="password" id="password" placeholder="Password">
-        <button onclick="faiLogin()">Accedi</button>
+        <button onclick="accedi()">Accedi</button>
+    </div>
+    
+    <div id="dashboard" style="display:none">
+        <h2>Dashboard</h2>
+        <button onclick="logout()">Logout</button>
+        <div id="dati"></div>
     </div>
 
-    <div id="dashboardDiv" style="display:none;">
-        <h1>Dashboard Richieste</h1>
-        <button onclick="logout()" style="width:auto; background:#dc3545;">Logout</button>
-        <div id="contenuto"></div>
-    </div>
-
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        const PASSWORD = "stockholm2025";
+        // CONFIGURAZIONE COMPLETA
         const SUPABASE_URL = 'https://zylxndpjbnejrfgyltly.supabase.co';
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp5bHhuZHBqYm5lanJmZ3lsdGx5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3Mzg3NjAsImV4cCI6MjA4ODMxNDc2MH0.LBjmM5DGwGQJdb0OOD7c7CEmgNc3KAP3YPWJcpOxLnY';
         
         const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
         
-        function faiLogin() {
-            if (document.getElementById('password').value === PASSWORD) {
-                document.getElementById('loginDiv').style.display = 'none';
-                document.getElementById('dashboardDiv').style.display = 'block';
+        function accedi() {
+            const password = document.getElementById('password').value;
+            
+            if (password === "stockholm2025") {
+                document.getElementById('login').style.display = 'none';
+                document.getElementById('dashboard').style.display = 'block';
                 caricaDati();
             } else {
                 alert('Password errata!');
@@ -44,12 +37,12 @@
         }
         
         function logout() {
-            document.getElementById('loginDiv').style.display = 'block';
-            document.getElementById('dashboardDiv').style.display = 'none';
+            document.getElementById('login').style.display = 'block';
+            document.getElementById('dashboard').style.display = 'none';
         }
         
         async function caricaDati() {
-            document.getElementById('contenuto').innerHTML = '<p>Caricamento...</p>';
+            document.getElementById('dati').innerHTML = 'Caricamento...';
             
             try {
                 const { data, error } = await supabase
@@ -58,26 +51,18 @@
                 
                 if (error) throw error;
                 
-                if (!data || data.length === 0) {
-                    document.getElementById('contenuto').innerHTML = '<p>Nessuna richiesta</p>';
-                    return;
+                if (data && data.length > 0) {
+                    let html = '<table border="1"><tr><th>Nome</th><th>Email</th><th>Importo</th></tr>';
+                    data.forEach(r => {
+                        html += `<tr><td>${r.nome}</td><td>${r.email}</td><td>€${r.importo}</td></tr>`;
+                    });
+                    html += '</table>';
+                    document.getElementById('dati').innerHTML = html;
+                } else {
+                    document.getElementById('dati').innerHTML = 'Nessuna richiesta';
                 }
-                
-                let html = '<table><tr><th>Nome</th><th>Email</th><th>Importo</th><th>Stato</th></tr>';
-                data.forEach(r => {
-                    html += `<tr>
-                        <td>${r.nome}</td>
-                        <td>${r.email}</td>
-                        <td>€${r.importo}</td>
-                        <td>${r.stato}</td>
-                    </tr>`;
-                });
-                html += '</table>';
-                
-                document.getElementById('contenuto').innerHTML = html;
-                
             } catch (error) {
-                document.getElementById('contenuto').innerHTML = '<p style="color:red;">Errore: ' + error.message + '</p>';
+                document.getElementById('dati').innerHTML = 'Errore: ' + error.message;
             }
         }
     </script>
