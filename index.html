@@ -2711,64 +2711,75 @@
             }
         });
     </script>
-<!-- Supabase SDK -->
+    <!-- Supabase SDK - Versione CORRETTA -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
-  // 🔐 CONFIGURAZIONE SUPABASE (GIÀ INSERITA)
-  const SUPABASE_URL = 'https://zylxndpjbnejrfgyltly.supabase.co';
-  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp5bHhuZHBqYm5lanJmZ3lsdGx5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3Mzg3NjAsImV4cCI6MjA4ODMxNDc2MH0.LBjmM5DGwGQJdb0OOD7c7CEmgNc3KAP3YPWJcpOxLnY';
-  
-  // Inizializza Supabase
-  const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-  
-  // Funzione per inviare richiesta
-  async function inviaRichiesta(event) {
-    event.preventDefault(); // Evita il ricaricamento della pagina
+  // Inizializza Supabase DOPO aver caricato la libreria
+  document.addEventListener('DOMContentLoaded', function() {
+    // 🔐 CONFIGURAZIONE SUPABASE
+    const SUPABASE_URL = 'https://zylxndpjbnejrfgyltly.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp5bHhuZHBqYm5lanJmZ3lsdGx5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3Mzg3NjAsImV4cCI6MjA4ODMxNDc2MH0.LBjmM5DGwGQJdb0OOD7c7CEmgNc3KAP3YPWJcpOxLnY';
     
-    try {
-      // Raccoglie i dati dal form (MODIFICA QUESTI ID CON QUELLI DEL TUO FORM)
-      const richiesta = {
-        nome: document.getElementById('nome')?.value || document.querySelector('input[placeholder*="nome"]')?.value || 'Test',
-        email: document.getElementById('email')?.value || document.querySelector('input[type="email"]')?.value || 'test@email.com',
-        telefono: document.getElementById('telefono')?.value || document.querySelector('input[type="tel"]')?.value || '',
-        descrizione: document.getElementById('descrizione')?.value || document.querySelector('textarea')?.value || 'Descrizione test',
-        importo: parseFloat(document.getElementById('importo')?.value || document.querySelector('input[placeholder*="importo"]')?.value || 1000),
-        stato: 'in_valutazione',
-        percentuale: 25,
-        data_invio: new Date().toISOString()
-      };
-      
-      console.log('Inviando richiesta:', richiesta);
-      
-      // Salva su Supabase
-      const { data, error } = await supabase
-        .from('richieste')
-        .insert([richiesta]);
-      
-      if (error) throw error;
-      
-      alert('✅ Richiesta inviata! Riceverai aggiornamenti via email.');
-      event.target.reset();
-      
-    } catch (error) {
-      console.error('Errore dettagliato:', error);
-      alert('❌ Errore nell\'invio: ' + error.message);
+    // Controlla che la libreria sia caricata
+    if (typeof supabase === 'undefined') {
+      console.error('❌ Libreria Supabase non caricata!');
+      return;
     }
-  }
-  
-  // Trova automaticamente il form e gli attacca l'evento
-  window.addEventListener('load', function() {
+    
+    // Inizializza Supabase
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    console.log('✅ Supabase inizializzato!');
+    
+    // Funzione per inviare richiesta
+    window.inviaRichiesta = async function(event) {
+      event.preventDefault();
+      
+      try {
+        // Raccogli i dati dal form (USA GLI ID CORRETTI!)
+        const form = event.target;
+        const richiesta = {
+          nome: form.querySelector('#nome')?.value || form.querySelector('input[placeholder*="nome"]')?.value || 'Test',
+          email: form.querySelector('#email')?.value || form.querySelector('input[type="email"]')?.value || 'test@email.com',
+          telefono: form.querySelector('#telefono')?.value || '',
+          descrizione: form.querySelector('textarea')?.value || 'Descrizione',
+          importo: parseFloat(form.querySelector('input[type="number"]')?.value || 1000),
+          stato: 'in_valutazione',
+          percentuale: 25,
+          data_invio: new Date().toISOString()
+        };
+        
+        console.log('📤 Invio richiesta:', richiesta);
+        
+        // Salva su Supabase
+        const { data, error } = await supabaseClient
+          .from('richieste')
+          .insert([richiesta]);
+        
+        if (error) throw error;
+        
+        console.log('✅ Richiesta salvata:', data);
+        alert('✅ Richiesta inviata! Riceverai aggiornamenti via email.');
+        form.reset();
+        
+      } catch (error) {
+        console.error('❌ Errore dettagliato:', error);
+        alert('❌ Errore: ' + error.message);
+      }
+    };
+    
+    // Collega la funzione al form
     const form = document.querySelector('form');
     if (form) {
-      form.onsubmit = inviaRichiesta;
-      console.log('✅ Form collegato a Supabase!');
+      form.onsubmit = window.inviaRichiesta;
+      console.log('✅ Form collegato!');
     } else {
-      console.log('❌ Nessun form trovato!');
+      console.log('❌ Nessun form trovato');
     }
   });
 </script>
 </body>
 </html>
+
 
 
