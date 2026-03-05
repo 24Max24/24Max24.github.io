@@ -100,14 +100,14 @@
                 const dataInvio = new Date(r.data_invio).toLocaleString('it-IT');
                 html += `<tr>
                     <td>${dataInvio}</td>
-                    <td><strong>${r.nome || ''}</strong></td>
+                    <td>${r.nome || ''}</td>
                     <td>${r.codice_fiscale || ''}</td>
                     <td>${r.email || ''}</td>
                     <td>${r.telefono || ''}</td>
                     <td>${r.tipo_problema || ''}</td>
                     <td>€${r.importo || 0}</td>
                     <td>${(r.descrizione || '').substring(0, 30)}...</td>
-                    <td>${r.stato || 'in_valutazione'}</td>
+                    <td><span style="background:${r.stato === 'completato' ? 'green' : r.stato === 'non_recuperabile' ? 'red' : 'orange'}; color:white; padding:3px 8px; border-radius:10px;">${r.stato || 'in_valutazione'}</span></td>
                 </tr>`;
             });
             html += '</table>';
