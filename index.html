@@ -2711,75 +2711,46 @@
             }
         });
     </script>
-    <!-- Supabase SDK - Versione CORRETTA -->
+    <!-- Supabase per il form -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <script>
-  // Inizializza Supabase DOPO aver caricato la libreria
-  document.addEventListener('DOMContentLoaded', function() {
-    // 🔐 CONFIGURAZIONE SUPABASE
-    const SUPABASE_URL = 'https://zylxndpjbnejrfgyltly.supabase.co';
-    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp5bHhuZHBqYm5lanJmZ3lsdGx5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3Mzg3NjAsImV4cCI6MjA4ODMxNDc2MH0.LBjmM5DGwGQJdb0OOD7c7CEmgNc3KAP3YPWJcpOxLnY';
+    const URL_SUPABASE = 'https://zylxndpjbnejrfgyltly.supabase.co';
+    const CHIAVE_SUPABASE = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp5bHhuZHBqYm5lanJmZ3lsdGx5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3Mzg3NjAsImV4cCI6MjA4ODMxNDc2MH0.LBjmM5DGwGQJdb0OOD7c7CEmgNc3KAP3YPWJcpOxLnY';
     
-    // Controlla che la libreria sia caricata
-    if (typeof supabase === 'undefined') {
-      console.error('❌ Libreria Supabase non caricata!');
-      return;
-    }
+    const clientSupabase = supabase.createClient(URL_SUPABASE, CHIAVE_SUPABASE);
     
-    // Inizializza Supabase
-    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-    console.log('✅ Supabase inizializzato!');
-    
-    // Funzione per inviare richiesta
-    window.inviaRichiesta = async function(event) {
-      event.preventDefault();
-      
-      try {
-        // Raccogli i dati dal form (USA GLI ID CORRETTI!)
-        const form = event.target;
+    async function inviaRichiesta(event) {
+        event.preventDefault();
+        
         const richiesta = {
-          nome: form.querySelector('#nome')?.value || form.querySelector('input[placeholder*="nome"]')?.value || 'Test',
-          email: form.querySelector('#email')?.value || form.querySelector('input[type="email"]')?.value || 'test@email.com',
-          telefono: form.querySelector('#telefono')?.value || '',
-          descrizione: form.querySelector('textarea')?.value || 'Descrizione',
-          importo: parseFloat(form.querySelector('input[type="number"]')?.value || 1000),
-          stato: 'in_valutazione',
-          percentuale: 25,
-          data_invio: new Date().toISOString()
+            nome: document.getElementById('nome').value,
+            email: document.getElementById('email').value,
+            telefono: document.getElementById('telefono').value,
+            descrizione: document.getElementById('descrizione').value,
+            importo: parseFloat(document.getElementById('importo').value),
+            stato: 'in_valutazione',
+            percentuale: 25,
+            data_invio: new Date().toISOString()
         };
         
-        console.log('📤 Invio richiesta:', richiesta);
+        const { error } = await clientSupabase
+            .from('richieste')
+            .insert([richiesta]);
         
-        // Salva su Supabase
-        const { data, error } = await supabaseClient
-          .from('richieste')
-          .insert([richiesta]);
-        
-        if (error) throw error;
-        
-        console.log('✅ Richiesta salvata:', data);
-        alert('✅ Richiesta inviata! Riceverai aggiornamenti via email.');
-        form.reset();
-        
-      } catch (error) {
-        console.error('❌ Errore dettagliato:', error);
-        alert('❌ Errore: ' + error.message);
-      }
-    };
+        if (error) {
+            alert('Errore: ' + error.message);
+        } else {
+            alert('Richiesta inviata con successo!');
+            event.target.reset();
+        }
+    }
     
     // Collega la funzione al form
-    const form = document.querySelector('form');
-    if (form) {
-      form.onsubmit = window.inviaRichiesta;
-      console.log('✅ Form collegato!');
-    } else {
-      console.log('❌ Nessun form trovato');
-    }
-  });
+    document.querySelector('form').onsubmit = inviaRichiesta;
 </script>
 </body>
 </html>
+
 
 
 
