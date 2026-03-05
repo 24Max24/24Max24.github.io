@@ -1,29 +1,39 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Admin</title>
+    <title>Admin - Recupero Fondi</title>
+    <style>
+        body { font-family: Arial; background: #f0f2f5; padding: 20px; }
+        .login-box { max-width: 300px; margin: 100px auto; background: white; padding: 30px; border-radius: 10px; text-align: center; }
+        input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 5px; }
+        button { width: 100%; padding: 10px; background: #0066cc; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        button:hover { background: #0052a3; }
+        #dashboard { background: white; padding: 20px; border-radius: 10px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th { background: #1a2b4c; color: white; padding: 10px; }
+        td { padding: 10px; border-bottom: 1px solid #ddd; }
+        .logout { background: #dc3545; width: auto; float: right; }
+    </style>
 </head>
 <body>
-    <div id="login">
-        <h2>Login Admin</h2>
-        <input type="password" id="password" placeholder="Password">
+    <div id="login" class="login-box">
+        <h2>🔐 Accesso Admin</h2>
+        <input type="password" id="password" placeholder="Inserisci password">
         <button onclick="faiLogin()">Accedi</button>
     </div>
     
-    <div id="dashboard" style="display:none">
-        <h2>Dashboard</h2>
-        <button onclick="esci()">Logout</button>
-        <div id="dati"></div>
+    <div id="dashboard" style="display:none;">
+        <h2>📊 Dashboard Richieste <button onclick="esci()" class="logout">Logout</button></h2>
+        <div id="dati">Caricamento...</div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        // CONFIGURAZIONE - UNA SOLA VOLTA
-        const URL_SUPABASE = 'https://zylxndpjbnejrfgyltly.supabase.co';
-        const CHIAVE_SUPABASE = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp5bHhuZHBqYm5lanJmZ3lsdGx5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3Mzg3NjAsImV4cCI6MjA4ODMxNDc2MH0.LBjmM5DGwGQJdb0OOD7c7CEmgNc3KAP3YPWJcpOxLnY';
+        // CONFIGURAZIONE SUPABASE - NON MODIFICARE
+        const SUPABASE_URL = 'https://zylxndpjbnejrfgyltly.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp5bHhuZHBqYm5lanJmZ3lsdGx5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3Mzg3NjAsImV4cCI6MjA4ODMxNDc2MH0.LBjmM5DGwGQJdb0OOD7c7CEmgNc3KAP3YPWJcpOxLnY';
         
-        // Cliente Supabase (nome diverso per evitare conflitti)
-        const clientSupabase = supabase.createClient(URL_SUPABASE, CHIAVE_SUPABASE);
+        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
         
         function faiLogin() {
             const password = document.getElementById('password').value;
@@ -33,7 +43,7 @@
                 document.getElementById('dashboard').style.display = 'block';
                 caricaDati();
             } else {
-                alert('Password errata!');
+                alert('❌ Password errata!');
             }
         }
         
@@ -42,46 +52,37 @@
             document.getElementById('dashboard').style.display = 'none';
         }
         
-       <!-- Sostituisci la funzione caricaDati() con questa -->
-async function caricaDati() {
-    document.getElementById('dati').innerHTML = 'Caricamento...';
-    
-    try {
-        const { data, error } = await clientSupabase
-            .from('richieste')
-            .select('*')
-            .order('data_invio', { ascending: false });
-        
-        if (error) throw error;
-        
-        if (data && data.length > 0) {
-            let html = '<table border="1" cellpadding="8" style="border-collapse: collapse; width: 100%;">';
-            html += '<tr style="background: #1a2b4c; color: white;">';
-            html += '<th>Data</th><th>Nome</th><th>Email</th><th>Telefono</th><th>Importo</th><th>Descrizione</th><th>Documenti</th><th>Stato</th>';
-            html += '</tr>';
-            
-            data.forEach(r => {
-                const dataFormattata = new Date(r.data_invio).toLocaleString('it-IT');
-                const documenti = r.documenti ? r.documenti.join(', ') : 'Nessuno';
+        async function caricaDati() {
+            try {
+                const { data, error } = await supabase
+                    .from('richieste')
+                    .select('*')
+                    .order('data_invio', { ascending: false });
                 
-                html += '<tr>';
-                html += `<td>${dataFormattata}</td>`;
-                html += `<td><strong>${r.nome || ''}</strong></td>`;
-                html += `<td>${r.email || ''}</td>`;
-                html += `<td>${r.telefono || ''}</td>`;
-                html += `<td>€${r.importo || 0}</td>`;
-                html += `<td>${(r.descrizione || '').substring(0, 50)}...</td>`;
-                html += `<td>${documenti}</td>`;
-                html += `<td><span style="background: ${r.stato === 'completato' ? 'green' : r.stato === 'non_recuperabile' ? 'red' : 'orange'}; color: white; padding: 3px 8px; border-radius: 10px;">${r.stato}</span></td>`;
-                html += '</tr>';
-            });
-            
-            html += '</table>';
-            document.getElementById('dati').innerHTML = html;
-        } else {
-            document.getElementById('dati').innerHTML = '<p style="text-align: center; padding: 40px;">📭 Nessuna richiesta trovata</p>';
+                if (error) throw error;
+                
+                if (data && data.length > 0) {
+                    let html = '<table><tr><th>Data</th><th>Nome</th><th>Email</th><th>Telefono</th><th>Importo</th><th>Stato</th></tr>';
+                    data.forEach(r => {
+                        const dataInvio = new Date(r.data_invio).toLocaleDateString('it-IT');
+                        html += `<tr>
+                            <td>${dataInvio}</td>
+                            <td>${r.nome || ''}</td>
+                            <td>${r.email || ''}</td>
+                            <td>${r.telefono || ''}</td>
+                            <td>€${r.importo || 0}</td>
+                            <td>${r.stato || 'in_valutazione'}</td>
+                        </tr>`;
+                    });
+                    html += '</table>';
+                    document.getElementById('dati').innerHTML = html;
+                } else {
+                    document.getElementById('dati').innerHTML = '<p style="text-align:center; padding:40px;">📭 Nessuna richiesta trovata</p>';
+                }
+            } catch (error) {
+                document.getElementById('dati').innerHTML = '<p style="color:red;">Errore: ' + error.message + '</p>';
+            }
         }
-    } catch (error) {
-        document.getElementById('dati').innerHTML = 'Errore: ' + error.message;
-    }
-}
+    </script>
+</body>
+</html>
