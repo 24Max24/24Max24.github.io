@@ -18,13 +18,17 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
+        // CONFIGURAZIONE SUPABASE - VERIFICATA CORRETTA
         const SUPABASE_URL = 'https://zylxndpjbnejrfgyltly.supabase.co';
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp5bHhuZHBqYm5lanJmZ3lsdGx5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3Mzg3NjAsImV4cCI6MjA4ODMxNDc2MH0.LBjmM5DGwGQJdb0OOD7c7CEmgNc3KAP3YPWJcpOxLnY';
         
+        // Inizializza Supabase
         const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        console.log('Supabase inizializzato');
         
         function accedi() {
             const password = document.getElementById('password').value;
+            console.log('Tentativo login con password:', password);
             
             if (password === "stockholm2025") {
                 document.getElementById('login').style.display = 'none';
@@ -51,17 +55,18 @@
                 if (error) throw error;
                 
                 if (data && data.length > 0) {
-                    let html = '<table border="1"><tr><th>Nome</th><th>Email</th><th>Importo</th></tr>';
+                    let html = '<table border="1" cellpadding="5"><tr><th>Nome</th><th>Email</th><th>Importo</th></tr>';
                     data.forEach(r => {
                         html += `<tr><td>${r.nome}</td><td>${r.email}</td><td>€${r.importo}</td></tr>`;
                     });
                     html += '</table>';
                     document.getElementById('dati').innerHTML = html;
                 } else {
-                    document.getElementById('dati').innerHTML = 'Nessuna richiesta';
+                    document.getElementById('dati').innerHTML = 'Nessuna richiesta trovata';
                 }
             } catch (error) {
                 document.getElementById('dati').innerHTML = 'Errore: ' + error.message;
+                console.error('Errore:', error);
             }
         }
     </script>
