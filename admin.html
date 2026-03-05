@@ -7,25 +7,25 @@
     <div id="login">
         <h2>Login Admin</h2>
         <input type="password" id="password" placeholder="Password">
-        <button onclick="accedi()">Accedi</button>
+        <button onclick="faiLogin()">Accedi</button>
     </div>
     
     <div id="dashboard" style="display:none">
         <h2>Dashboard</h2>
-        <button onclick="logout()">Logout</button>
+        <button onclick="esci()">Logout</button>
         <div id="dati"></div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        // CONFIGURAZIONE SUPABASE
-        const SUPABASE_URL = 'https://zylxndpjbnejrfgyltly.supabase.co';
-        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp5bHhuZHBqYm5lanJmZ3lsdGx5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3Mzg3NjAsImV4cCI6MjA4ODMxNDc2MH0.LBjmM5DGwGQJdb0OOD7c7CEmgNc3KAP3YPWJcpOxLnY';
+        // CONFIGURAZIONE - UNA SOLA VOLTA
+        const URL_SUPABASE = 'https://zylxndpjbnejrfgyltly.supabase.co';
+        const CHIAVE_SUPABASE = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp5bHhuZHBqYm5lanJmZ3lsdGx5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3Mzg3NjAsImV4cCI6MjA4ODMxNDc2MH0.LBjmM5DGwGQJdb0OOD7c7CEmgNc3KAP3YPWJcpOxLnY';
         
-        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        // Cliente Supabase (nome diverso per evitare conflitti)
+        const clientSupabase = supabase.createClient(URL_SUPABASE, CHIAVE_SUPABASE);
         
-        // FUNZIONE ACCEDI - QUESTA MANCAVA!
-        function accedi() {
+        function faiLogin() {
             const password = document.getElementById('password').value;
             
             if (password === "stockholm2025") {
@@ -37,7 +37,7 @@
             }
         }
         
-        function logout() {
+        function esci() {
             document.getElementById('login').style.display = 'block';
             document.getElementById('dashboard').style.display = 'none';
         }
@@ -46,14 +46,14 @@
             document.getElementById('dati').innerHTML = 'Caricamento...';
             
             try {
-                const { data, error } = await supabase
+                const { data, error } = await clientSupabase
                     .from('richieste')
                     .select('*');
                 
                 if (error) throw error;
                 
                 if (data && data.length > 0) {
-                    let html = '<table border="1"><tr><th>Nome</th><th>Email</th><th>Importo</th></tr>';
+                    let html = '<table border="1" cellpadding="5"><tr><th>Nome</th><th>Email</th><th>Importo</th></tr>';
                     data.forEach(r => {
                         html += `<tr><td>${r.nome}</td><td>${r.email}</td><td>€${r.importo}</td></tr>`;
                     });
