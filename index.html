@@ -2711,5 +2711,51 @@
             }
         });
     </script>
+<!-- Supabase SDK -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+  // 🔑 Prendi questi dati dal tuo progetto Supabase (dopo la registrazione)
+  const SUPABASE_URL = 'https://tuo-progetto.supabase.co';
+  const SUPABASE_KEY = 'la-tua-chiave-pubblica';
+  
+  // Inizializza Supabase
+  const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  
+  console.log("✅ Supabase connesso!");
+  
+  // Funzione per inviare richiesta
+  async function inviaRichiesta(event) {
+    event.preventDefault();
+    
+    try {
+      const richiesta = {
+        nome: document.getElementById('nome').value,
+        email: document.getElementById('email').value,
+        telefono: document.getElementById('telefono').value,
+        descrizione: document.getElementById('descrizione').value,
+        importo: parseFloat(document.getElementById('importo').value),
+        stato: 'in_valutazione',
+        percentuale: 25,
+        data_invio: new Date().toISOString()
+      };
+      
+      // Salva su Supabase
+      const { data, error } = await supabase
+        .from('richieste')
+        .insert([richiesta]);
+      
+      if (error) throw error;
+      
+      alert('✅ Richiesta inviata con successo!');
+      event.target.reset();
+      
+    } catch (error) {
+      console.error('Errore:', error);
+      alert('❌ Errore nell\'invio. Riprova.');
+    }
+  }
+</script>
 </body>
 </html>
+
