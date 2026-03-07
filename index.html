@@ -2119,6 +2119,7 @@
         </div>
     </div>
 
+    <!-- TUTTO IL TUO SCRIPT ESISTENTE -->
     <script>
         // MENU MOBILE
         const mobileMenuBtn = document.getElementById('mobileMenuBtn');
@@ -2240,8 +2241,8 @@
             localStorage.setItem('uploaded_files', JSON.stringify(savedFiles));
         }
 
-        // FORM SUBMIT
-        document.getElementById('recoveryForm').addEventListener('submit', function(e) {
+        // FORM SUBMIT - MODIFICATO PER SUPABASE
+        document.getElementById('recoveryForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
             const nome = document.getElementById('nome').value;
@@ -2711,61 +2712,13 @@
             }
         });
     </script>
-    <!-- Supabase per il form con documenti -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-    const SUPABASE_URL = 'https://zylxndpjbnejrfgyltly.supabase.co';
-    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp5bHhuZHBqYm5lanJmZ3lsdGx5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3Mzg3NjAsImV4cCI6MjA4ODMxNDc2MH0.LBjmM5DGwGQJdb0OOD7c7CEmgNc3KAP3YPWJcpOxLnY';
-    
-    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-    
-    async function inviaRichiesta(event) {
-        event.preventDefault();
+    <!-- AGGIUNGI SOLO QUESTO SCRIPT PER SUPABASE -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        const SUPABASE_URL = 'https://zylxndpjbnejrfgyltly.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp5bHhuZHBqYm5lanJmZ3lsdGx5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3Mzg3NjAsImV4cCI6MjA4ODMxNDc2MH0.LBjmM5DGwGQJdb0OOD7c7CEmgNc3KAP3YPWJcpOxLnY';
         
-        // Prendi tutti i campi del form
-        const inputs = document.querySelectorAll('input, select, textarea');
-        
-        const richiesta = {
-            nome: inputs[0]?.value || '',
-            codice_fiscale: inputs[1]?.value || '',
-            email: inputs[2]?.value || '',
-            telefono: inputs[3]?.value || '',
-            tipo_problema: inputs[4]?.value || '',
-            importo: parseFloat(inputs[5]?.value?.replace(/[^\d,]/g, '').replace(',', '.')) || 0,
-            descrizione: inputs[6]?.value || '',
-            stato: 'in_valutazione',
-            percentuale: 25,
-            data_invio: new Date().toISOString()
-        };
-        
-        console.log('📤 Invio:', richiesta);
-        
-        const { error } = await supabaseClient
-            .from('richieste')
-            .insert([richiesta]);
-        
-        if (error) {
-            alert('Errore: ' + error.message);
-        } else {
-            alert('✅ Richiesta inviata!');
-            event.target.reset();
-        }
-    }
-    
-    window.addEventListener('load', function() {
-        const form = document.querySelector('form');
-        if (form) {
-            form.onsubmit = inviaRichiesta;
-        }
-    });
-</script>
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
