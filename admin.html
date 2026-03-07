@@ -1,124 +1,722 @@
 <!DOCTYPE html>
-<html>
+<html lang="it">
 <head>
-    <title>Admin Dashboard</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Stockholm Claim Partners</title>
     <style>
-        body { font-family: Arial; background: #f0f2f5; padding: 20px; }
-        .login-box { max-width: 300px; margin: 100px auto; background: white; padding: 30px; border-radius: 10px; text-align: center; }
-        input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 5px; }
-        button { width: 100%; padding: 10px; background: #0066cc; color: white; border: none; border-radius: 5px; cursor: pointer; }
-        #dashboard { background: white; padding: 20px; border-radius: 10px; display: none; }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th { background: #1a2b4c; color: white; padding: 10px; }
-        td { padding: 10px; border-bottom: 1px solid #ddd; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background: #f5f5f5; padding: 20px; }
+        
+        .login-container {
+            max-width: 400px;
+            margin: 100px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .login-container h1 { 
+            color: #0a2540; 
+            margin-bottom: 20px; 
+            font-size: 24px;
+        }
+        
+        .login-container input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        
+        .login-container button {
+            width: 100%;
+            padding: 12px;
+            background: #0a2540;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .login-container button:hover {
+            background: #1e3b5a;
+        }
+        
+        .dashboard { display: none; }
+        
+        .header {
+            background: #0a2540;
+            color: white;
+            padding: 20px;
+            border-radius: 10px 10px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .header h1 {
+            font-size: 20px;
+            color: white;
+        }
+        
+        .logout-btn {
+            background: #c9a959;
+            color: #0a2540;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        
+        .logout-btn:hover {
+            background: #dabe7a;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .stat-label {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .stat-number {
+            font-size: 28px;
+            font-weight: bold;
+            color: #0a2540;
+        }
+        
+        .stat-note {
+            font-size: 11px;
+            color: #999;
+            margin-top: 5px;
+        }
+        
+        .filters {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .filters input, .filters select {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 13px;
+            flex: 1;
+            min-width: 150px;
+        }
+        
+        .filters button {
+            padding: 10px 20px;
+            background: #0a2540;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .table-container {
+            background: white;
+            border-radius: 10px;
+            overflow-x: auto;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1200px;
+        }
+        
+        th {
+            background: #0a2540;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+            font-size: 13px;
+        }
+        
+        tr:hover {
+            background: #f9f9f9;
+        }
+        
+        .status-badge {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            display: inline-block;
+        }
+        
+        .status-in_valutazione { background: #fff3cd; color: #856404; }
+        .status-recupero { background: #cce5ff; color: #004085; }
+        .status-completato { background: #d4edda; color: #155724; }
+        .status-bocciato { background: #f8d7da; color: #721c24; }
+        
+        .action-btn {
+            background: #c9a959;
+            color: #0a2540;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 2px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .action-btn:hover {
+            background: #dabe7a;
+        }
+        
+        .delete-btn {
+            background: #dc3545;
+            color: white;
+        }
+        
+        .delete-btn:hover {
+            background: #c82333;
+        }
+        
+        .view-btn {
+            background: #0a2540;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .modal-content h2 {
+            color: #0a2540;
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+        
+        .modal-content label {
+            display: block;
+            font-weight: 600;
+            font-size: 13px;
+            margin: 10px 0 5px;
+            color: #333;
+        }
+        
+        .modal-content input,
+        .modal-content select,
+        .modal-content textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 13px;
+        }
+        
+        .modal-content textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+        
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .save-btn { 
+            background: #28a745; 
+            color: white; 
+            border: none; 
+            padding: 12px 20px; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            flex: 1;
+            font-weight: 600;
+        }
+        
+        .cancel-btn { 
+            background: #6c757d; 
+            color: white; 
+            border: none; 
+            padding: 12px 20px; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            flex: 1;
+            font-weight: 600;
+        }
+        
+        .file-link {
+            color: #0a2540;
+            text-decoration: none;
+            font-size: 18px;
+        }
+        
+        .file-link:hover {
+            color: #c9a959;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 50px;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        @media (max-width: 768px) {
+            .stats {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
-    <div id="login" class="login-box">
-        <h2>🔐 Login Admin</h2>
-        <input type="password" id="password" placeholder="Password">
-        <button onclick="faiLogin()">Accedi</button>
+    <!-- Login -->
+    <div class="login-container" id="loginContainer">
+        <h1>🔐 Admin Dashboard</h1>
+        <input type="password" id="password" placeholder="Inserisci password" onkeypress="if(event.key==='Enter') checkLogin()">
+        <button onclick="checkLogin()">Accedi</button>
+        <div style="margin-top: 15px; text-align: center; color: #666; font-size: 13px;">
+            Password: <strong>stockholm2026</strong>
+        </div>
     </div>
     
-    <div id="dashboard">
-        <h2>📊 Dashboard</h2>
-        <div id="dati">Caricamento...</div>
+    <!-- Dashboard -->
+    <div class="dashboard" id="dashboard">
+        <div class="header">
+            <h1>📊 Stockholm Claim Partners - Admin Panel</h1>
+            <button class="logout-btn" onclick="logout()">Logout</button>
+        </div>
+        
+        <!-- Statistiche -->
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-label">Totale Richieste</div>
+                <div class="stat-number" id="totalRequests">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">In Valutazione</div>
+                <div class="stat-number" id="pendingRequests">0</div>
+                <div class="stat-note">da analizzare</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">In Recupero</div>
+                <div class="stat-number" id="processingRequests">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Completate</div>
+                <div class="stat-number" id="completedRequests">0</div>
+                <div class="stat-note" id="totalRecovered">€0</div>
+            </div>
+        </div>
+        
+        <!-- Filtri -->
+        <div class="filters">
+            <input type="text" id="searchInput" placeholder="🔍 Cerca per nome, email, CF...">
+            <select id="statusFilter">
+                <option value="">Tutti gli stati</option>
+                <option value="in_valutazione">In Valutazione</option>
+                <option value="recupero">In Recupero</option>
+                <option value="completato">Completato</option>
+                <option value="bocciato">Non Recuperabile</option>
+            </select>
+            <button onclick="applicaFiltri()">Filtra</button>
+        </div>
+        
+        <!-- Tabella clienti -->
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>Nome</th>
+                        <th>CF</th>
+                        <th>Email</th>
+                        <th>Telefono</th>
+                        <th>Tipo</th>
+                        <th>Importo Perso</th>
+                        <th>Importo Rec.</th>
+                        <th>Stato</th>
+                        <th>%</th>
+                        <th>Azioni</th>
+                    </tr>
+                </thead>
+                <tbody id="clientiBody">
+                    <tr><td colspan="11" class="loading">Caricamento dati...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <!-- Modal modifica -->
+    <div class="modal" id="editModal">
+        <div class="modal-content">
+            <h2>✏️ Modifica Pratica</h2>
+            <input type="hidden" id="editId">
+            
+            <label>Nome e Cognome</label>
+            <input type="text" id="editNome">
+            
+            <label>Codice Fiscale</label>
+            <input type="text" id="editCf">
+            
+            <label>Email</label>
+            <input type="email" id="editEmail">
+            
+            <label>Telefono</label>
+            <input type="text" id="editTelefono">
+            
+            <label>Tipo Problema</label>
+            <select id="editTipo">
+                <option value="crypto">Crypto & Blockchain</option>
+                <option value="frode">Frode Bancaria</option>
+                <option value="bonifico">Bonifico Errato</option>
+                <option value="wallet">Accesso Perso</option>
+                <option value="altro">Altro</option>
+            </select>
+            
+            <label>Importo Perso (€)</label>
+            <input type="number" id="editImporto" step="0.01">
+            
+            <label>Importo Recuperato (€)</label>
+            <input type="number" id="editRecuperato" step="0.01" value="0">
+            
+            <label>Stato</label>
+            <select id="editStato">
+                <option value="in_valutazione">In Valutazione</option>
+                <option value="recupero">In Recupero</option>
+                <option value="completato">Completato</option>
+                <option value="bocciato">Non Recuperabile</option>
+            </select>
+            
+            <label>Percentuale Completamento</label>
+            <input type="number" id="editPercentuale" min="0" max="100">
+            
+            <label>Descrizione</label>
+            <textarea id="editDescrizione" rows="3"></textarea>
+            
+            <div class="modal-buttons">
+                <button class="save-btn" onclick="salvaModifiche()">💾 Salva</button>
+                <button class="cancel-btn" onclick="chiudiModal()">✕ Annulla</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal dettagli -->
+    <div class="modal" id="dettagliModal">
+        <div class="modal-content">
+            <h2>📋 Dettagli Pratica</h2>
+            <div id="dettagliContenuto"></div>
+            <div class="modal-buttons">
+                <button class="cancel-btn" onclick="chiudiDettagli()">Chiudi</button>
+            </div>
+        </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        // TUTTO IN UN UNICO SCRIPT - NIENTE DUPLICAZIONI
-        
-        // Configurazione
+        // Configurazione Supabase (STESSA DEL TUO INDEX)
         const SUPABASE_URL = 'https://zylxndpjbnejrfgyltly.supabase.co';
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp5bHhuZHBqYm5lanJmZ3lsdGx5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3Mzg3NjAsImV4cCI6MjA4ODMxNDc2MH0.LBjmM5DGwGQJdb0OOD7c7CEmgNc3KAP3YPWJcpOxLnY';
         
-        // Inizializza Supabase (UNA SOLA VOLTA)
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
         
-        // Funzione login
-        function faiLogin() {
-            const password = document.getElementById('password').value;
-            
-            if (password === "stockholm2025") {
-                document.getElementById('login').style.display = 'none';
+        const ADMIN_PASSWORD = 'stockholm2026';
+        let clientiData = [];
+        let currentClientId = null;
+        
+        function checkLogin() {
+            const pass = document.getElementById('password').value;
+            if(pass === ADMIN_PASSWORD) {
+                document.getElementById('loginContainer').style.display = 'none';
                 document.getElementById('dashboard').style.display = 'block';
                 caricaDati();
             } else {
-                alert('Password errata!');
+                alert('❌ Password errata');
             }
         }
         
-        // Funzione per caricare dati
+        function logout() {
+            document.getElementById('loginContainer').style.display = 'block';
+            document.getElementById('dashboard').style.display = 'none';
+            document.getElementById('password').value = '';
+        }
+        
         async function caricaDati() {
             try {
                 const { data, error } = await supabaseClient
                     .from('richieste')
-                    .select('*');
+                    .select('*')
+                    .order('data_invio', { ascending: false });
                 
                 if (error) throw error;
                 
-                if (data && data.length > 0) {
-                    let html = '<table><tr><th>Nome</th><th>Email</th><th>Importo</th></tr>';
-                    data.forEach(r => {
-                        html += `<tr><td>${r.nome}</td><td>${r.email}</td><td>€${r.importo}</td></tr>`;
-                    });
-                    html += '</table>';
-                    document.getElementById('dati').innerHTML = html;
-                } else {
-                    document.getElementById('dati').innerHTML = 'Nessuna richiesta trovata';
-                }
+                clientiData = data || [];
+                aggiornaStatistiche();
+                visualizzaClienti(clientiData);
+                
             } catch (error) {
-                document.getElementById('dati').innerHTML = 'Errore: ' + error.message;
+                console.error('Errore:', error);
+                document.getElementById('clientiBody').innerHTML = `
+                    <tr><td colspan="11" class="error-message">
+                        ❌ Errore nel caricamento: ${error.message}
+                    </td></tr>
+                `;
             }
         }
-    </script>
-    <!-- Aggiungi QUESTO alla fine di index.html, prima di </body> -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-    const SUPABASE_URL = 'https://zylxndpjbnejrfgyltly.supabase.co';
-    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp5bHhuZHBqYm5lanJmZ3lsdGx5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3Mzg3NjAsImV4cCI6MjA4ODMxNDc2MH0.LBjmM5DGwGQJdb0OOD7c7CEmgNc3KAP3YPWJcpOxLnY';
-    
-    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-    
-    async function caricaDati() {
-    try {
-        const { data, error } = await supabaseClient
-            .from('richieste')
-            .select('*')
-            .order('data_invio', { ascending: false });
         
-        if (error) throw error;
-        
-        if (data && data.length > 0) {
-            let html = '<table border="1" cellpadding="8" style="width:100%; border-collapse: collapse;">';
-            html += '<tr style="background:#1a2b4c; color:white;">';
-            html += '<th>Data</th><th>Nome</th><th>Codice Fiscale</th><th>Email</th><th>Telefono</th><th>Tipo</th><th>Importo</th><th>Descrizione</th><th>Stato</th>';
-            html += '</tr>';
+        function aggiornaStatistiche() {
+            const totali = clientiData.length;
+            const inValutazione = clientiData.filter(c => c.stato === 'in_valutazione').length;
+            const inRecupero = clientiData.filter(c => c.stato === 'recupero').length;
+            const completati = clientiData.filter(c => c.stato === 'completato').length;
             
-            data.forEach(r => {
-                const dataInvio = new Date(r.data_invio).toLocaleString('it-IT');
-                html += `<tr>
-                    <td>${dataInvio}</td>
-                    <td>${r.nome || ''}</td>
-                    <td>${r.codice_fiscale || ''}</td>
-                    <td>${r.email || ''}</td>
-                    <td>${r.telefono || ''}</td>
-                    <td>${r.tipo_problema || ''}</td>
-                    <td>€${r.importo || 0}</td>
-                    <td>${(r.descrizione || '').substring(0, 30)}...</td>
-                    <td><span style="background:${r.stato === 'completato' ? 'green' : r.stato === 'non_recuperabile' ? 'red' : 'orange'}; color:white; padding:3px 8px; border-radius:10px;">${r.stato || 'in_valutazione'}</span></td>
-                </tr>`;
-            });
-            html += '</table>';
-            document.getElementById('dati').innerHTML = html;
-        } else {
-            document.getElementById('dati').innerHTML = '<p>Nessuna richiesta</p>';
+            const totaleRecuperato = clientiData
+                .filter(c => c.importo_recuperato)
+                .reduce((sum, c) => sum + (parseFloat(c.importo_recuperato) || 0), 0);
+            
+            document.getElementById('totalRequests').textContent = totali;
+            document.getElementById('pendingRequests').textContent = inValutazione;
+            document.getElementById('processingRequests').textContent = inRecupero;
+            document.getElementById('completedRequests').textContent = completati;
+            document.getElementById('totalRecovered').textContent = '€' + totaleRecuperato.toFixed(2);
         }
-    } catch (error) {
-        document.getElementById('dati').innerHTML = 'Errore: ' + error.message;
-    }
-}
-</script>
+        
+        function visualizzaClienti(data) {
+            const tbody = document.getElementById('clientiBody');
+            tbody.innerHTML = '';
+            
+            if (data.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="11" style="text-align: center; padding: 30px;">Nessuna richiesta trovata</td></tr>';
+                return;
+            }
+            
+            data.forEach(cliente => {
+                const row = tbody.insertRow();
+                const dataInvio = cliente.data_invio ? new Date(cliente.data_invio).toLocaleDateString('it-IT') : 'N/D';
+                const importoPerso = parseFloat(cliente.importo) || 0;
+                const importoRecuperato = parseFloat(cliente.importo_recuperato) || 0;
+                const percentuale = cliente.percentuale || 0;
+                
+                let tipoTesto = {
+                    'crypto': 'Crypto',
+                    'frode': 'Frode',
+                    'bonifico': 'Bonifico',
+                    'wallet': 'Wallet',
+                    'altro': 'Altro'
+                }[cliente.tipo_problema] || cliente.tipo_problema;
+                
+                row.innerHTML = `
+                    <td>${dataInvio}</td>
+                    <td><strong>${cliente.nome || 'N/D'}</strong></td>
+                    <td>${cliente.codice_fiscale || ''}</td>
+                    <td>${cliente.email || ''}</td>
+                    <td>${cliente.telefono || ''}</td>
+                    <td>${tipoTesto}</td>
+                    <td>€${importoPerso.toFixed(2)}</td>
+                    <td>${importoRecuperado > 0 ? '€' + importoRecuperado.toFixed(2) : '—'}</td>
+                    <td><span class="status-badge status-${cliente.stato || 'in_valutazione'}">${cliente.stato || 'in valutazione'}</span></td>
+                    <td>${percentuale}%</td>
+                    <td>
+                        <button class="action-btn" onclick="apriModifica('${cliente.id}')">✏️</button>
+                        <button class="view-btn" onclick="vediDettagli('${cliente.id}')">👁️</button>
+                        <button class="action-btn delete-btn" onclick="eliminaRichiesta('${cliente.id}')">🗑️</button>
+                    </td>
+                `;
+            });
+        }
+        
+        function applicaFiltri() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const statusFilter = document.getElementById('statusFilter').value;
+            
+            let filtrati = clientiData;
+            
+            if (searchTerm) {
+                filtrati = filtrati.filter(c => 
+                    (c.nome && c.nome.toLowerCase().includes(searchTerm)) ||
+                    (c.email && c.email.toLowerCase().includes(searchTerm)) ||
+                    (c.codice_fiscale && c.codice_fiscale.toLowerCase().includes(searchTerm)) ||
+                    (c.telefono && c.telefono.includes(searchTerm))
+                );
+            }
+            
+            if (statusFilter) {
+                filtrati = filtrati.filter(c => c.stato === statusFilter);
+            }
+            
+            visualizzaClienti(filtrati);
+        }
+        
+        async function apriModifica(id) {
+            const cliente = clientiData.find(c => c.id === id);
+            if (!cliente) return;
+            
+            currentClientId = id;
+            
+            document.getElementById('editId').value = id;
+            document.getElementById('editNome').value = cliente.nome || '';
+            document.getElementById('editCf').value = cliente.codice_fiscale || '';
+            document.getElementById('editEmail').value = cliente.email || '';
+            document.getElementById('editTelefono').value = cliente.telefono || '';
+            document.getElementById('editTipo').value = cliente.tipo_problema || 'altro';
+            document.getElementById('editImporto').value = cliente.importo || 0;
+            document.getElementById('editRecuperato').value = cliente.importo_recuperato || 0;
+            document.getElementById('editStato').value = cliente.stato || 'in_valutazione';
+            document.getElementById('editPercentuale').value = cliente.percentuale || 0;
+            document.getElementById('editDescrizione').value = cliente.descrizione || '';
+            
+            document.getElementById('editModal').style.display = 'flex';
+        }
+        
+        async function salvaModifiche() {
+            const id = document.getElementById('editId').value;
+            
+            const updates = {
+                nome: document.getElementById('editNome').value,
+                codice_fiscale: document.getElementById('editCf').value,
+                email: document.getElementById('editEmail').value,
+                telefono: document.getElementById('editTelefono').value,
+                tipo_problema: document.getElementById('editTipo').value,
+                importo: parseFloat(document.getElementById('editImporto').value) || 0,
+                importo_recuperato: parseFloat(document.getElementById('editRecuperato').value) || 0,
+                stato: document.getElementById('editStato').value,
+                percentuale: parseInt(document.getElementById('editPercentuale').value) || 0,
+                descrizione: document.getElementById('editDescrizione').value,
+                data_aggiornamento: new Date().toISOString()
+            };
+            
+            const { error } = await supabaseClient
+                .from('richieste')
+                .update(updates)
+                .eq('id', id);
+            
+            if (error) {
+                alert('❌ Errore: ' + error.message);
+            } else {
+                alert('✅ Pratica aggiornata!');
+                chiudiModal();
+                caricaDati();
+            }
+        }
+        
+        function chiudiModal() {
+            document.getElementById('editModal').style.display = 'none';
+        }
+        
+        async function vediDettagli(id) {
+            const cliente = clientiData.find(c => c.id === id);
+            if (!cliente) return;
+            
+            const dettagli = document.getElementById('dettagliContenuto');
+            dettagli.innerHTML = `
+                <p><strong>ID:</strong> ${cliente.id}</p>
+                <p><strong>Nome:</strong> ${cliente.nome}</p>
+                <p><strong>CF:</strong> ${cliente.codice_fiscale}</p>
+                <p><strong>Email:</strong> ${cliente.email}</p>
+                <p><strong>Telefono:</strong> ${cliente.telefono}</p>
+                <p><strong>Tipo:</strong> ${cliente.tipo_problema}</p>
+                <p><strong>Importo perso:</strong> €${parseFloat(cliente.importo || 0).toFixed(2)}</p>
+                <p><strong>Importo recuperato:</strong> €${parseFloat(cliente.importo_recuperato || 0).toFixed(2)}</p>
+                <p><strong>Stato:</strong> ${cliente.stato}</p>
+                <p><strong>Percentuale:</strong> ${cliente.percentuale || 0}%</p>
+                <p><strong>Data invio:</strong> ${new Date(cliente.data_invio).toLocaleString('it-IT')}</p>
+                <p><strong>Descrizione:</strong><br>${cliente.descrizione || 'Nessuna'}</p>
+            `;
+            
+            document.getElementById('dettagliModal').style.display = 'flex';
+        }
+        
+        function chiudiDettagli() {
+            document.getElementById('dettagliModal').style.display = 'none';
+        }
+        
+        async function eliminaRichiesta(id) {
+            if (!confirm('⚠️ Sei sicuro di voler eliminare questa richiesta?')) return;
+            
+            const { error } = await supabaseClient
+                .from('richieste')
+                .delete()
+                .eq('id', id);
+            
+            if (error) {
+                alert('❌ Errore: ' + error.message);
+            } else {
+                alert('✅ Richiesta eliminata');
+                caricaDati();
+            }
+        }
+        
+        // Auto-refresh ogni 30 secondi
+        setInterval(() => {
+            if (document.getElementById('dashboard').style.display === 'block') {
+                caricaDati();
+            }
+        }, 30000);
+    </script>
 </body>
 </html>
