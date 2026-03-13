@@ -273,7 +273,7 @@
         // Carica i dati da Supabase
         (async function() {
             try {
-                // CONFIGURAZIONE SUPABASE - INSERITE LE TUE CREDENZIALI
+                // CONFIGURAZIONE SUPABASE - GIA' INSERITE
                 const SUPABASE_URL = 'https://zylxndpjbnejrfgyltly.supabase.co';
                 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp5bHhuZHBqYm5lanJmZ3lsdGx5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDE4MDEwNzEsImV4cCI6MjA1NzM3NzA3MX0.PnB9fqKntgLrg7eGvNKRy5oKeO11yOfrUO7cbGg2aKk';
 
@@ -281,87 +281,39 @@
                 const { createClient } = await import('https://esm.sh/@supabase/supabase-js@2');
                 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-                // Recupera i dati dalla tabella - PROVA CON PIÙ NOMI POSSIBILI
-                let richieste = [];
-                let error = null;
-                
-                // Prova con 'pratiche'
-                let result = await supabase
+                console.log('✅ Connessione a Supabase riuscita');
+
+                // Recupera i dati dalla tabella
+                const { data: richieste, error } = await supabase
                     .from('pratiche')
                     .select('*')
                     .order('created_at', { ascending: false });
-                
-                if (result.error) {
-                    console.log('Tabella "pratiche" non trovata, provo con "richieste"');
-                    // Prova con 'richieste'
-                    result = await supabase
-                        .from('richieste')
-                        .select('*')
-                        .order('created_at', { ascending: false });
-                }
-                
-                if (result.error) {
-                    console.log('Tabella "richieste" non trovata, provo con "upload"');
-                    // Prova con 'upload'
-                    result = await supabase
-                        .from('upload')
-                        .select('*')
-                        .order('created_at', { ascending: false });
-                }
-                
-                if (result.error) {
-                    console.log('Tabella "upload" non trovata, provo con "finanziamenti"');
-                    // Prova con 'finanziamenti'
-                    result = await supabase
-                        .from('finanziamenti')
-                        .select('*')
-                        .order('created_at', { ascending: false });
-                }
-
-                richieste = result.data || [];
-                error = result.error;
 
                 if (error) {
+                    console.log('❌ Errore tabella "pratiche":', error);
                     throw error;
                 }
+
+                console.log('📊 Dati ricevuti:', richieste);
 
                 // Riferimenti agli elementi HTML
                 const tbody = document.getElementById('tabella-richieste');
                 
                 if (!richieste || richieste.length === 0) {
-                    // Nessuna richiesta
                     tbody.innerHTML = `
                         <tr>
                             <td colspan="10" style="text-align: center; padding: 50px; color: #999;">
-                                📭 Nessuna richiesta trovata nel database
+                                📭 Nessuna richiesta trovata nella tabella "pratiche"
                             </td>
                         </tr>
                     `;
-                    
-                    // Statistiche a zero
-                    document.getElementById('totale-richieste').textContent = '0';
-                    document.getElementById('in-valutazione').textContent = '0';
-                    document.getElementById('in-recupero').textContent = '0';
-                    document.getElementById('completate').textContent = '0';
-                    
                     return;
                 }
 
                 // Calcola le statistiche
-                let inValutazione = 0;
-                let inRecupero = 0;
-                let completate = 0;
-                
-                richieste.forEach(r => {
-                    const stato = (r.stato || 'nuova').toLowerCase();
-                    if (stato === 'nuova' || stato === 'in valutazione') {
-                        inValutazione++;
-                    } else if (stato === 'in recupero') {
-                        inRecupero++;
-                    } else if (stato === 'completata') {
-                        completate++;
-                    }
-                });
+                let inValutazione = richieste.filter(r => r.stato === 'nuova' || r.stato === 'in valutazione').length;
+                let inRecupero = richieste.filter(r => r.stato === 'in recupero').length;
+                let completate = richieste.filter(r => r.stato === 'completata').length;
 
                 // Aggiorna le statistiche
                 document.getElementById('totale-richieste').textContent = richieste.length;
@@ -378,14 +330,14 @@
                     htmlRighe += `
                         <tr>
                             <td>${formatDate(r.created_at)}</td>
-                            <td>${r.nome || r.name || '-'}</td>
-                            <td>${r.codice_fiscale || r.cf || r.fiscal_code || '-'}</td>
-                            <td>${r.telefono || r.phone || r.tel || '-'}</td>
-                            <td>${r.tipo_perdita || r.tipo || r.type || '-'}</td>
-                            <td>${formatEuro(r.importo_perso || r.importo || r.amount || 0)}</td>
-                            <td>${formatEuro(r.importo_recuperato || r.recuperato || r.recovered || 0)}</td>
+                            <td>${r.nome || '-'}</td>
+                            <td>${r.codice_fiscale || '-'}</td>
+                            <td>${r.telefono || '-'}</td>
+                            <td>${r.tipo_perdita || '-'}</td>
+                            <td>${formatEuro(r.importo_perso)}</td>
+                            <td>${formatEuro(r.importo_recuperato)}</td>
                             <td><span class="status ${statusClass}">${stato}</span></td>
-                            <td>${r.percentuale || r.commissione || 7}%</td>
+                            <td>${r.percentuale || 7}%</td>
                             <td>
                                 <button class="view-btn" onclick="alert('Dettaglio richiesta ID: ${r.id}')">👁️</button>
                             </td>
@@ -396,13 +348,13 @@
                 tbody.innerHTML = htmlRighe;
 
             } catch (error) {
-                console.error('Errore:', error);
+                console.error('❌ Errore:', error);
                 const tbody = document.getElementById('tabella-richieste');
                 tbody.innerHTML = `
                     <tr>
                         <td colspan="10" style="text-align: center; padding: 50px; color: #ff4757;">
                             ❌ Errore: ${error.message}<br>
-                            <small>Verifica che la tabella esista in Supabase</small>
+                            <small>Controlla che la tabella "pratiche" esista in Supabase</small>
                         </td>
                     </tr>
                 `;
