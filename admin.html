@@ -241,14 +241,22 @@
                     .select('*')
                     .order('id', { ascending: false });
 
-                if (error) throw error;
+                if (error) {
+                    console.error('❌ Errore database:', error);
+                    throw error;
+                }
 
                 console.log('✅ Trovate', data?.length || 0, 'richieste');
+                console.log('📋 Prima richiesta:', data?.[0]);
 
                 const tbody = document.getElementById('tabella-richieste');
                 
                 if (!data || data.length === 0) {
                     tbody.innerHTML = '<tr><td colspan="9" style="text-align: center;">📭 Nessuna richiesta trovata</td></tr>';
+                    document.getElementById('totale-richieste').textContent = '0';
+                    document.getElementById('in-valutazione').textContent = '0';
+                    document.getElementById('in-recupero').textContent = '0';
+                    document.getElementById('completate').textContent = '0';
                     return;
                 }
 
@@ -262,16 +270,19 @@
                     else if (stato.toLowerCase().includes('recupero')) inRec++;
                     else if (stato.toLowerCase() === 'completata') comp++;
 
+                    // Debug: stampa ogni riga
+                    console.log('Riga:', row);
+
                     html += `<tr>
                         <td><strong>#${row.id || '-'}</strong></td>
                         <td>${formatDate(row.created_at)}</td>
                         <td>${row.nome || '-'}</td>
                         <td>${row.email || '-'}</td>
                         <td>${row.telefono || '-'}</td>
-                        <td>${row.descrizione ? row.descrizione.substring(0, 30) + '...' : '-'}</td>
+                        <td>${row.descrizione ? (row.descrizione.length > 30 ? row.descrizione.substring(0,30) + '...' : row.descrizione) : '-'}</td>
                         <td>${formatEuro(row.importo_nu)}</td>
                         <td><span class="status ${getStatusClass(stato)}">${stato}</span></td>
-                        <td><button class="view-btn" onclick="alert('ID: ${row.id}\\nNome: ${row.nome}\\nEmail: ${row.email}\\nTelefono: ${row.telefono}\\nImporto: €${row.importo_nu}\\nStato: ${row.stato}')">👁️</button></td>
+                        <td><button class="view-btn" onclick='alert("ID: ${row.id}\\nNome: ${row.nome || ""}\\nEmail: ${row.email || ""}\\nTelefono: ${row.telefono || ""}\\nImporto: €${row.importo_nu || 0}\\nStato: ${row.stato || ""}")'>👁️</button></td>
                     </tr>`;
                 });
 
@@ -281,11 +292,14 @@
                 document.getElementById('in-recupero').textContent = inRec;
                 document.getElementById('completate').textContent = comp;
 
+                console.log('✅ Tabella aggiornata con', data.length, 'righe');
+
             } catch (error) {
                 console.error('❌ Errore:', error);
                 document.getElementById('tabella-richieste').innerHTML = 
-                    `<tr><td colspan="9" style="color:#ff4757; text-align:center;">
-                        ❌ Errore: ${error.message}
+                    `<tr><td colspan="9" style="color:#ff4757; text-align:center; padding:20px;">
+                        ❌ Errore: ${error.message}<br>
+                        <small>Premi F12 → Console per dettagli</small>
                     </td></tr>`;
             }
         })();
