@@ -273,9 +273,9 @@
         // Carica i dati da Supabase
         (async function() {
             try {
-                // CONFIGURAZIONE SUPABASE - GIA' INSERITE
+                // CONFIGURAZIONE SUPABASE - CON LA TUA CHIAVE CORRETTA
                 const SUPABASE_URL = 'https://zylxndpjbnejrfgyltly.supabase.co';
-                const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp5bHhuZHBqYm5lanJmZ3lsdGx5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDE4MDEwNzEsImV4cCI6MjA1NzM3NzA3MX0.PnB9fqKntgLrg7eGvNKRy5oKeO11yOfrUO7cbGg2aKk';
+                const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp5bHhuZHBqYm5lanJmZ3lsdGx5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3Mzg3NjAsImV4cCI6MjA4ODMxNDc2MH0.LBjmM5DGwGQJdb0OOD7c7CEmgNc3KAP3YPWJcpOxLnY';
 
                 // Importa e crea il client Supabase
                 const { createClient } = await import('https://esm.sh/@supabase/supabase-js@2');
@@ -283,14 +283,36 @@
 
                 console.log('✅ Connessione a Supabase riuscita');
 
-                // Recupera i dati dalla tabella
-                const { data: richieste, error } = await supabase
+                // PROVA A CERCARE LA TABELLA - Prova con nomi diversi
+                let richieste = [];
+                let error = null;
+                
+                // Prova con 'pratiche'
+                let result = await supabase
                     .from('pratiche')
                     .select('*')
                     .order('created_at', { ascending: false });
+                
+                if (result.error) {
+                    console.log('Tabella "pratiche" non trovata, provo con "richieste"');
+                    result = await supabase
+                        .from('richieste')
+                        .select('*')
+                        .order('created_at', { ascending: false });
+                }
+                
+                if (result.error) {
+                    console.log('Tabella "richieste" non trovata, provo con "upload"');
+                    result = await supabase
+                        .from('upload')
+                        .select('*')
+                        .order('created_at', { ascending: false });
+                }
+
+                richieste = result.data || [];
+                error = result.error;
 
                 if (error) {
-                    console.log('❌ Errore tabella "pratiche":', error);
                     throw error;
                 }
 
@@ -303,17 +325,23 @@
                     tbody.innerHTML = `
                         <tr>
                             <td colspan="10" style="text-align: center; padding: 50px; color: #999;">
-                                📭 Nessuna richiesta trovata nella tabella "pratiche"
+                                📭 Nessuna richiesta trovata nel database
                             </td>
                         </tr>
                     `;
+                    
+                    document.getElementById('totale-richieste').textContent = '0';
+                    document.getElementById('in-valutazione').textContent = '0';
+                    document.getElementById('in-recupero').textContent = '0';
+                    document.getElementById('completate').textContent = '0';
+                    
                     return;
                 }
 
                 // Calcola le statistiche
-                let inValutazione = richieste.filter(r => r.stato === 'nuova' || r.stato === 'in valutazione').length;
-                let inRecupero = richieste.filter(r => r.stato === 'in recupero').length;
-                let completate = richieste.filter(r => r.stato === 'completata').length;
+                let inValutazione = richieste.filter(r => (r.stato || '').toLowerCase() === 'nuova' || (r.stato || '').toLowerCase() === 'in valutazione').length;
+                let inRecupero = richieste.filter(r => (r.stato || '').toLowerCase() === 'in recupero').length;
+                let completate = richieste.filter(r => (r.stato || '').toLowerCase() === 'completata').length;
 
                 // Aggiorna le statistiche
                 document.getElementById('totale-richieste').textContent = richieste.length;
@@ -330,12 +358,12 @@
                     htmlRighe += `
                         <tr>
                             <td>${formatDate(r.created_at)}</td>
-                            <td>${r.nome || '-'}</td>
-                            <td>${r.codice_fiscale || '-'}</td>
-                            <td>${r.telefono || '-'}</td>
-                            <td>${r.tipo_perdita || '-'}</td>
-                            <td>${formatEuro(r.importo_perso)}</td>
-                            <td>${formatEuro(r.importo_recuperato)}</td>
+                            <td>${r.nome || r.name || '-'}</td>
+                            <td>${r.codice_fiscale || r.cf || '-'}</td>
+                            <td>${r.telefono || r.phone || '-'}</td>
+                            <td>${r.tipo_perdita || r.tipo || '-'}</td>
+                            <td>${formatEuro(r.importo_perso || r.importo || 0)}</td>
+                            <td>${formatEuro(r.importo_recuperato || r.recuperato || 0)}</td>
                             <td><span class="status ${statusClass}">${stato}</span></td>
                             <td>${r.percentuale || 7}%</td>
                             <td>
@@ -354,7 +382,7 @@
                     <tr>
                         <td colspan="10" style="text-align: center; padding: 50px; color: #ff4757;">
                             ❌ Errore: ${error.message}<br>
-                            <small>Controlla che la tabella "pratiche" esista in Supabase</small>
+                            <small>Verifica che la tabella esista in Supabase (Table Editor)</small>
                         </td>
                     </tr>
                 `;
