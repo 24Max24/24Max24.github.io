@@ -130,25 +130,10 @@
             display: inline-block;
         }
 
-        .status.nuova {
-            background: #e3f2fd;
-            color: #1976d2;
-        }
-
-        .status.in-valutazione {
-            background: #fff3e0;
-            color: #f57c00;
-        }
-
-        .status.in-recupero {
-            background: #e8f5e8;
-            color: #388e3c;
-        }
-
-        .status.completata {
-            background: #e8eaf6;
-            color: #3f51b5;
-        }
+        .status.nuova { background: #e3f2fd; color: #1976d2; }
+        .status.in-valutazione { background: #fff3e0; color: #f57c00; }
+        .status.in-recupero { background: #e8f5e8; color: #388e3c; }
+        .status.completata { background: #e8eaf6; color: #3f51b5; }
 
         .view-btn {
             background: none;
@@ -160,9 +145,7 @@
             transition: background 0.3s;
         }
 
-        .view-btn:hover {
-            background: #f0f0f0;
-        }
+        .view-btn:hover { background: #f0f0f0; }
 
         footer {
             text-align: center;
@@ -171,7 +154,6 @@
             font-size: 14px;
         }
     </style>
-    <!-- Import map per Supabase -->
     <script type="importmap">
         {
             "imports": {
@@ -188,167 +170,117 @@
         </header>
 
         <div class="stats-grid">
-            <div class="stat-card">
-                <h3>Totale Richieste</h3>
-                <div class="stat-number" id="totale-richieste">0</div>
-            </div>
-            <div class="stat-card">
-                <h3>In Valutazione</h3>
-                <div class="stat-number" id="in-valutazione">0</div>
-            </div>
-            <div class="stat-card">
-                <h3>In Recupero</h3>
-                <div class="stat-number" id="in-recupero">0</div>
-            </div>
-            <div class="stat-card">
-                <h3>Completate</h3>
-                <div class="stat-number" id="completate">0</div>
-            </div>
+            <div class="stat-card"><h3>Totale Richieste</h3><div class="stat-number" id="totale-richieste">0</div></div>
+            <div class="stat-card"><h3>In Valutazione</h3><div class="stat-number" id="in-valutazione">0</div></div>
+            <div class="stat-card"><h3>In Recupero</h3><div class="stat-number" id="in-recupero">0</div></div>
+            <div class="stat-card"><h3>Completate</h3><div class="stat-number" id="completate">0</div></div>
         </div>
 
         <div class="table-container">
             <table>
                 <thead>
                     <tr>
-                        <th>Data</th>
-                        <th>Nome</th>
-                        <th>CF</th>
-                        <th>Telefono</th>
-                        <th>Tipo</th>
-                        <th>Importo Perso</th>
-                        <th>Importo Rec.</th>
-                        <th>Stato</th>
-                        <th>%</th>
-                        <th>Azioni</th>
+                        <th>Data</th><th>Nome</th><th>CF</th><th>Telefono</th><th>Tipo</th>
+                        <th>Importo Perso</th><th>Importo Rec.</th><th>Stato</th><th>%</th><th>Azioni</th>
                     </tr>
                 </thead>
                 <tbody id="tabella-richieste">
-                    <tr>
-                        <td colspan="10" style="text-align: center; padding: 50px;">
-                            Caricamento dati...
-                        </td>
-                    </tr>
+                    <tr><td colspan="10" style="text-align: center; padding: 50px;">Caricamento dati...</td></tr>
                 </tbody>
             </table>
         </div>
-
-        <footer>
-            © 2026 Stockholm Claim Partners - Tutti i diritti riservati
-        </footer>
+        <footer>© 2026 Stockholm Claim Partners</footer>
     </div>
 
     <script>
-        // Funzione per il logout
-        function logout() {
-            if (confirm('Sei sicuro di voler uscire?')) {
-                window.location.href = 'index.html';
-            }
+        function logout() { if (confirm('Uscire?')) window.location.href = 'index.html'; }
+        function formatDate(d) { return d ? new Date(d).toLocaleDateString('it-IT') : ''; }
+        function formatEuro(a) { return a ? '€' + parseFloat(a).toLocaleString('it-IT') : '€0'; }
+        function getStatusClass(s) { 
+            if (!s) return 'nuova';
+            const stato = s.toLowerCase();
+            if (stato.includes('valutazione')) return 'in-valutazione';
+            if (stato.includes('recupero')) return 'in-recupero';
+            if (stato === 'completata') return 'completata';
+            return 'nuova';
         }
 
-        // Funzione per formattare la data
-        function formatDate(dateString) {
-            if (!dateString) return '';
-            const date = new Date(dateString);
-            return date.toLocaleDateString('it-IT');
-        }
-
-        // Funzione per formattare l'importo
-        function formatEuro(amount) {
-            if (!amount && amount !== 0) return '€0';
-            return '€' + parseFloat(amount).toLocaleString('it-IT');
-        }
-
-        // Funzione per ottenere la classe CSS dello stato
-        function getStatusClass(stato) {
-            if (!stato) return 'nuova';
-            switch(stato.toLowerCase()) {
-                case 'nuova': return 'nuova';
-                case 'in valutazione': return 'in-valutazione';
-                case 'in recupero': return 'in-recupero';
-                case 'completata': return 'completata';
-                default: return 'nuova';
-            }
-        }
-
-        // Carica i dati da Supabase
         (async function() {
             try {
-                // CONFIGURAZIONE SUPABASE - CORRETTA!
-                const SUPABASE_URL = 'https://zylxndpjbnejrfgyltly.supabase.co';  // lascia così
+                const SUPABASE_URL = 'https://zylxndpjbnejrfgyltly.supabase.co';
                 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp5bHhuZHBqYm5lanJmZ3lsdGx5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3Mzg3NjAsImV4cCI6MjA4ODMxNDc2MH0.LBjmM5DGwGQJdb0OOD7c7CEmgNc3KAP3YPWJcpOxLnY';
 
-                console.log('🔌 Tentativo connessione a:', SUPABASE_URL);
-
-                // Importa e crea il client Supabase
                 const { createClient } = await import('https://esm.sh/@supabase/supabase-js@2');
                 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-                console.log('✅ Client creato, provo a leggere dati...');
+                // LISTA DI NOMI DI TABELLE DA PROVARE
+                const possibiliTabelle = ['pratiche', 'richieste', 'finanziamenti', 'upload', 'pratica', 'richiesta', 'clienti', 'recuperi', 'casi'];
+                
+                let dati = null;
+                let tabellaTrovata = null;
+                let errore = null;
 
-                // Prova a leggere dalla tabella 'pratiche' (o qualunque nome)
-                const { data, error } = await supabase
-                    .from('pratiche')
-                    .select('*');
-
-                if (error) {
-                    console.error('❌ Errore specifico:', error);
-                    throw error;
+                for (const nomeTabella of possibiliTabelle) {
+                    console.log(`🔍 Provo tabella: ${nomeTabella}...`);
+                    const { data, error } = await supabase.from(nomeTabella).select('*');
+                    
+                    if (!error) {
+                        console.log(`✅ Trovata tabella: ${nomeTabella} con ${data?.length || 0} righe`);
+                        dati = data;
+                        tabellaTrovata = nomeTabella;
+                        break;
+                    } else {
+                        console.log(`❌ Tabella ${nomeTabella} non trovata:`, error.message);
+                    }
                 }
 
-                console.log('✅ Dati ricevuti:', data);
+                if (!tabellaTrovata) {
+                    throw new Error('Nessuna tabella trovata tra: ' + possibiliTabelle.join(', '));
+                }
 
-                // Mostra i dati nella tabella
                 const tbody = document.getElementById('tabella-richieste');
                 
-                if (!data || data.length === 0) {
-                    tbody.innerHTML = `
-                        <tr>
-                            <td colspan="10" style="text-align: center; padding: 50px; color: #999;">
-                                📭 Tabella "pratiche" vuota
-                            </td>
-                        </tr>
-                    `;
+                if (!dati || dati.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="10" style="text-align: center;">📭 Tabella "${tabellaTrovata}" vuota</td></tr>`;
                     return;
                 }
 
-                // Costruisci le righe della tabella
                 let html = '';
-                data.forEach(row => {
-                    html += `
-                        <tr>
-                            <td>${formatDate(row.created_at)}</td>
-                            <td>${row.nome || '-'}</td>
-                            <td>${row.codice_fiscale || '-'}</td>
-                            <td>${row.telefono || '-'}</td>
-                            <td>${row.tipo_perdita || '-'}</td>
-                            <td>${formatEuro(row.importo_perso)}</td>
-                            <td>${formatEuro(row.importo_recuperato)}</td>
-                            <td><span class="status ${getStatusClass(row.stato)}">${row.stato || 'nuova'}</span></td>
-                            <td>${row.percentuale || 7}%</td>
-                            <td><button class="view-btn" onclick="alert('ID: ${row.id}')">👁️</button></td>
-                        </tr>
-                    `;
+                let inVal = 0, inRec = 0, comp = 0;
+
+                dati.forEach(row => {
+                    const stato = row.stato || row.status || 'nuova';
+                    if (stato.toLowerCase().includes('valutazione')) inVal++;
+                    else if (stato.toLowerCase().includes('recupero')) inRec++;
+                    else if (stato.toLowerCase() === 'completata') comp++;
+
+                    html += `<tr>
+                        <td>${formatDate(row.created_at || row.data_creazione)}</td>
+                        <td>${row.nome || row.name || '-'}</td>
+                        <td>${row.codice_fiscale || row.cf || '-'}</td>
+                        <td>${row.telefono || row.phone || '-'}</td>
+                        <td>${row.tipo_perdita || row.tipo || row.tipo_perdita || '-'}</td>
+                        <td>${formatEuro(row.importo_perso || row.importo)}</td>
+                        <td>${formatEuro(row.importo_recuperato || row.recuperato)}</td>
+                        <td><span class="status ${getStatusClass(stato)}">${stato}</span></td>
+                        <td>${row.percentuale || 7}%</td>
+                        <td><button class="view-btn" onclick="alert('ID: ${row.id}')">👁️</button></td>
+                    </tr>`;
                 });
 
                 tbody.innerHTML = html;
-
-                // Aggiorna statistiche
-                document.getElementById('totale-richieste').textContent = data.length;
-                document.getElementById('in-valutazione').textContent = data.filter(r => (r.stato || '').toLowerCase().includes('valutazione')).length;
-                document.getElementById('in-recupero').textContent = data.filter(r => (r.stato || '').toLowerCase().includes('recupero')).length;
-                document.getElementById('completate').textContent = data.filter(r => (r.stato || '').toLowerCase() === 'completata').length;
+                document.getElementById('totale-richieste').textContent = dati.length;
+                document.getElementById('in-valutazione').textContent = inVal;
+                document.getElementById('in-recupero').textContent = inRec;
+                document.getElementById('completate').textContent = comp;
 
             } catch (error) {
-                console.error('❌ ERRORE:', error);
-                const tbody = document.getElementById('tabella-richieste');
-                tbody.innerHTML = `
-                    <tr>
-                        <td colspan="10" style="text-align: center; padding: 50px; color: #ff4757;">
-                            ❌ Errore: ${error.message}<br>
-                            <small>Dettagli nella console (F12)</small>
-                        </td>
-                    </tr>
-                `;
+                console.error('❌', error);
+                document.getElementById('tabella-richieste').innerHTML = 
+                    `<tr><td colspan="10" style="color:#ff4757; text-align:center;">
+                        ❌ Errore: ${error.message}<br>
+                        <small>Premi F12 → Console per dettagli</small>
+                    </td></tr>`;
             }
         })();
     </script>
