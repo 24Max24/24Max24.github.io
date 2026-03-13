@@ -1,393 +1,65 @@
 <!DOCTYPE html>
-<html lang="it">
+<html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>📊 Stockholm Claim Partners - Admin Panel</title>
+    <title>Test Admin</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-        }
-
-        body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        header {
-            background: white;
-            padding: 20px 30px;
-            border-radius: 15px;
-            margin-bottom: 25px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        h1 {
-            color: #333;
-            font-size: 24px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .logout-btn {
-            background: #ff4757;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: background 0.3s;
-        }
-
-        .logout-btn:hover {
-            background: #ff6b81;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .stat-card {
-            background: white;
-            padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-            transition: transform 0.3s;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .stat-card h3 {
-            color: #666;
-            font-size: 14px;
-            font-weight: 500;
-            margin-bottom: 10px;
-        }
-
-        .stat-number {
-            font-size: 32px;
-            font-weight: bold;
-            color: #333;
-        }
-
-        .table-container {
-            background: white;
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-            overflow-x: auto;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        th {
-            text-align: left;
-            padding: 15px 10px;
-            background: #f8f9fa;
-            color: #333;
-            font-weight: 600;
-            font-size: 14px;
-        }
-
-        td {
-            padding: 15px 10px;
-            border-bottom: 1px solid #eee;
-            color: #555;
-            font-size: 14px;
-        }
-
-        tr:hover {
-            background: #f8f9fa;
-        }
-
-        .status {
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 500;
-            display: inline-block;
-        }
-
-        .status.in_valutazioni { background: #fff3e0; color: #f57c00; }
-        .status.in-recupero { background: #e8f5e8; color: #388e3c; }
-        .status.completata { background: #e8eaf6; color: #3f51b5; }
-
-        .view-btn {
-            background: none;
-            border: none;
-            font-size: 18px;
-            cursor: pointer;
-            padding: 5px 10px;
-            border-radius: 5px;
-            transition: background 0.3s;
-        }
-
-        .view-btn:hover { background: #f0f0f0; }
-
-        footer {
-            text-align: center;
-            margin-top: 30px;
-            color: white;
-            font-size: 14px;
-        }
-
-        .login-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-
-        .login-box {
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-            width: 90%;
-            max-width: 400px;
-        }
-
-        .login-box h2 {
-            color: #333;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        .login-box input {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 15px;
-            border: 2px solid #eee;
-            border-radius: 8px;
-            font-size: 16px;
-        }
-
-        .login-box button {
-            width: 100%;
-            padding: 12px;
-            background: #667eea;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-
-        .login-box button:hover {
-            background: #764ba2;
-        }
-
-        .error-message {
-            color: #ff4757;
-            margin-top: 10px;
-            text-align: center;
-        }
-
-        .hidden {
-            display: none;
-        }
+        body { font-family: Arial; padding: 20px; background: #f0f2f5; }
+        table { border-collapse: collapse; width: 100%; background: white; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background: #667eea; color: white; }
     </style>
     <script type="importmap">
-        {
-            "imports": {
-                "@supabase/supabase-js": "https://esm.sh/@supabase/supabase-js@2"
-            }
-        }
+        { "imports": { "@supabase/supabase-js": "https://esm.sh/@supabase/supabase-js@2" } }
     </script>
 </head>
 <body>
-    <!-- Login Modal -->
-    <div id="loginModal" class="login-modal">
-        <div class="login-box">
-            <h2>🔐 Accesso Admin</h2>
-            <input type="password" id="passwordInput" placeholder="Password" onkeypress="if(event.key==='Enter') checkPassword()">
-            <button onclick="checkPassword()">Accedi</button>
-            <div id="loginError" class="error-message"></div>
-        </div>
-    </div>
+    <h2>📋 Richieste dal database</h2>
+    <div id="messaggio">Caricamento...</div>
+    <table id="tabella" style="display:none">
+        <thead>
+            <tr><th>ID</th><th>Nome</th><th>Email</th><th>Telefono</th><th>Importo</th><th>Stato</th></tr>
+        </thead>
+        <tbody id="corpo-tabella"></tbody>
+    </table>
 
-    <!-- Admin Content -->
-    <div id="adminContent" class="container hidden">
-        <header>
-            <h1>📊 Stockholm Claim Partners - Admin Panel</h1>
-            <button class="logout-btn" onclick="logout()">Esci</button>
-        </header>
+    <script type="module">
+        import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
-        <div class="stats-grid">
-            <div class="stat-card"><h3>Totale Richieste</h3><div class="stat-number" id="totale-richieste">0</div></div>
-            <div class="stat-card"><h3>In Valutazione</h3><div class="stat-number" id="in-valutazione">0</div></div>
-            <div class="stat-card"><h3>In Recupero</h3><div class="stat-number" id="in-recupero">0</div></div>
-            <div class="stat-card"><h3>Completate</h3><div class="stat-number" id="completate">0</div></div>
-        </div>
+        const SUPABASE_URL = 'https://zylxndpjbnejrfgyltly.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp5bHhuZHBqYm5lanJmZ3lsdGx5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3Mzg3NjAsImV4cCI6MjA4ODMxNDc2MH0.LBjmM5DGwGQJdb0OOD7c7CEmgNc3KAP3YPWJcpOxLnY';
 
-        <div class="table-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Data</th>
-                        <th>Nome</th>
-                        <th>Email</th>
-                        <th>Telefono</th>
-                        <th>Descrizione</th>
-                        <th>Importo (€)</th>
-                        <th>Stato</th>
-                        <th>Azioni</th>
-                    </tr>
-                </thead>
-                <tbody id="tabella-richieste">
-                    <tr><td colspan="9" style="text-align: center; padding: 50px;">🔄 Caricamento dati...</td></tr>
-                </tbody>
-            </table>
-        </div>
-        <footer>© 2026 Stockholm Claim Partners - Tutti i diritti riservati</footer>
-    </div>
+        const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    <script>
-        const ADMIN_PASSWORD = 'stockholm2026';
-
-        function checkPassword() {
-            const pwd = document.getElementById('passwordInput').value;
-            if (pwd === ADMIN_PASSWORD) {
-                document.getElementById('loginModal').classList.add('hidden');
-                document.getElementById('adminContent').classList.remove('hidden');
-                caricaDati();
-            } else {
-                document.getElementById('loginError').textContent = '❌ Password errata';
-            }
-        }
-
-        function logout() {
-            if (confirm('Sei sicuro di voler uscire?')) {
-                document.getElementById('adminContent').classList.add('hidden');
-                document.getElementById('loginModal').classList.remove('hidden');
-                document.getElementById('passwordInput').value = '';
-                document.getElementById('loginError').textContent = '';
-            }
-        }
-
-        function formatDate(dateString) {
-            if (!dateString) return '-';
+        async function carica() {
             try {
-                const date = new Date(dateString);
-                return date.toLocaleDateString('it-IT');
-            } catch {
-                return '-';
+                const { data, error } = await supabase.from('richieste').select('*');
+                if (error) throw error;
+
+                document.getElementById('messaggio').textContent = `Trovate ${data.length} richieste`;
+
+                if (data.length > 0) {
+                    const tbody = document.getElementById('corpo-tabella');
+                    data.forEach(row => {
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
+                            <td>${row.id || ''}</td>
+                            <td>${row.nome || ''}</td>
+                            <td>${row.email || ''}</td>
+                            <td>${row.telefono || ''}</td>
+                            <td>€${row.importo_nu || 0}</td>
+                            <td>${row.stato || ''}</td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+                    document.getElementById('tabella').style.display = 'table';
+                }
+            } catch (e) {
+                document.getElementById('messaggio').textContent = 'Errore: ' + e.message;
             }
         }
 
-        function formatEuro(amount) {
-            if (!amount && amount !== 0) return '€0';
-            return '€' + parseFloat(amount).toLocaleString('it-IT');
-        }
-
-        function getStatusClass(stato) {
-            if (!stato) return 'in_valutazioni';
-            return 'in_valutazioni'; // Per ora tutte le voci hanno questo stato
-        }
-
-        async function caricaDati() {
-            try {
-                console.log('🚀 Avvio caricamento...');
-                
-                const SUPABASE_URL = 'https://zylxndpjbnejrfgyltly.supabase.co';
-                const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp5bHhuZHBqYm5lanJmZ3lsdGx5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3Mzg3NjAsImV4cCI6MjA4ODMxNDc2MH0.LBjmM5DGwGQJdb0OOD7c7CEmgNc3KAP3YPWJcpOxLnY';
-
-                const { createClient } = await import('https://esm.sh/@supabase/supabase-js@2');
-                const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-                console.log('📡 Cerco tabella richieste...');
-                
-                const { data, error } = await supabase
-                    .from('richieste')
-                    .select('*')
-                    .order('id', { ascending: false });
-
-                if (error) {
-                    console.error('❌ Errore database:', error);
-                    throw error;
-                }
-
-                console.log('✅ Trovate', data?.length || 0, 'richieste');
-                console.log('📋 Prima riga:', data?.[0]);
-
-                const tbody = document.getElementById('tabella-richieste');
-                
-                if (!data || data.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="9" style="text-align: center;">📭 Nessuna richiesta trovata</td></tr>';
-                    document.getElementById('totale-richieste').textContent = '0';
-                    document.getElementById('in-valutazione').textContent = '0';
-                    document.getElementById('in-recupero').textContent = '0';
-                    document.getElementById('completate').textContent = '0';
-                    return;
-                }
-
-                // Calcola statistiche
-                let inVal = data.filter(r => r.stato === 'in_valutazioni').length;
-                let inRec = 0; // Nessuna in recupero al momento
-                let comp = 0;  // Nessuna completata al momento
-
-                let html = '';
-                data.forEach(row => {
-                    html += `<tr>
-                        <td><strong>#${row.id || '-'}</strong></td>
-                        <td>${formatDate(row.created_at)}</td>
-                        <td>${row.nome || '-'}</td>
-                        <td>${row.email || '-'}</td>
-                        <td>${row.telefono || '-'}</td>
-                        <td>${row.descrizione ? (row.descrizione.length > 30 ? row.descrizione.substring(0,30) + '...' : row.descrizione) : '-'}</td>
-                        <td>${formatEuro(row.importo_nu)}</td>
-                        <td><span class="status in_valutazioni">${row.stato || 'in_valutazioni'}</span></td>
-                        <td><button class="view-btn" onclick='alert("ID: ${row.id}\\nNome: ${row.nome || "-"}\\nEmail: ${row.email || "-"}\\nTelefono: ${row.telefono || "-"}\\nImporto: €${row.importo_nu || 0}\\nStato: ${row.stato || "in_valutazioni"}")'>👁️</button></td>
-                    </tr>`;
-                });
-
-                tbody.innerHTML = html;
-                
-                document.getElementById('totale-richieste').textContent = data.length;
-                document.getElementById('in-valutazione').textContent = inVal;
-                document.getElementById('in-recupero').textContent = inRec;
-                document.getElementById('completate').textContent = comp;
-
-                console.log('✅ Tabella aggiornata con', data.length, 'richieste');
-
-            } catch (error) {
-                console.error('❌ Errore:', error);
-                document.getElementById('tabella-richieste').innerHTML = 
-                    `<tr><td colspan="9" style="color:#ff4757; text-align:center; padding:20px;">
-                        ❌ Errore: ${error.message}<br>
-                        <small>Premi F12 → Console per dettagli</small>
-                    </td></tr>`;
-            }
-        }
+        carica();
     </script>
 </body>
 </html>
