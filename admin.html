@@ -89,12 +89,6 @@
             color: #333;
         }
 
-        .stat-number small {
-            font-size: 14px;
-            color: #666;
-            font-weight: normal;
-        }
-
         .table-container {
             background: white;
             border-radius: 15px;
@@ -279,24 +273,53 @@
         // Carica i dati da Supabase
         (async function() {
             try {
-                // CONFIGURAZIONE SUPABASE - SOSTITUISCI CON I TUOI VALORI!
-                const SUPABASE_URL = 'https://zylxndpjbnejrfgyltly.supabase.co'; // <-- INSERISCI QUI LA TUA URL
-                const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp5bHhuZHBqYm5lanJmZ3lsdGx5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3Mzg3NjAsImV4cCI6MjA4ODMxNDc2MH0.LBjmM5DGwGQJdb0OOD7c7CEmgNc3KAP3YPWJcpOxLnY'; // <-- INSERISCI QUI LA TUA CHIAVE
-                
-                // Verifica che le credenziali siano state inserite
-                if (SUPABASE_URL === 'https://zylxndpjbnejrfgyltly.supabase.co' || SUPABASE_ANON_KEY === 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp5bHhuZHBqYm5lanJmZ3lsdGx5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3Mzg3NjAsImV4cCI6MjA4ODMxNDc2MH0.LBjmM5DGwGQJdb0OOD7c7CEmgNc3KAP3YPWJcpOxLnY') {
-                    throw new Error('Inserisci le credenziali di Supabase nel codice!');
-                }
+                // CONFIGURAZIONE SUPABASE - INSERITE LE TUE CREDENZIALI
+                const SUPABASE_URL = 'https://zylxndpjbnejrfgyltly.supabase.co';
+                const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp5bHhuZHBqYm5lanJmZ3lsdGx5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDE4MDEwNzEsImV4cCI6MjA1NzM3NzA3MX0.PnB9fqKntgLrg7eGvNKRy5oKeO11yOfrUO7cbGg2aKk';
 
                 // Importa e crea il client Supabase
                 const { createClient } = await import('https://esm.sh/@supabase/supabase-js@2');
                 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-                // Recupera i dati dalla tabella 'pratiche' (cambia il nome se necessario)
-                const { data: richieste, error } = await supabase
-                    .from('pratiche') // <-- VERIFICA CHE QUESTO SIA IL NOME ESATTO DELLA TUA TABELLA
+                // Recupera i dati dalla tabella - PROVA CON PIÙ NOMI POSSIBILI
+                let richieste = [];
+                let error = null;
+                
+                // Prova con 'pratiche'
+                let result = await supabase
+                    .from('pratiche')
                     .select('*')
                     .order('created_at', { ascending: false });
+                
+                if (result.error) {
+                    console.log('Tabella "pratiche" non trovata, provo con "richieste"');
+                    // Prova con 'richieste'
+                    result = await supabase
+                        .from('richieste')
+                        .select('*')
+                        .order('created_at', { ascending: false });
+                }
+                
+                if (result.error) {
+                    console.log('Tabella "richieste" non trovata, provo con "upload"');
+                    // Prova con 'upload'
+                    result = await supabase
+                        .from('upload')
+                        .select('*')
+                        .order('created_at', { ascending: false });
+                }
+                
+                if (result.error) {
+                    console.log('Tabella "upload" non trovata, provo con "finanziamenti"');
+                    // Prova con 'finanziamenti'
+                    result = await supabase
+                        .from('finanziamenti')
+                        .select('*')
+                        .order('created_at', { ascending: false });
+                }
+
+                richieste = result.data || [];
+                error = result.error;
 
                 if (error) {
                     throw error;
@@ -310,7 +333,7 @@
                     tbody.innerHTML = `
                         <tr>
                             <td colspan="10" style="text-align: center; padding: 50px; color: #999;">
-                                📭 Nessuna richiesta trovata
+                                📭 Nessuna richiesta trovata nel database
                             </td>
                         </tr>
                     `;
@@ -355,14 +378,14 @@
                     htmlRighe += `
                         <tr>
                             <td>${formatDate(r.created_at)}</td>
-                            <td>${r.nome || '-'}</td>
-                            <td>${r.codice_fiscale || '-'}</td>
-                            <td>${r.telefono || '-'}</td>
-                            <td>${r.tipo_perdita || '-'}</td>
-                            <td>${formatEuro(r.importo_perso)}</td>
-                            <td>${formatEuro(r.importo_recuperato)}</td>
+                            <td>${r.nome || r.name || '-'}</td>
+                            <td>${r.codice_fiscale || r.cf || r.fiscal_code || '-'}</td>
+                            <td>${r.telefono || r.phone || r.tel || '-'}</td>
+                            <td>${r.tipo_perdita || r.tipo || r.type || '-'}</td>
+                            <td>${formatEuro(r.importo_perso || r.importo || r.amount || 0)}</td>
+                            <td>${formatEuro(r.importo_recuperato || r.recuperato || r.recovered || 0)}</td>
                             <td><span class="status ${statusClass}">${stato}</span></td>
-                            <td>${r.percentuale || 7}%</td>
+                            <td>${r.percentuale || r.commissione || 7}%</td>
                             <td>
                                 <button class="view-btn" onclick="alert('Dettaglio richiesta ID: ${r.id}')">👁️</button>
                             </td>
@@ -379,7 +402,7 @@
                     <tr>
                         <td colspan="10" style="text-align: center; padding: 50px; color: #ff4757;">
                             ❌ Errore: ${error.message}<br>
-                            <small>Verifica le credenziali Supabase e la connessione</small>
+                            <small>Verifica che la tabella esista in Supabase</small>
                         </td>
                     </tr>
                 `;
