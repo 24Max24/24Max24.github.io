@@ -130,10 +130,10 @@
             display: inline-block;
         }
 
-        .status.nuova { background: #e3f2fd; color: #1976d2; }
         .status.in-valutazione { background: #fff3e0; color: #f57c00; }
         .status.in-recupero { background: #e8f5e8; color: #388e3c; }
         .status.completata { background: #e8eaf6; color: #3f51b5; }
+        .status.nuova { background: #e3f2fd; color: #1976d2; }
 
         .view-btn {
             background: none;
@@ -180,12 +180,19 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Data</th><th>Nome</th><th>CF</th><th>Telefono</th><th>Tipo</th>
-                        <th>Importo Perso</th><th>Importo Rec.</th><th>Stato</th><th>%</th><th>Azioni</th>
+                        <th>ID</th>
+                        <th>Data</th>
+                        <th>Nome</th>
+                        <th>Email</th>
+                        <th>Telefono</th>
+                        <th>Descrizione</th>
+                        <th>Importo</th>
+                        <th>Stato</th>
+                        <th>Azioni</th>
                     </tr>
                 </thead>
                 <tbody id="tabella-richieste">
-                    <tr><td colspan="10" style="text-align: center; padding: 50px;">Caricamento dati...</td></tr>
+                    <tr><td colspan="9" style="text-align: center; padding: 50px;">Caricamento dati...</td></tr>
                 </tbody>
             </table>
         </div>
@@ -194,14 +201,28 @@
 
     <script>
         function logout() { if (confirm('Sei sicuro di voler uscire?')) window.location.href = 'index.html'; }
-        function formatDate(d) { return d ? new Date(d).toLocaleDateString('it-IT') : ''; }
-        function formatEuro(a) { return a ? '€' + parseFloat(a).toLocaleString('it-IT') : '€0'; }
-        function getStatusClass(s) { 
-            if (!s) return 'nuova';
-            const stato = s.toLowerCase();
-            if (stato.includes('valutazione')) return 'in-valutazione';
-            if (stato.includes('recupero')) return 'in-recupero';
-            if (stato === 'completata') return 'completata';
+        
+        function formatDate(dateString) { 
+            if (!dateString) return '-';
+            try {
+                const date = new Date(dateString);
+                return date.toLocaleDateString('it-IT');
+            } catch {
+                return '-';
+            }
+        }
+        
+        function formatEuro(amount) { 
+            if (!amount && amount !== 0) return '€0';
+            return '€' + parseFloat(amount).toLocaleString('it-IT');
+        }
+        
+        function getStatusClass(stato) { 
+            if (!stato) return 'nuova';
+            const s = stato.toLowerCase();
+            if (s.includes('valutazione')) return 'in-valutazione';
+            if (s.includes('recupero')) return 'in-recupero';
+            if (s === 'completata') return 'completata';
             return 'nuova';
         }
 
@@ -218,23 +239,20 @@
                 const { data, error } = await supabase
                     .from('richieste')
                     .select('*')
-                    .order('created_at', { ascending: false });
+                    .order('id', { ascending: false });
 
-                if (error) {
-                    throw error;
-                }
+                if (error) throw error;
 
                 console.log('✅ Trovate', data?.length || 0, 'richieste');
-                console.log('📋 Prima riga:', data?.[0]); // Questo mostrerà i nomi esatti delle colonne!
 
                 const tbody = document.getElementById('tabella-richieste');
                 
                 if (!data || data.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="10" style="text-align: center;">📭 Nessuna richiesta trovata</td></tr>';
+                    tbody.innerHTML = '<tr><td colspan="9" style="text-align: center;">📭 Nessuna richiesta trovata</td></tr>';
                     return;
                 }
 
-                // Statistiche
+                // Calcola statistiche
                 let inVal = 0, inRec = 0, comp = 0;
                 let html = '';
 
@@ -245,16 +263,15 @@
                     else if (stato.toLowerCase() === 'completata') comp++;
 
                     html += `<tr>
+                        <td><strong>#${row.id || '-'}</strong></td>
                         <td>${formatDate(row.created_at)}</td>
                         <td>${row.nome || '-'}</td>
-                        <td>${row.codice_fiscale || '-'}</td>
+                        <td>${row.email || '-'}</td>
                         <td>${row.telefono || '-'}</td>
-                        <td>${row.tipo_perdita || '-'}</td>
-                        <td>${formatEuro(row.importo_perso)}</td>
-                        <td>${formatEuro(row.importo_recuperato)}</td>
+                        <td>${row.descrizione ? row.descrizione.substring(0, 30) + '...' : '-'}</td>
+                        <td>${formatEuro(row.importo_nu)}</td>
                         <td><span class="status ${getStatusClass(stato)}">${stato}</span></td>
-                        <td>${row.percentuale || 7}%</td>
-                        <td><button class="view-btn" onclick="alert('ID: ${row.id}')">👁️</button></td>
+                        <td><button class="view-btn" onclick="alert('ID: ${row.id}\\nNome: ${row.nome}\\nEmail: ${row.email}\\nTelefono: ${row.telefono}\\nImporto: €${row.importo_nu}\\nStato: ${row.stato}')">👁️</button></td>
                     </tr>`;
                 });
 
@@ -267,9 +284,8 @@
             } catch (error) {
                 console.error('❌ Errore:', error);
                 document.getElementById('tabella-richieste').innerHTML = 
-                    `<tr><td colspan="10" style="color:#ff4757; text-align:center;">
-                        ❌ Errore: ${error.message}<br>
-                        <small>Premi F12 → Console per dettagli</small>
+                    `<tr><td colspan="9" style="color:#ff4757; text-align:center;">
+                        ❌ Errore: ${error.message}
                     </td></tr>`;
             }
         })();
