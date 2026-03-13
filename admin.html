@@ -153,9 +153,6 @@
             color: white;
             font-size: 14px;
         }
-
-        /* DEBUG: evidenzia la tabella per vedere se esiste */
-        #tabella-richieste { border: 2px solid red; }
     </style>
     <script type="importmap">
         {
@@ -252,10 +249,8 @@
                 }
 
                 console.log('✅ Trovate', data?.length || 0, 'richieste');
-                console.log('📋 Prima richiesta:', data?.[0]);
-
+                
                 const tbody = document.getElementById('tabella-richieste');
-                console.log('📌 Tbody element:', tbody);
                 
                 if (!data || data.length === 0) {
                     tbody.innerHTML = '<tr><td colspan="9" style="text-align: center;">📭 Nessuna richiesta trovata</td></tr>';
@@ -289,17 +284,14 @@
                     </tr>`;
                 });
 
-                console.log('📝 HTML generato:', html.substring(0, 200) + '...');
-                
                 tbody.innerHTML = html;
-                console.log('✅ Tabella aggiornata');
-
+                
                 document.getElementById('totale-richieste').textContent = data.length;
                 document.getElementById('in-valutazione').textContent = inVal;
                 document.getElementById('in-recupero').textContent = inRec;
                 document.getElementById('completate').textContent = comp;
 
-                console.log('✅ Statistiche aggiornate');
+                console.log('✅ Tabella aggiornata con', data.length, 'richieste');
 
             } catch (error) {
                 console.error('❌ Errore:', error);
