@@ -189,11 +189,11 @@
                 </tbody>
             </table>
         </div>
-        <footer>© 2026 Stockholm Claim Partners</footer>
+        <footer>© 2026 Stockholm Claim Partners - Tutti i diritti riservati</footer>
     </div>
 
     <script>
-        function logout() { if (confirm('Uscire?')) window.location.href = 'index.html'; }
+        function logout() { if (confirm('Sei sicuro di voler uscire?')) window.location.href = 'index.html'; }
         function formatDate(d) { return d ? new Date(d).toLocaleDateString('it-IT') : ''; }
         function formatEuro(a) { return a ? '€' + parseFloat(a).toLocaleString('it-IT') : '€0'; }
         function getStatusClass(s) { 
@@ -213,55 +213,45 @@
                 const { createClient } = await import('https://esm.sh/@supabase/supabase-js@2');
                 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-                // LISTA DI NOMI DI TABELLE DA PROVARE
-                const possibiliTabelle = ['pratiche', 'richieste', 'finanziamenti', 'upload', 'pratica', 'richiesta', 'clienti', 'recuperi', 'casi'];
+                console.log('🔍 Cerco tabella richieste...');
                 
-                let dati = null;
-                let tabellaTrovata = null;
-                let errore = null;
+                const { data, error } = await supabase
+                    .from('richieste')
+                    .select('*')
+                    .order('created_at', { ascending: false });
 
-                for (const nomeTabella of possibiliTabelle) {
-                    console.log(`🔍 Provo tabella: ${nomeTabella}...`);
-                    const { data, error } = await supabase.from(nomeTabella).select('*');
-                    
-                    if (!error) {
-                        console.log(`✅ Trovata tabella: ${nomeTabella} con ${data?.length || 0} righe`);
-                        dati = data;
-                        tabellaTrovata = nomeTabella;
-                        break;
-                    } else {
-                        console.log(`❌ Tabella ${nomeTabella} non trovata:`, error.message);
-                    }
+                if (error) {
+                    throw error;
                 }
 
-                if (!tabellaTrovata) {
-                    throw new Error('Nessuna tabella trovata tra: ' + possibiliTabelle.join(', '));
-                }
+                console.log('✅ Trovate', data?.length || 0, 'richieste');
+                console.log('📋 Prima riga:', data?.[0]); // Questo mostrerà i nomi esatti delle colonne!
 
                 const tbody = document.getElementById('tabella-richieste');
                 
-                if (!dati || dati.length === 0) {
-                    tbody.innerHTML = `<tr><td colspan="10" style="text-align: center;">📭 Tabella "${tabellaTrovata}" vuota</td></tr>`;
+                if (!data || data.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="10" style="text-align: center;">📭 Nessuna richiesta trovata</td></tr>';
                     return;
                 }
 
-                let html = '';
+                // Statistiche
                 let inVal = 0, inRec = 0, comp = 0;
+                let html = '';
 
-                dati.forEach(row => {
-                    const stato = row.stato || row.status || 'nuova';
+                data.forEach(row => {
+                    const stato = row.stato || 'nuova';
                     if (stato.toLowerCase().includes('valutazione')) inVal++;
                     else if (stato.toLowerCase().includes('recupero')) inRec++;
                     else if (stato.toLowerCase() === 'completata') comp++;
 
                     html += `<tr>
-                        <td>${formatDate(row.created_at || row.data_creazione)}</td>
-                        <td>${row.nome || row.name || '-'}</td>
-                        <td>${row.codice_fiscale || row.cf || '-'}</td>
-                        <td>${row.telefono || row.phone || '-'}</td>
-                        <td>${row.tipo_perdita || row.tipo || row.tipo_perdita || '-'}</td>
-                        <td>${formatEuro(row.importo_perso || row.importo)}</td>
-                        <td>${formatEuro(row.importo_recuperato || row.recuperato)}</td>
+                        <td>${formatDate(row.created_at)}</td>
+                        <td>${row.nome || '-'}</td>
+                        <td>${row.codice_fiscale || '-'}</td>
+                        <td>${row.telefono || '-'}</td>
+                        <td>${row.tipo_perdita || '-'}</td>
+                        <td>${formatEuro(row.importo_perso)}</td>
+                        <td>${formatEuro(row.importo_recuperato)}</td>
                         <td><span class="status ${getStatusClass(stato)}">${stato}</span></td>
                         <td>${row.percentuale || 7}%</td>
                         <td><button class="view-btn" onclick="alert('ID: ${row.id}')">👁️</button></td>
@@ -269,13 +259,13 @@
                 });
 
                 tbody.innerHTML = html;
-                document.getElementById('totale-richieste').textContent = dati.length;
+                document.getElementById('totale-richieste').textContent = data.length;
                 document.getElementById('in-valutazione').textContent = inVal;
                 document.getElementById('in-recupero').textContent = inRec;
                 document.getElementById('completate').textContent = comp;
 
             } catch (error) {
-                console.error('❌', error);
+                console.error('❌ Errore:', error);
                 document.getElementById('tabella-richieste').innerHTML = 
                     `<tr><td colspan="10" style="color:#ff4757; text-align:center;">
                         ❌ Errore: ${error.message}<br>
