@@ -153,6 +153,9 @@
             color: white;
             font-size: 14px;
         }
+
+        /* DEBUG: evidenzia la tabella per vedere se esiste */
+        #tabella-richieste { border: 2px solid red; }
     </style>
     <script type="importmap">
         {
@@ -192,7 +195,7 @@
                     </tr>
                 </thead>
                 <tbody id="tabella-richieste">
-                    <tr><td colspan="9" style="text-align: center; padding: 50px;">Caricamento dati...</td></tr>
+                    <tr><td colspan="9" style="text-align: center; padding: 50px;">🔄 Caricamento dati...</td></tr>
                 </tbody>
             </table>
         </div>
@@ -228,6 +231,8 @@
 
         (async function() {
             try {
+                console.log('🔍 Avvio caricamento...');
+                
                 const SUPABASE_URL = 'https://zylxndpjbnejrfgyltly.supabase.co';
                 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp5bHhuZHBqYm5lanJmZ3lsdGx5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3Mzg3NjAsImV4cCI6MjA4ODMxNDc2MH0.LBjmM5DGwGQJdb0OOD7c7CEmgNc3KAP3YPWJcpOxLnY';
 
@@ -250,6 +255,7 @@
                 console.log('📋 Prima richiesta:', data?.[0]);
 
                 const tbody = document.getElementById('tabella-richieste');
+                console.log('📌 Tbody element:', tbody);
                 
                 if (!data || data.length === 0) {
                     tbody.innerHTML = '<tr><td colspan="9" style="text-align: center;">📭 Nessuna richiesta trovata</td></tr>';
@@ -270,9 +276,6 @@
                     else if (stato.toLowerCase().includes('recupero')) inRec++;
                     else if (stato.toLowerCase() === 'completata') comp++;
 
-                    // Debug: stampa ogni riga
-                    console.log('Riga:', row);
-
                     html += `<tr>
                         <td><strong>#${row.id || '-'}</strong></td>
                         <td>${formatDate(row.created_at)}</td>
@@ -286,13 +289,17 @@
                     </tr>`;
                 });
 
+                console.log('📝 HTML generato:', html.substring(0, 200) + '...');
+                
                 tbody.innerHTML = html;
+                console.log('✅ Tabella aggiornata');
+
                 document.getElementById('totale-richieste').textContent = data.length;
                 document.getElementById('in-valutazione').textContent = inVal;
                 document.getElementById('in-recupero').textContent = inRec;
                 document.getElementById('completate').textContent = comp;
 
-                console.log('✅ Tabella aggiornata con', data.length, 'righe');
+                console.log('✅ Statistiche aggiornate');
 
             } catch (error) {
                 console.error('❌ Errore:', error);
