@@ -273,116 +273,79 @@
         // Carica i dati da Supabase
         (async function() {
             try {
-                // CONFIGURAZIONE SUPABASE - CON LA TUA CHIAVE CORRETTA
-                const SUPABASE_URL = 'https://zylxndpjbnejrfgyltly.supabase.co';
+                // CONFIGURAZIONE SUPABASE - CORRETTA!
+                const SUPABASE_URL = 'https://zylxndpjbnejrfgyltly.supabase.co';  // lascia così
                 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp5bHhuZHBqYm5lanJmZ3lsdGx5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3Mzg3NjAsImV4cCI6MjA4ODMxNDc2MH0.LBjmM5DGwGQJdb0OOD7c7CEmgNc3KAP3YPWJcpOxLnY';
+
+                console.log('🔌 Tentativo connessione a:', SUPABASE_URL);
 
                 // Importa e crea il client Supabase
                 const { createClient } = await import('https://esm.sh/@supabase/supabase-js@2');
                 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-                console.log('✅ Connessione a Supabase riuscita');
+                console.log('✅ Client creato, provo a leggere dati...');
 
-                // PROVA A CERCARE LA TABELLA - Prova con nomi diversi
-                let richieste = [];
-                let error = null;
-                
-                // Prova con 'pratiche'
-                let result = await supabase
+                // Prova a leggere dalla tabella 'pratiche' (o qualunque nome)
+                const { data, error } = await supabase
                     .from('pratiche')
-                    .select('*')
-                    .order('created_at', { ascending: false });
-                
-                if (result.error) {
-                    console.log('Tabella "pratiche" non trovata, provo con "richieste"');
-                    result = await supabase
-                        .from('richieste')
-                        .select('*')
-                        .order('created_at', { ascending: false });
-                }
-                
-                if (result.error) {
-                    console.log('Tabella "richieste" non trovata, provo con "upload"');
-                    result = await supabase
-                        .from('upload')
-                        .select('*')
-                        .order('created_at', { ascending: false });
-                }
-
-                richieste = result.data || [];
-                error = result.error;
+                    .select('*');
 
                 if (error) {
+                    console.error('❌ Errore specifico:', error);
                     throw error;
                 }
 
-                console.log('📊 Dati ricevuti:', richieste);
+                console.log('✅ Dati ricevuti:', data);
 
-                // Riferimenti agli elementi HTML
+                // Mostra i dati nella tabella
                 const tbody = document.getElementById('tabella-richieste');
                 
-                if (!richieste || richieste.length === 0) {
+                if (!data || data.length === 0) {
                     tbody.innerHTML = `
                         <tr>
                             <td colspan="10" style="text-align: center; padding: 50px; color: #999;">
-                                📭 Nessuna richiesta trovata nel database
+                                📭 Tabella "pratiche" vuota
                             </td>
                         </tr>
                     `;
-                    
-                    document.getElementById('totale-richieste').textContent = '0';
-                    document.getElementById('in-valutazione').textContent = '0';
-                    document.getElementById('in-recupero').textContent = '0';
-                    document.getElementById('completate').textContent = '0';
-                    
                     return;
                 }
 
-                // Calcola le statistiche
-                let inValutazione = richieste.filter(r => (r.stato || '').toLowerCase() === 'nuova' || (r.stato || '').toLowerCase() === 'in valutazione').length;
-                let inRecupero = richieste.filter(r => (r.stato || '').toLowerCase() === 'in recupero').length;
-                let completate = richieste.filter(r => (r.stato || '').toLowerCase() === 'completata').length;
-
-                // Aggiorna le statistiche
-                document.getElementById('totale-richieste').textContent = richieste.length;
-                document.getElementById('in-valutazione').textContent = inValutazione;
-                document.getElementById('in-recupero').textContent = inRecupero;
-                document.getElementById('completate').textContent = completate;
-
-                // Genera le righe della tabella
-                let htmlRighe = '';
-                richieste.forEach(r => {
-                    const stato = r.stato || 'nuova';
-                    const statusClass = getStatusClass(stato);
-                    
-                    htmlRighe += `
+                // Costruisci le righe della tabella
+                let html = '';
+                data.forEach(row => {
+                    html += `
                         <tr>
-                            <td>${formatDate(r.created_at)}</td>
-                            <td>${r.nome || r.name || '-'}</td>
-                            <td>${r.codice_fiscale || r.cf || '-'}</td>
-                            <td>${r.telefono || r.phone || '-'}</td>
-                            <td>${r.tipo_perdita || r.tipo || '-'}</td>
-                            <td>${formatEuro(r.importo_perso || r.importo || 0)}</td>
-                            <td>${formatEuro(r.importo_recuperato || r.recuperato || 0)}</td>
-                            <td><span class="status ${statusClass}">${stato}</span></td>
-                            <td>${r.percentuale || 7}%</td>
-                            <td>
-                                <button class="view-btn" onclick="alert('Dettaglio richiesta ID: ${r.id}')">👁️</button>
-                            </td>
+                            <td>${formatDate(row.created_at)}</td>
+                            <td>${row.nome || '-'}</td>
+                            <td>${row.codice_fiscale || '-'}</td>
+                            <td>${row.telefono || '-'}</td>
+                            <td>${row.tipo_perdita || '-'}</td>
+                            <td>${formatEuro(row.importo_perso)}</td>
+                            <td>${formatEuro(row.importo_recuperato)}</td>
+                            <td><span class="status ${getStatusClass(row.stato)}">${row.stato || 'nuova'}</span></td>
+                            <td>${row.percentuale || 7}%</td>
+                            <td><button class="view-btn" onclick="alert('ID: ${row.id}')">👁️</button></td>
                         </tr>
                     `;
                 });
 
-                tbody.innerHTML = htmlRighe;
+                tbody.innerHTML = html;
+
+                // Aggiorna statistiche
+                document.getElementById('totale-richieste').textContent = data.length;
+                document.getElementById('in-valutazione').textContent = data.filter(r => (r.stato || '').toLowerCase().includes('valutazione')).length;
+                document.getElementById('in-recupero').textContent = data.filter(r => (r.stato || '').toLowerCase().includes('recupero')).length;
+                document.getElementById('completate').textContent = data.filter(r => (r.stato || '').toLowerCase() === 'completata').length;
 
             } catch (error) {
-                console.error('❌ Errore:', error);
+                console.error('❌ ERRORE:', error);
                 const tbody = document.getElementById('tabella-richieste');
                 tbody.innerHTML = `
                     <tr>
                         <td colspan="10" style="text-align: center; padding: 50px; color: #ff4757;">
                             ❌ Errore: ${error.message}<br>
-                            <small>Verifica che la tabella esista in Supabase (Table Editor)</small>
+                            <small>Dettagli nella console (F12)</small>
                         </td>
                     </tr>
                 `;
