@@ -2522,5 +2522,69 @@
             }
         });
     </script>
+    // ===== PARTE NUOVA PER SUPABASE =====
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+
+const supabase = createClient(
+    'https://zylxndpjbnejrfgyltly.supabase.co',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp5bHhuZHBqYm5lanJmZ3lsdGx5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3Mzg3NjAsImV4cCI6MjA4ODMxNDc2MH0.LBjmM5DGwGQJdb0OOD7c7CEmgNc3KAP3YPWJcpOxLnY'
+)
+
+// Gestione invio form a Supabase
+document.getElementById('recoveryForm').addEventListener('submit', async function(e) {
+    e.preventDefault()
+    
+    const messageDiv = document.getElementById('formMessage')
+    if (!messageDiv) return
+    
+    messageDiv.innerHTML = '⏳ Invio in corso...'
+    
+    try {
+        // Upload documenti
+        let documentiArray = []
+        const fileInput = document.getElementById('fileInput')
+        if (fileInput && fileInput.files.length > 0) {
+            for (let file of fileInput.files) {
+                const fileName = `${Date.now()}_${file.name}`
+                const { error } = await supabase.storage
+                    .from('DOCUMENTI-UTENTI')
+                    .upload(fileName, file)
+                if (!error) documentiArray.push(fileName)
+            }
+        }
+        
+        // Importo
+        let importoText = document.getElementById('importo')?.value || '0'
+        importoText = importoText.replace(/[^0-9.,]/g, '').replace(',', '.')
+        const importoNum = parseFloat(importoText) || 0
+        
+        // Inserimento in Supabase
+        const { error } = await supabase
+            .from('richieste')
+            .insert([{
+                nome: document.getElementById('nome')?.value || '',
+                codice_fiscale: document.getElementById('cf')?.value || '',
+                email: document.getElementById('email')?.value || '',
+                telefono: document.getElementById('telefono')?.value || '',
+                tipo_perdita: document.getElementById('tipo')?.value || '',
+                importo_nu: importoNum,
+                descrizione: document.getElementById('descrizione')?.value || '',
+                documenti: documentiArray,
+                stato: 'in_valutazioni'
+            }])
+        
+        if (error) throw error
+        
+        messageDiv.innerHTML = '✅ Richiesta inviata con successo!'
+        e.target.reset()
+        if (document.getElementById('fileList')) {
+            document.getElementById('fileList').innerHTML = ''
+        }
+        
+    } catch (error) {
+        messageDiv.innerHTML = `❌ Errore: ${error.message}`
+        console.error(error)
+    }
+})
 </body>
 </html>
