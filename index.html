@@ -1605,6 +1605,14 @@
             }
         }
     </style>
+    <!-- Import map per Supabase -->
+    <script type="importmap">
+        {
+            "imports": {
+                "@supabase/supabase-js": "https://esm.sh/@supabase/supabase-js@2"
+            }
+        }
+    </script>
 </head>
 <body>
     <!-- HEADER -->
@@ -1770,23 +1778,23 @@
             <form id="recoveryForm">
                 <div class="form-grid">
                     <div class="form-group">
-                        <label class="form-label">Nome e Cognome</label>
+                        <label class="form-label">Nome e Cognome *</label>
                         <input type="text" class="form-control" id="nome" placeholder="Mario Rossi" required>
                     </div>
                     <div class="form-group">
-                        <label class="form-label">Codice Fiscale</label>
+                        <label class="form-label">Codice Fiscale *</label>
                         <input type="text" class="form-control" id="cf" placeholder="RSSMRA80A01H501X" required>
                     </div>
                     <div class="form-group">
-                        <label class="form-label">Email</label>
+                        <label class="form-label">Email *</label>
                         <input type="email" class="form-control" id="email" placeholder="mario.rossi@email.com" required>
                     </div>
                     <div class="form-group">
-                        <label class="form-label">Telefono</label>
+                        <label class="form-label">Telefono *</label>
                         <input type="tel" class="form-control" id="telefono" placeholder="+39 123 456 7890" required>
                     </div>
                     <div class="form-group full-width">
-                        <label class="form-label">Tipo di Problema</label>
+                        <label class="form-label">Tipo di Problema *</label>
                         <select class="form-control" id="tipo" required>
                             <option value="">Seleziona...</option>
                             <option value="crypto">Transazione crypto bloccata / persa</option>
@@ -1797,11 +1805,11 @@
                         </select>
                     </div>
                     <div class="form-group full-width">
-                        <label class="form-label">Importo da Recuperare (USD/€)</label>
-                        <input type="text" class="form-control" id="importo" placeholder="es. 44.240,89" required>
+                        <label class="form-label">Importo da Recuperare (€) *</label>
+                        <input type="text" class="form-control" id="importo" placeholder="es. 44240.89" required>
                     </div>
                     <div class="form-group full-width">
-                        <label class="form-label">Descrizione Dettagliata</label>
+                        <label class="form-label">Descrizione Dettagliata *</label>
                         <textarea class="form-control" id="descrizione" rows="4" placeholder="Descrivi la tua situazione nel dettaglio..." required></textarea>
                     </div>
                     
@@ -1824,6 +1832,7 @@
                 </div>
                 <button type="submit" class="btn-primary" style="width: 100%;">INVIA RICHIESTA DI RECUPERO</button>
             </form>
+            <div id="formMessage" style="margin-top: 1rem; text-align: center;"></div>
         </div>
 
         <!-- AREA PERSONALE (inizialmente nascosta) -->
@@ -2119,32 +2128,15 @@
         </div>
     </div>
 
-    <!-- TUTTO IL TUO SCRIPT ESISTENTE -->
-    <script>
-        // MENU MOBILE
-        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-        const navLinks = document.getElementById('navLinks');
-
-        mobileMenuBtn.addEventListener('click', function() {
-            navLinks.classList.toggle('active');
-        });
-
-        // Chiudi menu quando si clicca su un link
-        document.querySelectorAll('.nav-links a').forEach(link => {
-            link.addEventListener('click', () => {
-                navLinks.classList.remove('active');
-            });
-        });
-
-        // HEADER SCROLL EFFECT
-        window.addEventListener('scroll', function() {
-            const header = document.getElementById('header');
-            if (window.scrollY > 50) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
-        });
+    <!-- SCRIPT PRINCIPALE -->
+    <script type="module">
+        import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+        
+        // Configurazione Supabase
+        const SUPABASE_URL = 'https://zylxndpjbnejrfgyltly.supabase.co'
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp5bHhuZHBqYm5lanJmZ3lsdGx5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3Mzg3NjAsImV4cCI6MjA4ODMxNDc2MH0.LBjmM5DGwGQJdb0OOD7c7CEmgNc3KAP3YPWJcpOxLnY'
+        
+        const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
 
         // GESTIONE UPLOAD FILE
         const fileUploadArea = document.getElementById('fileUploadArea');
@@ -2189,23 +2181,6 @@
                     continue;
                 }
                 uploadedFiles.push(file);
-                
-                // Salva in localStorage
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const fileData = {
-                        name: file.name,
-                        type: file.type,
-                        size: file.size,
-                        data: e.target.result,
-                        id: Date.now() + '_' + i
-                    };
-                    
-                    let savedFiles = JSON.parse(localStorage.getItem('uploaded_files') || '[]');
-                    savedFiles.push(fileData);
-                    localStorage.setItem('uploaded_files', JSON.stringify(savedFiles));
-                };
-                reader.readAsDataURL(file);
             }
             updateFileList();
         }
@@ -2232,47 +2207,124 @@
             });
         }
 
-        function removeFile(index) {
+        window.removeFile = function(index) {
             uploadedFiles.splice(index, 1);
             updateFileList();
-            
-            let savedFiles = JSON.parse(localStorage.getItem('uploaded_files') || '[]');
-            savedFiles.splice(index, 1);
-            localStorage.setItem('uploaded_files', JSON.stringify(savedFiles));
         }
 
-        // FORM SUBMIT - MODIFICATO PER SUPABASE
+        // FORM SUBMIT - VERSIONE SUPABASE
         document.getElementById('recoveryForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
+            e.preventDefault()
             
-            const nome = document.getElementById('nome').value;
-            const cf = document.getElementById('cf').value;
-            const email = document.getElementById('email').value;
-            const telefono = document.getElementById('telefono').value;
-            const tipo = document.getElementById('tipo').value;
-            const importo = document.getElementById('importo').value;
-            const descrizione = document.getElementById('descrizione').value;
+            const submitBtn = this.querySelector('button[type="submit"]')
+            const originalText = submitBtn.textContent
+            const messageDiv = document.getElementById('formMessage')
             
-            const clienteData = {
-                nome, cf, email, telefono, tipo, importo, descrizione,
-                timestamp: Date.now(),
-                files: uploadedFiles.length
-            };
+            submitBtn.textContent = 'Invio in corso...'
+            submitBtn.disabled = true
+            messageDiv.innerHTML = '⏳ Invio richiesta...'
             
-            localStorage.setItem('cliente_nome', nome);
-            localStorage.setItem('cliente_cf', cf);
-            localStorage.setItem('cliente_email', email);
-            localStorage.setItem('cliente_data', JSON.stringify(clienteData));
-            localStorage.setItem('pratica_inviata', Date.now().toString());
-            
-            alert('✅ Richiesta inviata con successo! Riceverai una email con le istruzioni per accedere all\'area personale entro 24 ore.');
-            this.reset();
-            fileList.innerHTML = '';
-            uploadedFiles = [];
+            try {
+                // 1. Upload documenti su Supabase Storage
+                let documentiArray = []
+                
+                if (uploadedFiles.length > 0) {
+                    for (let file of uploadedFiles) {
+                        const fileName = `${Date.now()}_${file.name}`
+                        const { data, error } = await supabase.storage
+                            .from('DOCUMENTI-UTENTI')
+                            .upload(fileName, file)
+                        
+                        if (error) throw error
+                        documentiArray.push(data.path)
+                    }
+                }
+                
+                // 2. Pulisci l'importo (rimuovi punti e virgole, converti in numero)
+                let importoText = document.getElementById('importo').value
+                importoText = importoText.replace(/[^0-9.,]/g, '').replace(',', '.')
+                const importoNum = parseFloat(importoText) || 0
+                
+                // 3. Salva richiesta nel database
+                const { data, error } = await supabase
+                    .from('richieste')
+                    .insert([
+                        {
+                            nome: document.getElementById('nome').value,
+                            codice_fiscale: document.getElementById('cf').value,
+                            email: document.getElementById('email').value,
+                            telefono: document.getElementById('telefono').value,
+                            tipo_perdita: document.getElementById('tipo').value,
+                            importo_nu: importoNum,
+                            descrizione: document.getElementById('descrizione').value,
+                            documenti: documentiArray,
+                            stato: 'in_valutazioni'
+                        }
+                    ])
+                
+                if (error) throw error
+                
+                // 4. Salva anche in localStorage per la vecchia area personale
+                const clienteData = {
+                    nome: document.getElementById('nome').value,
+                    cf: document.getElementById('cf').value,
+                    email: document.getElementById('email').value,
+                    telefono: document.getElementById('telefono').value,
+                    tipo: document.getElementById('tipo').value,
+                    importo: importoNum,
+                    timestamp: Date.now(),
+                    files: documentiArray.length
+                }
+                
+                localStorage.setItem('cliente_nome', document.getElementById('nome').value)
+                localStorage.setItem('cliente_cf', document.getElementById('cf').value)
+                localStorage.setItem('cliente_data', JSON.stringify(clienteData))
+                localStorage.setItem('pratica_inviata', Date.now().toString())
+                
+                messageDiv.innerHTML = '✅ Richiesta inviata con successo! Riceverai una email entro 24 ore.'
+                messageDiv.style.color = 'green'
+                
+                // Reset form
+                this.reset()
+                fileList.innerHTML = ''
+                uploadedFiles = []
+                
+            } catch (error) {
+                messageDiv.innerHTML = `❌ Errore: ${error.message}`
+                messageDiv.style.color = 'red'
+                console.error(error)
+            } finally {
+                submitBtn.textContent = originalText
+                submitBtn.disabled = false
+            }
+        })
+
+        // MENU MOBILE
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navLinks = document.getElementById('navLinks');
+
+        mobileMenuBtn.addEventListener('click', function() {
+            navLinks.classList.toggle('active');
         });
 
-        // FUNZIONE LOGIN (AREA PERSONALE)
-        function showLogin(e) {
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+            });
+        });
+
+        // HEADER SCROLL
+        window.addEventListener('scroll', function() {
+            const header = document.getElementById('header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // FUNZIONI AREA PERSONALE
+        window.showLogin = function(e) {
             e.preventDefault();
             
             const email = prompt("Inserisci la tua email:");
@@ -2283,13 +2335,11 @@
             }
         }
 
-        // GESTIONE ACCESSO AREA PERSONALE CORRETTA
         function gestisciAccessoAreaPersonale(email, cf) {
             const formSection = document.getElementById('form');
             const dashboard = document.getElementById('dashboard');
             const dashboardContent = document.getElementById('dashboardContent');
             const documentsSection = document.getElementById('documentsSection');
-            const documentsGrid = document.getElementById('documentsGrid');
             
             formSection.style.display = 'none';
             dashboard.style.display = 'block';
@@ -2298,51 +2348,21 @@
             document.getElementById('welcomeMessage').textContent = `Benvenuto, ${nomeSalvato}`;
             document.getElementById('clientBadge').textContent = `Pratica #${cf.substring(0,5)}-${Date.now().toString().substring(0,8)}`;
             
-            // LEGGI IL TIMESTAMP DI QUANDO E' STATO INVIATO IL FORM
             let praticaInviata = localStorage.getItem('pratica_inviata');
             let ora = Date.now();
             
             if (!praticaInviata) {
-                // Nessuna pratica inviata
                 mostraNessunaPratica(dashboardContent);
                 documentsSection.style.display = 'none';
             } else {
-                // Calcola ore trascorse dall'invio della pratica
                 let orePassate = (ora - parseInt(praticaInviata)) / (1000 * 60 * 60);
                 
                 if (orePassate < 24) {
-                    // Meno di 24 ore: mostra valutazione
                     mostraValutazioneInCorso(dashboardContent);
                     documentsSection.style.display = 'none';
                 } else {
-                    // Oltre 24 ore: mostra dashboard completa
                     mostraDashboardCompleta(dashboardContent);
-                    
-                    // Mostra documenti caricati
-                    const savedFiles = JSON.parse(localStorage.getItem('uploaded_files') || '[]');
-                    if (savedFiles.length > 0) {
-                        documentsSection.style.display = 'block';
-                        documentsGrid.innerHTML = '';
-                        
-                        savedFiles.forEach(file => {
-                            const docCard = document.createElement('div');
-                            docCard.className = 'document-card';
-                            
-                            let icon = 'fa-file';
-                            if (file.type.includes('pdf')) icon = 'fa-file-pdf';
-                            else if (file.type.includes('image')) icon = 'fa-file-image';
-                            
-                            docCard.innerHTML = `
-                                <i class="fas ${icon}"></i>
-                                <h4>${file.name.substring(0, 15)}${file.name.length > 15 ? '...' : ''}</h4>
-                                <p>${(file.size / 1024).toFixed(1)} KB</p>
-                                <a href="${file.data}" download="${file.name}"><i class="fas fa-download"></i> Scarica</a>
-                            `;
-                            documentsGrid.appendChild(docCard);
-                        });
-                    } else {
-                        documentsSection.style.display = 'none';
-                    }
+                    documentsSection.style.display = 'none';
                 }
             }
         }
@@ -2409,55 +2429,13 @@
                             <div class="commission-amount">€ 2.316,85</div>
                             <div class="commission-note">Da saldare entro 7 giorni dall'accredito finale</div>
                         </div>
-                        <button class="btn-secondary" onclick="payCommission()" style="background: var(--secondary); color: var(--primary); border: none;">PAGA ORA</button>
+                        <button class="btn-secondary" onclick="alert('Pagamento non ancora disponibile')" style="background: var(--secondary); color: var(--primary); border: none;">PAGA ORA</button>
                     </div>
-                </div>
-                
-                <div class="transactions-section">
-                    <h3 class="transactions-title"><i class="fas fa-list" style="margin-right: 0.5rem;"></i> Dettaglio Transazioni</h3>
-                    <table class="transactions-table">
-                        <thead>
-                            <tr>
-                                <th>Data</th>
-                                <th>Hash Transazione</th>
-                                <th>Importo</th>
-                                <th>Stato</th>
-                                <th>Link</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>24/02/2026</td>
-                                <td><small>0x614f...c4617</small></td>
-                                <td>€ 1.052,21</td>
-                                <td><span class="status-badge completed"><i class="fas fa-check-circle"></i> Completato</span></td>
-                                <td><a href="#" style="color: var(--primary);"><i class="fas fa-external-link-alt"></i></a></td>
-                            </tr>
-                            <tr>
-                                <td>24/02/2026</td>
-                                <td><small>0xa97f...b356</small></td>
-                                <td>€ 29.688,16</td>
-                                <td><span class="status-badge completed"><i class="fas fa-check-circle"></i> Completato</span></td>
-                                <td><a href="#" style="color: var(--primary);"><i class="fas fa-external-link-alt"></i></a></td>
-                            </tr>
-                            <tr>
-                                <td>24/02/2026</td>
-                                <td><small>0x1c66...ba30</small></td>
-                                <td>€ 13.500,50</td>
-                                <td><span class="status-badge processing"><i class="fas fa-spinner"></i> In elaborazione</span></td>
-                                <td><a href="#" style="color: var(--primary);"><i class="fas fa-external-link-alt"></i></a></td>
-                            </tr>
-                        </tbody>
-                    </table>
                 </div>
             `;
         }
 
-        function payCommission() {
-            alert('Sarai reindirizzato al portale pagamenti sicuro di Swedbank.');
-        }
-
-        // EMMA 3.0 - SUPER INTELLIGENTE
+        // CHATBOT FUNCTIONS
         const chatbotButton = document.getElementById('chatbotButton');
         const chatbotWindow = document.getElementById('chatbotWindow');
         const chatbotClose = document.getElementById('chatbotClose');
@@ -2472,192 +2450,26 @@
             chatbotWindow.classList.remove('open');
         });
 
-        // Funzione avanzata per analizzare la probabilità di successo
-        function analizzaProbabilità(testo) {
-            const lowerText = testo.toLowerCase();
+        window.sendMessage = function() {
+            const message = chatbotInput.value.trim();
+            if (message === '') return;
             
-            let tipo = 'generico';
-            let importo = 5000;
-            let anni = 2;
+            addMessage(message, 'user');
+            chatbotInput.value = '';
             
-            // Estrai tipo
-            if (lowerText.includes('crypto') || lowerText.includes('bitcoin') || lowerText.includes('ethereum')) {
-                tipo = 'crypto';
-            } else if (lowerText.includes('bonifico') || lowerText.includes('banca')) {
-                tipo = 'bonifico';
-            } else if (lowerText.includes('frode') || lowerText.includes('truffa')) {
-                tipo = 'frode';
-            } else if (lowerText.includes('wallet') || lowerText.includes('accesso')) {
-                tipo = 'wallet';
-            }
-            
-            // Estrai importo
-            const importoMatch = lowerText.match(/(\d+[.]?\d*)/g);
-            if (importoMatch) {
-                importo = parseFloat(importoMatch[0]);
-            }
-            
-            // Estrai anni
-            if (lowerText.includes('anno') || lowerText.includes('anni')) {
-                const anniMatch = lowerText.match(/(\d+)\s*anni/);
-                if (anniMatch) {
-                    anni = parseInt(anniMatch[1]);
-                }
-            }
-            
-            let probabilita = 0;
-            let motivazioni = [];
-            
-            // Analisi per tipo
-            if (tipo === 'crypto') {
-                probabilita += 40;
-                motivazioni.push("transazioni crypto tracciabili sulla blockchain");
-            } else if (tipo === 'bonifico') {
-                probabilita += 35;
-                motivazioni.push("bonifici bancari rintracciabili tramite autorità");
-            } else if (tipo === 'frode') {
-                probabilita += 45;
-                motivazioni.push("frodi con possibilità di chargeback e tracciamento");
-            } else if (tipo === 'wallet') {
-                probabilita += 30;
-                motivazioni.push("recupero accesso wallet con tecniche forensi");
-            } else {
-                probabilita += 25;
-                motivazioni.push("caso generico analizzabile");
-            }
-            
-            // Analisi per importo
-            if (importo > 10000) {
-                probabilita += 25;
-                motivazioni.push("importo significativo");
-            } else if (importo > 5000) {
-                probabilita += 20;
-                motivazioni.push("importo medio-buono");
-            } else {
-                probabilita += 15;
-                motivazioni.push("importo contenuto");
-            }
-            
-            // Analisi per anni
-            if (anni < 1) {
-                probabilita += 25;
-                motivazioni.push("transazione recentissima");
-            } else if (anni < 3) {
-                probabilita += 20;
-                motivazioni.push("transazione recente");
-            } else if (anni < 5) {
-                probabilita += 10;
-                motivazioni.push("transazione datata ma ancora tracciabile");
-            } else {
-                probabilita -= 20;
-                motivazioni.push("transazione oltre i 5 anni");
-            }
-            
-            probabilita = Math.min(100, Math.max(0, probabilita));
-            
-            let giudizio;
-            let colore;
-            if (probabilita >= 80) { giudizio = "MOLTO ALTA"; colore = "🟢"; }
-            else if (probabilita >= 60) { giudizio = "ALTA"; colore = "🟢"; }
-            else if (probabilita >= 40) { giudizio = "MEDIA"; colore = "🟡"; }
-            else if (probabilita >= 20) { giudizio = "BASSA"; colore = "🟠"; }
-            else { giudizio = "MOLTO BASSA"; colore = "🔴"; }
-            
-            return {
-                valore: probabilita,
-                giudizio: giudizio,
-                colore: colore,
-                motivazioni: motivazioni,
-                tipo: tipo,
-                importo: importo,
-                anni: anni
-            };
+            setTimeout(() => {
+                const response = getBotResponse(message);
+                addMessage(response, 'bot');
+            }, 1000);
         }
 
-        function getBotResponse(message) {
-            const lowerMsg = message.toLowerCase();
+        window.sendQuickReply = function(text) {
+            addMessage(text, 'user');
             
-            // Analisi caso personalizzata
-            if (lowerMsg.includes('analizza') || lowerMsg.includes('probabilità') || lowerMsg.includes('mio caso')) {
-                const analisi = analizzaProbabilità(message);
-                
-                let documentiConsigliati = [];
-                if (analisi.tipo === 'crypto') {
-                    documentiConsigliati = ["Hash della transazione", "Screenshot del wallet", "Email di conferma"];
-                } else if (analisi.tipo === 'bonifico') {
-                    documentiConsigliati = ["IBAN del beneficiario", "Ricevuta del bonifico", "Estratto conto"];
-                } else if (analisi.tipo === 'frode') {
-                    documentiConsigliati = ["Comunicazioni con il truffatore", "Screenshot delle chat", "Denuncia alle autorità"];
-                } else {
-                    documentiConsigliati = ["Documento d'identità", "Descrizione dettagliata", "Prove della transazione"];
-                }
-                
-                return `🔍 **ANALISI DETTAGLIATA DEL CASO**\n\n` +
-                       `📊 **Probabilità di successo:** ${analisi.colore} **${analisi.giudizio} (${analisi.valore}%)**\n\n` +
-                       `📋 **Fattori considerati:**\n• ${analisi.motivazioni.join('\n• ')}\n\n` +
-                       `📎 **Documenti consigliati:**\n• ${documentiConsigliati.join('\n• ')}\n\n` +
-                       `💡 **Suggerimento:** ${analisi.valore >= 60 ? 'Il caso è promettente! Ti consiglio di compilare il form qui sotto per iniziare subito.' : 'Vale comunque la pena provare, a volte casi simili hanno successo con la documentazione giusta.'}`;
-            }
-            
-            // Altre risposte
-            else if (lowerMsg.includes('come funziona')) {
-                return "📋 **IL NOSTRO PROCESSO**\n\n" +
-                       "1️⃣ **Valutazione gratuita** (24h)\n" +
-                       "2️⃣ **Analisi fondi** con AI\n" +
-                       "3️⃣ **Proposta di recupero**\n" +
-                       "4️⃣ **Recupero in 48-72h**\n" +
-                       "5️⃣ **Paghi 7% solo a successo**\n\n" +
-                       "Posso analizzare il tuo caso specifico se vuoi!";
-            }
-            else if (lowerMsg.includes('costo') || lowerMsg.includes('commissione')) {
-                return "💰 **COSTI E COMMISSIONI**\n\n" +
-                       "✓ **Valutazione iniziale:** Gratuita\n" +
-                       "✓ **Commissione:** 7% sull'importo recuperato\n" +
-                       "✓ **Paghi solo a successo**\n" +
-                       "✓ **Nessun costo nascosto**\n\n" +
-                       "Esempio: se recuperiamo €10.000, paghi €700 solo dopo che i soldi sono sul tuo conto.";
-            }
-            else if (lowerMsg.includes('tempo') || lowerMsg.includes('quanto ci vuole')) {
-                return "⏱️ **TEMPISTICHE**\n\n" +
-                       "• **Valutazione iniziale:** 24 ore\n" +
-                       "• **Recupero effettivo:** 48-72 ore\n" +
-                       "• **92% dei casi** risolti entro 3 giorni\n\n" +
-                       "Casi complessi: fino a 7 giorni, ma ti teniamo aggiornato ogni step.";
-            }
-            else if (lowerMsg.includes('documenti')) {
-                return "📎 **DOCUMENTI NECESSARI**\n\n" +
-                       "Di solito servono:\n" +
-                       "• Documento d'identità\n" +
-                       "• Codice fiscale\n" +
-                       "• Prove della transazione (hash, screenshot)\n" +
-                       "• Email con la piattaforma/banca\n" +
-                       "• Descrizione dettagliata\n\n" +
-                       "Puoi caricarli direttamente nel form qui sotto!";
-            }
-            else if (lowerMsg.includes('limiti') || lowerMsg.includes('non potete')) {
-                return "⚠️ **QUANDO NON POSSIAMO AIUTARE**\n\n" +
-                       "• Fondi già convertiti in contanti e prelevati\n" +
-                       "• Problemi con il conto corrente (indagini, bonifici sospetti)\n" +
-                       "• Transazioni oltre 5-7 anni\n\n" +
-                       "In questi casi lo diciamo subito, senza false promesse.";
-            }
-            else if (lowerMsg.includes('sicuro')) {
-                return "🔒 **SICUREZZA E AFFIDABILITÀ**\n\n" +
-                       "✓ Registrati in Svezia (Org.nr: SE556789123401)\n" +
-                       "✓ Conformi GDPR\n" +
-                       "✓ Partner autorità europee (ESMA, ECB)\n" +
-                       "✓ Crittografia end-to-end\n" +
-                       "✓ Team di avvocati specializzati";
-            }
-            else if (lowerMsg.includes('grazie')) {
-                return "Prego! Sono felice di aiutarti. Ricorda che puoi sempre chiedermi un'analisi del tuo caso specifico scrivendo 'analizza il mio caso' seguito dai dettagli.";
-            }
-            else if (lowerMsg.includes('ciao') || lowerMsg.includes('salve') || lowerMsg.includes('buongiorno')) {
-                return "👋 Ciao! Sono Emma 3.0, l'assistente intelligente di Stockholm Claim Partners. Posso analizzare il tuo caso, rispondere a qualsiasi domanda o aiutarti a preparare la documentazione. Come posso esserti utile oggi?";
-            }
-            else {
-                return "Grazie per la domanda. Per darti una risposta più precisa, potresti fornirmi più dettagli? Ad esempio: tipo di problema, importo, data della transazione. Oppure puoi chiedermi di 'analizzare il mio caso' per una valutazione preliminare.";
-            }
+            setTimeout(() => {
+                const response = getBotResponse(text);
+                addMessage(response, 'bot');
+            }, 1000);
         }
 
         function addMessage(text, sender) {
@@ -2679,46 +2491,36 @@
             chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
         }
 
-        function sendMessage() {
-            const message = chatbotInput.value.trim();
-            if (message === '') return;
+        function getBotResponse(message) {
+            const lowerMsg = message.toLowerCase();
             
-            addMessage(message, 'user');
-            chatbotInput.value = '';
-            
-            setTimeout(() => {
-                const response = getBotResponse(message);
-                addMessage(response, 'bot');
-            }, 1000);
+            if (lowerMsg.includes('come funziona')) {
+                return "📋 **IL NOSTRO PROCESSO**\n\n1️⃣ Valutazione gratuita (24h)\n2️⃣ Analisi fondi con AI\n3️⃣ Proposta di recupero\n4️⃣ Recupero in 48-72h\n5️⃣ Paghi 7% solo a successo";
+            }
+            else if (lowerMsg.includes('costo') || lowerMsg.includes('commissione')) {
+                return "💰 **COSTI**: Zero costi anticipati. Commissione 7% solo a recupero avvenuto.";
+            }
+            else if (lowerMsg.includes('tempo')) {
+                return "⏱️ **TEMPISTICHE**: Valutazione 24h, recupero 48-72h (92% dei casi).";
+            }
+            else if (lowerMsg.includes('analizza')) {
+                return "🔍 Per un'analisi precisa, compila il form qui sopra con tutti i dettagli. I nostri esperti ti contatteranno entro 24 ore.";
+            }
+            else {
+                return "Grazie per la domanda. Per assistenza personalizzata, compila il form o contatta un avvocato. Come posso aiutarti?";
+            }
         }
 
-        function sendQuickReply(text) {
-            addMessage(text, 'user');
-            
-            setTimeout(() => {
-                const response = getBotResponse(text);
-                addMessage(response, 'bot');
-            }, 1000);
+        window.contactOperator = function() {
+            alert("📞 Un nostro avvocato ti contatterà a breve all'indirizzo email fornito.");
         }
 
-        function contactOperator() {
-            alert("📞 Un nostro avvocato ti contatterà a breve all'indirizzo email fornito. Per assistenza immediata, puoi chiamare il +46 8 123 456 78.");
-        }
-
-        // Chiudi chatbot se clicchi fuori
+        // Chiudi chatbot cliccando fuori
         document.addEventListener('click', function(event) {
             if (!chatbotButton.contains(event.target) && !chatbotWindow.contains(event.target)) {
                 chatbotWindow.classList.remove('open');
             }
         });
-    </script>
-    <!-- AGGIUNGI SOLO QUESTO SCRIPT PER SUPABASE -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script>
-        const SUPABASE_URL = 'https://zylxndpjbnejrfgyltly.supabase.co';
-        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp5bHhuZHBqYm5lanJmZ3lsdGx5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3Mzg3NjAsImV4cCI6MjA4ODMxNDc2MH0.LBjmM5DGwGQJdb0OOD7c7CEmgNc3KAP3YPWJcpOxLnY';
-        
-        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
     </script>
 </body>
 </html>
