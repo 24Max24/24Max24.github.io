@@ -130,10 +130,9 @@
             display: inline-block;
         }
 
-        .status.in-valutazione { background: #fff3e0; color: #f57c00; }
+        .status.in_valutazioni { background: #fff3e0; color: #f57c00; }
         .status.in-recupero { background: #e8f5e8; color: #388e3c; }
         .status.completata { background: #e8eaf6; color: #3f51b5; }
-        .status.nuova { background: #e3f2fd; color: #1976d2; }
 
         .view-btn {
             background: none;
@@ -154,39 +153,35 @@
             font-size: 14px;
         }
 
-        /* Login Modal */
-        .modal {
-            display: none;
+        .login-modal {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             background: rgba(0,0,0,0.5);
-            z-index: 1000;
+            display: flex;
             justify-content: center;
             align-items: center;
+            z-index: 1000;
         }
 
-        .modal.active {
-            display: flex;
-        }
-
-        .modal-content {
+        .login-box {
             background: white;
             padding: 30px;
             border-radius: 15px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-            max-width: 400px;
             width: 90%;
+            max-width: 400px;
         }
 
-        .modal-content h2 {
+        .login-box h2 {
             color: #333;
             margin-bottom: 20px;
+            text-align: center;
         }
 
-        .modal-content input {
+        .login-box input {
             width: 100%;
             padding: 12px;
             margin-bottom: 15px;
@@ -195,7 +190,7 @@
             font-size: 16px;
         }
 
-        .modal-content button {
+        .login-box button {
             width: 100%;
             padding: 12px;
             background: #667eea;
@@ -206,7 +201,7 @@
             cursor: pointer;
         }
 
-        .modal-content button:hover {
+        .login-box button:hover {
             background: #764ba2;
         }
 
@@ -214,6 +209,10 @@
             color: #ff4757;
             margin-top: 10px;
             text-align: center;
+        }
+
+        .hidden {
+            display: none;
         }
     </style>
     <script type="importmap">
@@ -226,16 +225,17 @@
 </head>
 <body>
     <!-- Login Modal -->
-    <div class="modal active" id="loginModal">
-        <div class="modal-content">
+    <div id="loginModal" class="login-modal">
+        <div class="login-box">
             <h2>🔐 Accesso Admin</h2>
-            <input type="password" id="passwordInput" placeholder="Inserisci password" onkeypress="if(event.key==='Enter') checkPassword()">
+            <input type="password" id="passwordInput" placeholder="Password" onkeypress="if(event.key==='Enter') checkPassword()">
             <button onclick="checkPassword()">Accedi</button>
             <div id="loginError" class="error-message"></div>
         </div>
     </div>
 
-    <div class="container" id="adminContent" style="display: none;">
+    <!-- Admin Content -->
+    <div id="adminContent" class="container hidden">
         <header>
             <h1>📊 Stockholm Claim Partners - Admin Panel</h1>
             <button class="logout-btn" onclick="logout()">Esci</button>
@@ -258,7 +258,7 @@
                         <th>Email</th>
                         <th>Telefono</th>
                         <th>Descrizione</th>
-                        <th>Importo</th>
+                        <th>Importo (€)</th>
                         <th>Stato</th>
                         <th>Azioni</th>
                     </tr>
@@ -272,14 +272,13 @@
     </div>
 
     <script>
-        // PASSWORD ADMIN
         const ADMIN_PASSWORD = 'stockholm2026';
 
         function checkPassword() {
             const pwd = document.getElementById('passwordInput').value;
             if (pwd === ADMIN_PASSWORD) {
-                document.getElementById('loginModal').classList.remove('active');
-                document.getElementById('adminContent').style.display = 'block';
+                document.getElementById('loginModal').classList.add('hidden');
+                document.getElementById('adminContent').classList.remove('hidden');
                 caricaDati();
             } else {
                 document.getElementById('loginError').textContent = '❌ Password errata';
@@ -288,21 +287,14 @@
 
         function logout() {
             if (confirm('Sei sicuro di voler uscire?')) {
-                document.getElementById('adminContent').style.display = 'none';
-                document.getElementById('loginModal').classList.add('active');
+                document.getElementById('adminContent').classList.add('hidden');
+                document.getElementById('loginModal').classList.remove('hidden');
                 document.getElementById('passwordInput').value = '';
                 document.getElementById('loginError').textContent = '';
             }
         }
 
-        // Verifica se c'è già una sessione (es. dopo refresh)
-        (function() {
-            // Di default mostra il login
-            document.getElementById('loginModal').classList.add('active');
-            document.getElementById('adminContent').style.display = 'none';
-        })();
-
-        function formatDate(dateString) { 
+        function formatDate(dateString) {
             if (!dateString) return '-';
             try {
                 const date = new Date(dateString);
@@ -311,24 +303,20 @@
                 return '-';
             }
         }
-        
-        function formatEuro(amount) { 
+
+        function formatEuro(amount) {
             if (!amount && amount !== 0) return '€0';
             return '€' + parseFloat(amount).toLocaleString('it-IT');
         }
-        
-        function getStatusClass(stato) { 
-            if (!stato) return 'nuova';
-            const s = stato.toLowerCase();
-            if (s.includes('valutazione')) return 'in-valutazione';
-            if (s.includes('recupero')) return 'in-recupero';
-            if (s === 'completata') return 'completata';
-            return 'nuova';
+
+        function getStatusClass(stato) {
+            if (!stato) return 'in_valutazioni';
+            return 'in_valutazioni'; // Per ora tutte le voci hanno questo stato
         }
 
         async function caricaDati() {
             try {
-                console.log('🔍 Avvio caricamento...');
+                console.log('🚀 Avvio caricamento...');
                 
                 const SUPABASE_URL = 'https://zylxndpjbnejrfgyltly.supabase.co';
                 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp5bHhuZHBqYm5lanJmZ3lsdGx5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3Mzg3NjAsImV4cCI6MjA4ODMxNDc2MH0.LBjmM5DGwGQJdb0OOD7c7CEmgNc3KAP3YPWJcpOxLnY';
@@ -336,7 +324,7 @@
                 const { createClient } = await import('https://esm.sh/@supabase/supabase-js@2');
                 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-                console.log('🔍 Cerco tabella richieste...');
+                console.log('📡 Cerco tabella richieste...');
                 
                 const { data, error } = await supabase
                     .from('richieste')
@@ -349,7 +337,8 @@
                 }
 
                 console.log('✅ Trovate', data?.length || 0, 'richieste');
-                
+                console.log('📋 Prima riga:', data?.[0]);
+
                 const tbody = document.getElementById('tabella-richieste');
                 
                 if (!data || data.length === 0) {
@@ -362,15 +351,12 @@
                 }
 
                 // Calcola statistiche
-                let inVal = 0, inRec = 0, comp = 0;
+                let inVal = data.filter(r => r.stato === 'in_valutazioni').length;
+                let inRec = 0; // Nessuna in recupero al momento
+                let comp = 0;  // Nessuna completata al momento
+
                 let html = '';
-
                 data.forEach(row => {
-                    const stato = row.stato || 'nuova';
-                    if (stato.toLowerCase().includes('valutazione')) inVal++;
-                    else if (stato.toLowerCase().includes('recupero')) inRec++;
-                    else if (stato.toLowerCase() === 'completata') comp++;
-
                     html += `<tr>
                         <td><strong>#${row.id || '-'}</strong></td>
                         <td>${formatDate(row.created_at)}</td>
@@ -379,8 +365,8 @@
                         <td>${row.telefono || '-'}</td>
                         <td>${row.descrizione ? (row.descrizione.length > 30 ? row.descrizione.substring(0,30) + '...' : row.descrizione) : '-'}</td>
                         <td>${formatEuro(row.importo_nu)}</td>
-                        <td><span class="status ${getStatusClass(stato)}">${stato}</span></td>
-                        <td><button class="view-btn" onclick='alert("ID: ${row.id}\\nNome: ${row.nome || ""}\\nEmail: ${row.email || ""}\\nTelefono: ${row.telefono || ""}\\nImporto: €${row.importo_nu || 0}\\nStato: ${row.stato || ""}")'>👁️</button></td>
+                        <td><span class="status in_valutazioni">${row.stato || 'in_valutazioni'}</span></td>
+                        <td><button class="view-btn" onclick='alert("ID: ${row.id}\\nNome: ${row.nome || "-"}\\nEmail: ${row.email || "-"}\\nTelefono: ${row.telefono || "-"}\\nImporto: €${row.importo_nu || 0}\\nStato: ${row.stato || "in_valutazioni"}")'>👁️</button></td>
                     </tr>`;
                 });
 
