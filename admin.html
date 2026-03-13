@@ -2,64 +2,54 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Test Admin</title>
+    <title>Test Supabase API</title>
     <style>
-        body { font-family: Arial; padding: 20px; background: #f0f2f5; }
-        table { border-collapse: collapse; width: 100%; background: white; }
-        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-        th { background: #667eea; color: white; }
+        body { font-family: monospace; padding: 20px; }
+        pre { background: #f4f4f4; padding: 10px; border-radius: 5px; }
+        .success { color: green; }
+        .error { color: red; }
     </style>
-    <script type="importmap">
-        { "imports": { "@supabase/supabase-js": "https://esm.sh/@supabase/supabase-js@2" } }
-    </script>
 </head>
 <body>
-    <h2>📋 Richieste dal database</h2>
-    <div id="messaggio">Caricamento...</div>
-    <table id="tabella" style="display:none">
-        <thead>
-            <tr><th>ID</th><th>Nome</th><th>Email</th><th>Telefono</th><th>Importo</th><th>Stato</th></tr>
-        </thead>
-        <tbody id="corpo-tabella"></tbody>
-    </table>
+    <h2>🔍 Test connessione Supabase</h2>
+    <div id="output">Caricamento...</div>
 
-    <script type="module">
-        import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
-
-        const SUPABASE_URL = 'https://zylxndpjbnejrfgyltly.supabase.co';
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp5bHhuZHBqYm5lanJmZ3lsdGx5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3Mzg3NjAsImV4cCI6MjA4ODMxNDc2MH0.LBjmM5DGwGQJdb0OOD7c7CEmgNc3KAP3YPWJcpOxLnY';
-
-        const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-        async function carica() {
+    <script>
+        (async function() {
+            const output = document.getElementById('output');
+            
             try {
-                const { data, error } = await supabase.from('richieste').select('*');
-                if (error) throw error;
+                const SUPABASE_URL = 'https://zylxndpjbnejrfgyltly.supabase.co';
+                const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp5bHhuZHBqYm5lanJmZ3lsdGx5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3Mzg3NjAsImV4cCI6MjA4ODMxNDc2MH0.LBjmM5DGwGQJdb0OOD7c7CEmgNc3KAP3YPWJcpOxLnY';
 
-                document.getElementById('messaggio').textContent = `Trovate ${data.length} richieste`;
+                output.innerHTML = '📡 Invio richiesta a Supabase...';
+                
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/richieste?select=*`, {
+                    headers: {
+                        'apikey': SUPABASE_ANON_KEY,
+                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+                    }
+                });
 
-                if (data.length > 0) {
-                    const tbody = document.getElementById('corpo-tabella');
-                    data.forEach(row => {
-                        const tr = document.createElement('tr');
-                        tr.innerHTML = `
-                            <td>${row.id || ''}</td>
-                            <td>${row.nome || ''}</td>
-                            <td>${row.email || ''}</td>
-                            <td>${row.telefono || ''}</td>
-                            <td>€${row.importo_nu || 0}</td>
-                            <td>${row.stato || ''}</td>
-                        `;
-                        tbody.appendChild(tr);
-                    });
-                    document.getElementById('tabella').style.display = 'table';
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status} - ${await response.text()}`);
                 }
-            } catch (e) {
-                document.getElementById('messaggio').textContent = 'Errore: ' + e.message;
-            }
-        }
 
-        carica();
+                const data = await response.json();
+                
+                output.innerHTML = `<span class="success">✅ Successo! Trovate ${data.length} richieste</span>`;
+                
+                if (data.length > 0) {
+                    output.innerHTML += '<br><br><strong>Prima richiesta:</strong>';
+                    output.innerHTML += `<pre>${JSON.stringify(data[0], null, 2)}</pre>`;
+                } else {
+                    output.innerHTML += '<br>📭 Nessuna richiesta trovata (tabella vuota)';
+                }
+                
+            } catch (error) {
+                output.innerHTML = `<span class="error">❌ Errore: ${error.message}</span>`;
+            }
+        })();
     </script>
 </body>
 </html>
