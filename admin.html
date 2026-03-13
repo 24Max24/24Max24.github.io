@@ -1,142 +1,393 @@
-<!-- Sostituisci TUTTO il contenuto del tuo index.html con questo -->
 <!DOCTYPE html>
 <html lang="it">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stockholm Claim Partners - Recupero Fondi</title>
+    <title>📊 Admin Panel - Stockholm Claim Partners</title>
     <style>
-        /* Inserisci qui tutti i tuoi stili CSS attuali */
-        /* ... */
-    </style>
-    <script type="importmap">
-        {
-            "imports": {
-                "@supabase/supabase-js": "https://esm.sh/@supabase/supabase-js@2"
-            }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
         }
-    </script>
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: white;
+            padding: 20px 30px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        h1 {
+            color: #333;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logout-btn {
+            background: #ff4757;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+
+        .logout-btn:hover {
+            background: #ff6b81;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-card h3 {
+            color: #666;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+
+        .stat-number {
+            font-size: 32px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .table-container {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            text-align: left;
+            padding: 15px 10px;
+            background: #f8f9fa;
+            color: #333;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        td {
+            padding: 15px 10px;
+            border-bottom: 1px solid #eee;
+            color: #555;
+            font-size: 14px;
+        }
+
+        tr:hover {
+            background: #f8f9fa;
+        }
+
+        .status {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            display: inline-block;
+        }
+
+        .status.in_valutazioni { background: #fff3e0; color: #f57c00; }
+        .status.in_recupero { background: #e8f5e8; color: #388e3c; }
+        .status.completata { background: #e8eaf6; color: #3f51b5; }
+
+        .view-btn {
+            background: none;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        .view-btn:hover { background: #f0f0f0; }
+
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            color: white;
+            font-size: 14px;
+        }
+
+        .login-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .login-box {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            width: 90%;
+            max-width: 400px;
+        }
+
+        .login-box h2 {
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .login-box input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 2px solid #eee;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .login-box button {
+            width: 100%;
+            padding: 12px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .login-box button:hover {
+            background: #764ba2;
+        }
+
+        .error-message {
+            color: #ff4757;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
 </head>
 <body>
-    <!-- Mantieni tutto il tuo HTML esistente (header, sezioni, ecc.) -->
-    <!-- Sostituisci SOLO il form con questo: -->
-
-    <div class="form-container">
-        <h2>Inizia la tua pratica di recupero</h2>
-        <p>Compila il form con i dettagli della tua situazione. Ti contatteremo entro 24 ore.</p>
-        
-        <form id="recuperoForm">
-            <div class="form-group">
-                <label>Nome e Cognome *</label>
-                <input type="text" id="nome" required>
-            </div>
-            
-            <div class="form-group">
-                <label>Codice Fiscale *</label>
-                <input type="text" id="codiceFiscale" required>
-            </div>
-            
-            <div class="form-group">
-                <label>Email *</label>
-                <input type="email" id="email" required>
-            </div>
-            
-            <div class="form-group">
-                <label>Telefono *</label>
-                <input type="tel" id="telefono" required>
-            </div>
-            
-            <div class="form-group">
-                <label>Tipo di perdita *</label>
-                <select id="tipoPerdita" required>
-                    <option value="">Seleziona...</option>
-                    <option value="crypto">Crypto / Blockchain</option>
-                    <option value="bancario">Bonifico / Frode bancaria</option>
-                    <option value="wallet">Accesso perso / Wallet</option>
-                    <option value="altro">Altro</option>
-                </select>
-            </div>
-            
-            <div class="form-group">
-                <label>Importo perso (€) *</label>
-                <input type="number" id="importoPerso" required>
-            </div>
-            
-            <div class="form-group">
-                <label>Descrizione dettagliata *</label>
-                <textarea id="descrizione" rows="4" required></textarea>
-            </div>
-            
-            <div class="form-group">
-                <label>Documenti (PDF, JPG, PNG)</label>
-                <input type="file" id="documenti" multiple accept=".pdf,.jpg,.jpeg,.png">
-                <small>Puoi caricare più file (max 10MB ciascuno)</small>
-                <div id="fileList"></div>
-            </div>
-            
-            <button type="submit" class="submit-btn">Invia richiesta</button>
-        </form>
-        <div id="formMessage"></div>
+    <!-- Login Modal -->
+    <div id="loginModal" class="login-modal">
+        <div class="login-box">
+            <h2>🔐 Accesso Admin</h2>
+            <input type="password" id="passwordInput" placeholder="Password" onkeypress="if(event.key==='Enter') checkPassword()">
+            <button onclick="checkPassword()">Accedi</button>
+            <div id="loginError" class="error-message"></div>
+        </div>
     </div>
 
-    <!-- Mantieni il resto del footer e altri elementi -->
+    <!-- Admin Content -->
+    <div id="adminContent" class="container hidden">
+        <header>
+            <h1>📊 Stockholm Claim Partners - Admin Panel</h1>
+            <button class="logout-btn" onclick="logout()">Esci</button>
+        </header>
 
-    <script type="module">
-        import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
-        
-        const SUPABASE_URL = 'https://zylxndpjbnejrfgyltly.supabase.co';
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp5bHhuZHBqYm5lanJmZ3lsdGx5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3Mzg3NjAsImV4cCI6MjA4ODMxNDc2MH0.LBjmM5DGwGQJdb0OOD7c7CEmgNc3KAP3YPWJcpOxLnY';
-        
-        const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-        
-        document.getElementById('recuperoForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            const messageDiv = document.getElementById('formMessage');
-            messageDiv.innerHTML = '⏳ Invio in corso...';
-            
-            try {
-                // Upload documenti se presenti
-                let documentiArray = [];
-                const fileInput = document.getElementById('documenti');
-                if (fileInput.files.length > 0) {
-                    for (let file of fileInput.files) {
-                        const fileName = `${Date.now()}_${file.name}`;
-                        const { data, error } = await supabase.storage
-                            .from('DOCUMENTI-UTENTI')
-                            .upload(fileName, file);
-                        
-                        if (error) throw error;
-                        documentiArray.push(data.path);
-                    }
-                }
-                
-                // Inserisci richiesta nel database
-                const { data, error } = await supabase
-                    .from('richieste')
-                    .insert([
-                        {
-                            nome: document.getElementById('nome').value,
-                            codice_fiscale: document.getElementById('codiceFiscale').value,
-                            email: document.getElementById('email').value,
-                            telefono: document.getElementById('telefono').value,
-                            tipo_perdita: document.getElementById('tipoPerdita').value,
-                            importo_nu: parseFloat(document.getElementById('importoPerso').value),
-                            descrizione: document.getElementById('descrizione').value,
-                            documenti: documentiArray,
-                            stato: 'in_valutazioni'
-                        }
-                    ]);
-                
-                if (error) throw error;
-                
-                messageDiv.innerHTML = '✅ Richiesta inviata con successo! Ti contatteremo entro 24 ore.';
-                document.getElementById('recuperoForm').reset();
-                
-            } catch (error) {
-                messageDiv.innerHTML = `❌ Errore: ${error.message}`;
+        <div class="stats-grid">
+            <div class="stat-card"><h3>Totale Richieste</h3><div class="stat-number" id="totale-richieste">0</div></div>
+            <div class="stat-card"><h3>In Valutazione</h3><div class="stat-number" id="in-valutazione">0</div></div>
+            <div class="stat-card"><h3>In Recupero</h3><div class="stat-number" id="in-recupero">0</div></div>
+            <div class="stat-card"><h3>Completate</h3><div class="stat-number" id="completate">0</div></div>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Data</th>
+                        <th>Nome</th>
+                        <th>Codice Fiscale</th>
+                        <th>Email</th>
+                        <th>Telefono</th>
+                        <th>Tipo Perdita</th>
+                        <th>Importo (€)</th>
+                        <th>Descrizione</th>
+                        <th>Documenti</th>
+                        <th>Stato</th>
+                        <th>Azioni</th>
+                    </tr>
+                </thead>
+                <tbody id="tabella-richieste">
+                    <tr><td colspan="12" style="text-align: center; padding: 50px;">🔄 Caricamento dati...</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <footer>© 2026 Stockholm Claim Partners</footer>
+    </div>
+
+    <script>
+        const ADMIN_PASSWORD = 'stockholm2026';
+
+        function checkPassword() {
+            const pwd = document.getElementById('passwordInput').value;
+            if (pwd === ADMIN_PASSWORD) {
+                document.getElementById('loginModal').classList.add('hidden');
+                document.getElementById('adminContent').classList.remove('hidden');
+                caricaDati();
+            } else {
+                document.getElementById('loginError').textContent = '❌ Password errata';
             }
-        });
+        }
+
+        function logout() {
+            if (confirm('Sei sicuro di voler uscire?')) {
+                document.getElementById('adminContent').classList.add('hidden');
+                document.getElementById('loginModal').classList.remove('hidden');
+                document.getElementById('passwordInput').value = '';
+                document.getElementById('loginError').textContent = '';
+            }
+        }
+
+        function formatDate(dateString) {
+            if (!dateString) return '-';
+            try {
+                const date = new Date(dateString);
+                return date.toLocaleDateString('it-IT');
+            } catch {
+                return '-';
+            }
+        }
+
+        function formatEuro(amount) {
+            if (!amount && amount !== 0) return '€0';
+            return '€' + parseFloat(amount).toLocaleString('it-IT');
+        }
+
+        function getStatusClass(stato) {
+            if (!stato) return 'in_valutazioni';
+            const s = stato.toLowerCase();
+            if (s.includes('valutazione')) return 'in_valutazioni';
+            if (s.includes('recupero')) return 'in_recupero';
+            if (s === 'completata') return 'completata';
+            return 'in_valutazioni';
+        }
+
+        async function caricaDati() {
+            try {
+                const SUPABASE_URL = 'https://zylxndpjbnejrfgyltly.supabase.co';
+                const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp5bHhuZHBqYm5lanJmZ3lsdGx5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3Mzg3NjAsImV4cCI6MjA4ODMxNDc2MH0.LBjmM5DGwGQJdb0OOD7c7CEmgNc3KAP3YPWJcpOxLnY';
+
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/richieste?select=*`, {
+                    headers: {
+                        'apikey': SUPABASE_ANON_KEY,
+                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+
+                const data = await response.json();
+                
+                const tbody = document.getElementById('tabella-richieste');
+                
+                if (!data || data.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="12" style="text-align: center;">📭 Nessuna richiesta</td></tr>';
+                    return;
+                }
+
+                let inVal = 0, inRec = 0, comp = 0;
+                let html = '';
+
+                data.forEach(row => {
+                    const stato = row.stato || 'in_valutazioni';
+                    if (stato === 'in_valutazioni') inVal++;
+                    else if (stato === 'in_recupero') inRec++;
+                    else if (stato === 'completata') comp++;
+
+                    // Gestione documenti
+                    let documenti = '-';
+                    if (row.documenti) {
+                        if (Array.isArray(row.documenti)) {
+                            documenti = row.documenti.length ? `${row.documenti.length} file` : '-';
+                        } else {
+                            documenti = '✓';
+                        }
+                    }
+
+                    html += `<tr>
+                        <td><strong>#${row.id || '-'}</strong></td>
+                        <td>${formatDate(row.created_at)}</td>
+                        <td>${row.nome || '-'}</td>
+                        <td>${row.codice_fiscale || '-'}</td>
+                        <td>${row.email || '-'}</td>
+                        <td>${row.telefono || '-'}</td>
+                        <td>${row.tipo_perdita || '-'}</td>
+                        <td>${formatEuro(row.importo_nu)}</td>
+                        <td>${row.descrizione ? (row.descrizione.substring(0,30) + (row.descrizione.length>30?'...':'')) : '-'}</td>
+                        <td>${documenti}</td>
+                        <td><span class="status ${getStatusClass(stato)}">${stato}</span></td>
+                        <td><button class="view-btn" onclick='alert(${JSON.stringify(row).replace(/'/g, "\\'")})'>👁️</button></td>
+                    </tr>`;
+                });
+
+                tbody.innerHTML = html;
+                
+                document.getElementById('totale-richieste').textContent = data.length;
+                document.getElementById('in-valutazione').textContent = inVal;
+                document.getElementById('in-recupero').textContent = inRec;
+                document.getElementById('completate').textContent = comp;
+
+            } catch (error) {
+                document.getElementById('tabella-richieste').innerHTML = 
+                    `<tr><td colspan="12" style="color:#ff4757; text-align:center;">
+                        ❌ Errore: ${error.message}
+                    </td></tr>`;
+            }
+        }
     </script>
 </body>
 </html>
