@@ -2244,7 +2244,7 @@ console.log('2. Inizio pulizia importo');
                 
                 // 2. Pulisci l'importo (rimuovi punti e virgole, converti in numero)
                 const importoText = document.getElementById('importo').value || '';
-                console.log('3. Valore importo pulito:', importoNum);
+                console.log('3. Valore importo pulito:', importoText);
 console.log('4. Inizio controllo campi');
                 
                 // 3. Salva richiesta nel database
@@ -2296,7 +2296,7 @@ const { data, error } = await supabase
             email: document.getElementById('email').value,
             telefono: document.getElementById('telefono').value,
             tipo_perdita: document.getElementById('tipo').value,
-            importo: importoNum,
+            importo: importoText,
             descrizione: document.getElementById('descrizione').value,
             documenti: documentiArray || [],
             stato: 'in_valutazioni'
@@ -2317,7 +2317,7 @@ if (error) {
         email: document.getElementById('email').value,
         telefono: document.getElementById('telefono').value,
         tipo: document.getElementById('tipo').value,
-        importo: importoNum,
+        importo: importoText,
         timestamp: Date.now(),
         files: documentiArray ? documentiArray.length : 0
     };
@@ -2604,7 +2604,7 @@ document.getElementById('recoveryForm').addEventListener('submit', async functio
         // Importo
         let importoText = document.getElementById('importo')?.value || '0'
         importoText = importoText.replace(/[^0-9.,]/g, '').replace(',', '.')
-        const importoNum = parseFloat(importoText) || 0
+        const importoText = parseFloat(importoText) || 0
         
         // Inserimento in Supabase
         const { error } = await supabase
@@ -2615,7 +2615,7 @@ document.getElementById('recoveryForm').addEventListener('submit', async functio
                 email: document.getElementById('email')?.value || '',
                 telefono: document.getElementById('telefono')?.value || '',
                 tipo_perdita: document.getElementById('tipo')?.value || '',
-                importo: importoNum,
+                importo: importoText,
                 descrizione: document.getElementById('descrizione')?.value || '',
                 documenti: documentiArray,
                 stato: 'in_valutazioni'
