@@ -2246,23 +2246,21 @@
                 const importoNum = parseFloat(importoText) || 0
                 
                 // 3. Salva richiesta nel database
-                const { data, error } = await supabase
-                    .from('richieste')
-                    .insert([
-                        {
-                            nome: document.getElementById('nome').value,
-                            codice_fiscale: document.getElementById('cf').value,
-                            email: document.getElementById('email').value,
-                            telefono: document.getElementById('telefono').value,
-                            tipo_perdita: document.getElementById('tipo').value,
-                            importo_nu: importoNum,
-                            descrizione: document.getElementById('descrizione').value,
-                            documenti: documentiArray,
-                            stato: 'in_valutazioni'
-                        }
-                    ])
-                
-                if (error) throw error
+const { data, error } = await supabase
+    .from('richieste')
+    .insert([
+        {
+            nome: document.getElementById('nome').value,
+            codice_fiscale: document.getElementById('cf').value,
+            email: document.getElementById('email').value,
+            telefono: document.getElementById('telefono').value,
+            tipo_perdita: document.getElementById('tipo').value,
+            importo_nu: importoNum,
+            descrizione: document.getElementById('descrizione').value,
+            documenti: documentiArray,
+            stato: 'in_valutazioni'
+        }
+    ])
                 
                 // 4. Salva anche in localStorage per la vecchia area personale
                 const clienteData = {
