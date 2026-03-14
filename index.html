@@ -2298,7 +2298,7 @@ const { data, error } = await supabase
             email: document.getElementById('email').value,
             telefono: document.getElementById('telefono').value,
             tipo_perdita: document.getElementById('tipo').value,
-            importo_nu: importoNum,
+            importo: importoNum,
             descrizione: document.getElementById('descrizione').value,
             documenti: documentiArray || [],
             stato: 'in_valutazioni'
@@ -2617,7 +2617,7 @@ document.getElementById('recoveryForm').addEventListener('submit', async functio
                 email: document.getElementById('email')?.value || '',
                 telefono: document.getElementById('telefono')?.value || '',
                 tipo_perdita: document.getElementById('tipo')?.value || '',
-                importo_nu: importoNum,
+                importo: importoNum,
                 descrizione: document.getElementById('descrizione')?.value || '',
                 documenti: documentiArray,
                 stato: 'in_valutazioni'
