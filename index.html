@@ -2227,7 +2227,9 @@
             try {
                 // 1. Upload documenti su Supabase Storage
                 let documentiArray = []
-                
+console.log('=== INIZIO INVIO RICHIESTA ===');
+console.log('1. Caricamento file completato');
+console.log('2. Inizio pulizia importo'); 
                 if (uploadedFiles.length > 0) {
                     for (let file of uploadedFiles) {
                         const fileName = `${Date.now()}_${file.name}`
@@ -2244,6 +2246,8 @@
                 let importoText = document.getElementById('importo').value
                 importoText = importoText.replace(/[^0-9.,]/g, '').replace(',', '.')
                 const importoNum = parseFloat(importoText) || 0;
+                console.log('3. Valore importo pulito:', importoNum);
+console.log('4. Inizio controllo campi');
                 
                 // 3. Salva richiesta nel database
 // Verifica che tutti i campi siano compilati
