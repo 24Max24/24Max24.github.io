@@ -2246,21 +2246,48 @@
                 const importoNum = parseFloat(importoText) || 0
                 
                 // 3. Salva richiesta nel database
+// Verifica che tutti i campi siano compilati
+const nome = document.getElementById('nome')?.value;
+const cf = document.getElementById('cf')?.value;
+const email = document.getElementById('email')?.value;
+const telefono = document.getElementById('telefono')?.value;
+const tipo = document.getElementById('tipo')?.value;
+const importoField = document.getElementById('importo_nu');
+const descrizione = document.getElementById('descrizione')?.value;
+
+if (!nome || !cf || !email || !telefono || !tipo || !importoField?.value || !descrizione) {
+    alert('Per favore, compila tutti i campi del form.');
+    return;
+}
+
+// Calcola importoNum
+const importoNum = parseFloat(importoField.value) || 0;
+
+// 3. Salva richiesta nel database
 const { data, error } = await supabase
     .from('richieste')
     .insert([
         {
-            nome: document.getElementById('nome').value,
-            codice_fiscale: document.getElementById('cf').value,
-            email: document.getElementById('email').value,
-            telefono: document.getElementById('telefono').value,
-            tipo_perdita: document.getElementById('tipo').value,
+            nome: nome,
+            codice_fiscale: cf,
+            email: email,
+            telefono: telefono,
+            tipo_perdita: tipo,
             importo_nu: importoNum,
-            descrizione: document.getElementById('descrizione').value,
+            descrizione: descrizione,
             documenti: documentiArray,
             stato: 'in_valutazioni'
         }
     ])
+
+if (error) {
+    console.error('Errore Supabase:', error);
+    alert('Errore durante l\'invio: ' + error.message);
+    return;
+} else {
+    console.log('Successo!', data);
+    alert('Richiesta inviata con successo!');
+}
                 
                 // 4. Salva anche in localStorage per la vecchia area personale
                 const clienteData = {
