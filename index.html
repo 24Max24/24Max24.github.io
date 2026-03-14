@@ -2264,50 +2264,62 @@ if (!nome || !cf || !email || !telefono || !tipo || !importoField?.value || !des
 const importoNum = parseFloat(importoField.value) || 0;
 
 // 3. Salva richiesta nel database
+console.log('DATI INVIATI:', {
+    nome: document.getElementById('nome').value,
+    codice_fiscale: document.getElementById('cf').value,
+    email: document.getElementById('email').value,
+    telefono: document.getElementById('telefono').value,
+    tipo_perdita: document.getElementById('tipo').value,
+    importo_nu: importoNum,
+    descrizione: document.getElementById('descrizione').value,
+    documenti: documentiArray || [], // Assicurati che documentiArray esista
+    stato: 'in_valutazioni'
+});
+
 const { data, error } = await supabase
     .from('richieste')
     .insert([
         {
-            nome: nome,
-            codice_fiscale: cf,
-            email: email,
-            telefono: telefono,
-            tipo_perdita: tipo,
+            nome: document.getElementById('nome').value,
+            codice_fiscale: document.getElementById('cf').value,
+            email: document.getElementById('email').value,
+            telefono: document.getElementById('telefono').value,
+            tipo_perdita: document.getElementById('tipo').value,
             importo_nu: importoNum,
-            descrizione: descrizione,
-            documenti: documentiArray,
+            descrizione: document.getElementById('descrizione').value,
+            documenti: documentiArray || [],
             stato: 'in_valutazioni'
         }
-    ])
+    ]);
 
 if (error) {
-    console.error('Errore Supabase:', error);
-    alert('Errore durante l\'invio: ' + error.message);
+    console.error('Errore Supabase DETTAGLIATO:', error);
+    alert('Errore durante l\'invio: ' + error.message + '\nDettagli: ' + JSON.stringify(error));
     return;
 } else {
-    console.log('Successo!', data);
-    alert('Richiesta inviata con successo!');
+    console.log('Successo! Dati salvati:', data);
+    
+    // 4. Salva anche in localStorage per la vecchia area personale
+    const clienteData = {
+        nome: document.getElementById('nome').value,
+        cf: document.getElementById('cf').value,
+        email: document.getElementById('email').value,
+        telefono: document.getElementById('telefono').value,
+        tipo: document.getElementById('tipo').value,
+        importo: importoNum,
+        timestamp: Date.now(),
+        files: documentiArray ? documentiArray.length : 0
+    };
+    
+    localStorage.setItem('cliente_nome', document.getElementById('nome').value);
+    localStorage.setItem('cliente_cf', document.getElementById('cf').value);
+    localStorage.setItem('cliente_data', JSON.stringify(clienteData));
+    localStorage.setItem('pratica_inviata', Date.now().toString());
+    
+    messageDiv.innerHTML = `Richiesta inviata con successo! Riceverai una email entro 24 ore.`;
+    messageDiv.style.backgroundColor = '#d4edda';
+    messageDiv.style.color = '#155724';
 }
-                
-                // 4. Salva anche in localStorage per la vecchia area personale
-                const clienteData = {
-                    nome: document.getElementById('nome').value,
-                    cf: document.getElementById('cf').value,
-                    email: document.getElementById('email').value,
-                    telefono: document.getElementById('telefono').value,
-                    tipo: document.getElementById('tipo').value,
-                    importo: importoNum,
-                    timestamp: Date.now(),
-                    files: documentiArray.length
-                }
-                
-                localStorage.setItem('cliente_nome', document.getElementById('nome').value)
-                localStorage.setItem('cliente_cf', document.getElementById('cf').value)
-                localStorage.setItem('cliente_data', JSON.stringify(clienteData))
-                localStorage.setItem('pratica_inviata', Date.now().toString())
-                
-                messageDiv.innerHTML = '✅ Richiesta inviata con successo! Riceverai una email entro 24 ore.'
-                messageDiv.style.color = 'green'
                 
                 // Reset form
                 this.reset()
