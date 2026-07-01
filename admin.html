@@ -527,6 +527,7 @@
 
                 aggiornaStats(data);
                 mostraTabella(data);
+
             } catch (error) {
                 document.getElementById('tabella-richieste').innerHTML =
                     `<tr><td colspan="11" style="color:#ff4757; text-align:center; padding:30px;">
@@ -554,9 +555,7 @@
         }
 
         // ============ MOSTRA TABELLA ============
-       function mostraTabella(data) {
-    console.log('📊 Mostra tabella, dati:', data); // AGGIUNGI QUESTA RIGA
-    const tbody = document.getElementById('tabella-richieste');
+        function mostraTabella(data) {
             const tbody = document.getElementById('tabella-richieste');
 
             if (!data || data.length === 0) {
