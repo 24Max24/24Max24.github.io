@@ -439,6 +439,334 @@
     </div>
 
     <script>
+    // ============ CONFIGURAZIONE ============
+    const ADMIN_PASSWORD = 'stockholm2026';
+    const SUPABASE_URL = 'https://zylxndpjbnejrfgyltly.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp5bHhuZHBqYm5lanJmZ3lsdGx5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3Mzg3NjAsImV4cCI6MjA4ODMxNDc2MH0.LBjmM5DGwGQJdb0OOD7c7CEmgNc3KAP3YPWJcpOxLnY';
+
+    let tutteLeRichieste = [];
+    let idRichiestaInApprovazione = null;
+
+    // ============ LOGIN / LOGOUT ============
+    function checkPassword() {
+        const pwd = document.getElementById('passwordInput').value;
+        if (pwd === ADMIN_PASSWORD) {
+            document.getElementById('loginModal').classList.add('hidden');
+            document.getElementById('adminContent').classList.remove('hidden');
+            caricaDati();
+        } else {
+            document.getElementById('loginError').textContent = '❌ Password errata';
+        }
+    }
+
+    function logout() {
+        if (confirm('Sei sicuro di voler uscire?')) {
+            document.getElementById('adminContent').classList.add('hidden');
+            document.getElementById('loginModal').classList.remove('hidden');
+            document.getElementById('passwordInput').value = '';
+            document.getElementById('loginError').textContent = '';
+        }
+    }
+
+    // ============ FUNZIONI UTILITY ============
+    function formatDate(dateString) {
+        if (!dateString) return '-';
+        try {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('it-IT', { day: '2-digit', month: '2-digit', year: 'numeric' });
+        } catch {
+            return '-';
+        }
+    }
+
+    function getStatusClass(stato) {
+        if (!stato) return 'in_valutazioni';
+        const s = stato.toLowerCase();
+        if (s === 'in_valutazioni') return 'in_valutazioni';
+        if (s === 'approvata') return 'approvata';
+        if (s === 'in_recupero') return 'in_recupero';
+        if (s === 'completata') return 'completata';
+        return 'in_valutazioni';
+    }
+
+    function getStatoLabel(stato) {
+        const labels = {
+            'in_valutazioni': '⏳ In Valutazione',
+            'approvata': '✅ Approvata',
+            'in_recupero': '🔄 In Recupero',
+            'completata': '🎉 Completata'
+        };
+        return labels[stato] || stato || '⏳ In Valutazione';
+    }
+
+    function getTipoPerditaLabel(tipo) {
+        const labels = {
+            'crypto': '💰 Transazione crypto bloccata / persa',
+            'frode': '⚠️ Vittima di frode / truffa',
+            'bonifico': '🏦 Bonifico non ricevuto / bloccato',
+            'wallet': '🔐 Accesso perso a wallet',
+            'altro': '❓ Altro'
+        };
+        return labels[tipo] || tipo || '-';
+    }
+
+    // ============ CARICA DATI ============
+    async function caricaDati() {
+        try {
+            const response = await fetch(`${SUPABASE_URL}/rest/v1/richieste?select=*`, {
+                headers: {
+                    'apikey': SUPABASE_ANON_KEY,
+                    'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+                }
+            });
+
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+            const data = await response.json();
+            tutteLeRichieste = data;
+
+            aggiornaStats(data);
+            mostraTabella(data);
+
+        } catch (error) {
+            document.getElementById('tabella-richieste').innerHTML =
+                `<tr><td colspan="11" style="color:#ff4757; text-align:center; padding:30px;">
+                    ❌ Errore: ${error.message}
+                </td></tr>`;
+        }
+    }
+
+    // ============ AGGIORNA STATS ============
+    function aggiornaStats(data) {
+        let inVal = 0, approvate = 0, inRec = 0, comp = 0;
+        data.forEach(row => {
+            const stato = row.stato || 'in_valutazioni';
+            if (stato === 'in_valutazioni') inVal++;
+            else if (stato === 'approvata') approvate++;
+            else if (stato === 'in_recupero') inRec++;
+            else if (stato === 'completata') comp++;
+        });
+
+        document.getElementById('totale-richieste').textContent = data.length;
+        document.getElementById('in-valutazione').textContent = inVal;
+        document.getElementById('approvate').textContent = approvate;
+        document.getElementById('in-recupero').textContent = inRec;
+        document.getElementById('completate').textContent = comp;
+    }
+
+    // ============ MOSTRA TABELLA ============
+    function mostraTabella(data) {
+        const tbody = document.getElementById('tabella-richieste');
+
+        if (!data || data.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="11" style="text-align:center; padding:40px;">📭 Nessuna richiesta</td></tr>';
+            return;
+        }
+
+        let html = '';
+        data.forEach(row => {
+            const stato = row.stato || 'in_valutazioni';
+            const isApprovata = stato === 'approvata';
+
+            html += `<tr>
+                <td><strong>${String(row.id || '').substring(0, 8)}</strong></td>
+                <td>${formatDate(row.data_richiesta || row.created_at)}</td>
+                <td>${row.nome || '-'} ${row.cognome || ''}</td>
+                <td>${row.codice_fiscale || '-'}</td>
+                <td>${row.email || '-'}</td>
+                <td>${row.telefono || '-'}</td>
+                <td style="max-width: 180px; word-wrap: break-word;">${getTipoPerditaLabel(row.tipo_perdita)}</td>
+                <td style="max-width: 150px; word-wrap: break-word;">${row.importo || '-'}</td>
+                <td style="max-width: 250px; word-wrap: break-word;">${row.descrizione || '-'}</td>
+                <td><span class="status ${getStatusClass(stato)}">${getStatoLabel(stato)}</span></td>
+                <td style="white-space: nowrap;">
+                    ${!isApprovata ? `<button class="btn-approva" onclick="apriModaleApprova('${row.id}')">✏️ Approva</button>` : ''}
+                    <button class="btn-dettagli" onclick="mostraDettagli('${row.id}')">📋</button>
+                    <button class="btn-delete" onclick="eliminaRichiesta('${row.id}')">🗑️</button>
+                </td>
+            </tr>`;
+        });
+
+        tbody.innerHTML = html;
+    }
+
+    // ============ APRI MODALE APPROVAZIONE ============
+    function apriModaleApprova(id) {
+        console.log('🔍 Approva ID:', id);
+        
+        const richiesta = tutteLeRichieste.find(r => r.id === id);
+        if (!richiesta) {
+            alert('❌ Richiesta non trovata');
+            return;
+        }
+
+        idRichiestaInApprovazione = id;
+
+        document.getElementById('approvaNome').textContent = `${richiesta.nome || ''} ${richiesta.cognome || ''}`;
+        document.getElementById('approvaEmail').textContent = richiesta.email || '';
+        document.getElementById('approvaImportoPerso').textContent = richiesta.importo || '€0';
+
+        // Precompila data odierna
+        document.getElementById('inputDataAccredito').value = new Date().toISOString().split('T')[0];
+        
+        // Imposta USDC come default
+        document.getElementById('inputValuta').value = 'USDC';
+        document.getElementById('inputRete').value = 'Solana (Sol)';
+
+        document.getElementById('modalApprova').style.display = 'flex';
+    }
+
+    function closeModalApprova() {
+        document.getElementById('modalApprova').style.display = 'none';
+        idRichiestaInApprovazione = null;
+    }
+
+    // ============ CONFERMA APPROVAZIONE ============
+    async function confermaApprova() {
+        if (!idRichiestaInApprovazione) {
+            alert('❌ Nessuna richiesta selezionata');
+            return;
+        }
+
+        const importoRecuperato = document.getElementById('inputImportoRecuperato').value.trim();
+        const valuta = document.getElementById('inputValuta').value;
+        const rete = document.getElementById('inputRete').value;
+        const txHash = document.getElementById('inputTxHash').value.trim();
+        const note = document.getElementById('inputNote').value.trim();
+        const commissionePercentuale = parseFloat(document.getElementById('inputCommissione').value) || 15;
+        const dataAccredito = document.getElementById('inputDataAccredito').value;
+
+        if (!importoRecuperato) {
+            alert('❌ Inserisci l\'importo recuperato.');
+            return;
+        }
+
+        if (!txHash) {
+            alert('❌ Inserisci l\'hash della transazione (TXID).');
+            return;
+        }
+
+        const importoNum = parseFloat(importoRecuperato.replace(/[^0-9,.]/g, '').replace(',', '.'));
+        const commissione = (importoNum * (commissionePercentuale / 100)).toFixed(2);
+
+        try {
+            const response = await fetch(`${SUPABASE_URL}/rest/v1/richieste?id=eq.${idRichiestaInApprovazione}`, {
+                method: 'PATCH',
+                headers: {
+                    'apikey': SUPABASE_ANON_KEY,
+                    'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                    'Content-Type': 'application/json',
+                    'Prefer': 'return=minimal'
+                },
+                body: JSON.stringify({
+                    stato: 'approvata',
+                    data_approvazione: new Date().toISOString(),
+                    importo_recuperato: importoRecuperato,
+                    valuta: valuta,
+                    rete: rete,
+                    tx_hash: txHash,
+                    note_recupero: note,
+                    data_accredito: dataAccredito,
+                    commissione: commissione,
+                    commissione_percentuale: commissionePercentuale
+                })
+            });
+
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+            alert(`✅ Richiesta approvata con successo!\n\n💰 Importo Recuperato: ${importoRecuperato} ${valuta}\n🔗 Rete: ${rete}\n🔑 TXID: ${txHash}\n📊 Commissione: ${commissione} € (${commissionePercentuale}%)`);
+
+            closeModalApprova();
+            caricaDati();
+
+        } catch (error) {
+            alert('❌ Errore durante l\'approvazione: ' + error.message);
+        }
+    }
+
+    // ============ MOSTRA DETTAGLI ============
+    function mostraDettagli(id) {
+        const richiesta = tutteLeRichieste.find(r => r.id === id);
+        if (!richiesta) return;
+
+        const modalBody = document.getElementById('modalBody');
+        let html = `
+            <div class="modal-field"><strong>Nome:</strong> ${richiesta.nome || ''} ${richiesta.cognome || ''}</div>
+            <div class="modal-field"><strong>Email:</strong> ${richiesta.email || ''}</div>
+            <div class="modal-field"><strong>Telefono:</strong> ${richiesta.telefono || ''}</div>
+            <div class="modal-field"><strong>Codice Fiscale:</strong> ${richiesta.codice_fiscale || ''}</div>
+            <div class="modal-field"><strong>Tipo Perdita:</strong> ${getTipoPerditaLabel(richiesta.tipo_perdita)}</div>
+            <div class="modal-field"><strong>Importo Perso:</strong> ${richiesta.importo || ''}</div>
+            <div class="modal-field"><strong>Descrizione:</strong> ${richiesta.descrizione || '-'}</div>
+            <div class="modal-field"><strong>Data Richiesta:</strong> ${formatDate(richiesta.data_richiesta || richiesta.created_at)}</div>
+            <div class="modal-field"><strong>Stato:</strong> ${getStatoLabel(richiesta.stato)}</div>
+        `;
+
+        if (richiesta.stato === 'approvata') {
+            html += `
+                <div style="background:#f0fff4;padding:15px;border-radius:8px;margin-top:10px;border:2px solid #10b981;">
+                    <strong>💰 Importo Recuperato:</strong> ${richiesta.importo_recuperato || ''} ${richiesta.valuta || 'USDC'}<br>
+                    <strong>🔗 Rete:</strong> ${richiesta.rete || ''}<br>
+                    <strong>🔑 TXID:</strong> <span style="font-family:monospace;font-size:11px;word-break:break-all;">${richiesta.tx_hash || ''}</span><br>
+                    <strong>📊 Commissione:</strong> ${richiesta.commissione || ''} € (${richiesta.commissione_percentuale || 15}%)<br>
+                    <strong>📅 Data Accredito:</strong> ${richiesta.data_accredito || ''}
+                    ${richiesta.note_recupero ? `<br><strong>📝 Note:</strong> ${richiesta.note_recupero}` : ''}
+                </div>
+            `;
+        }
+
+        modalBody.innerHTML = html;
+        document.getElementById('modalDettagli').style.display = 'flex';
+    }
+
+    function closeModalDettagli() {
+        document.getElementById('modalDettagli').style.display = 'none';
+    }
+
+    // ============ ELIMINA RICHIESTA ============
+    async function eliminaRichiesta(id) {
+        if (!confirm('⚠️ Sei sicuro di voler eliminare questa richiesta?')) return;
+
+        try {
+            const response = await fetch(`${SUPABASE_URL}/rest/v1/richieste?id=eq.${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'apikey': SUPABASE_ANON_KEY,
+                    'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+                }
+            });
+
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+            alert('✅ Richiesta eliminata.');
+            caricaDati();
+
+        } catch (error) {
+            alert('❌ Errore durante l\'eliminazione: ' + error.message);
+        }
+    }
+
+    // ============ CHIUDI MODAL CLICCANDO FUORI ============
+    document.addEventListener('click', function(e) {
+        const modalApprova = document.getElementById('modalApprova');
+        const modalDettagli = document.getElementById('modalDettagli');
+        if (e.target === modalApprova) closeModalApprova();
+        if (e.target === modalDettagli) closeModalDettagli();
+    });
+
+    // ============ INVIO CON TASTO ENTER ============
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+            const modalApprova = document.getElementById('modalApprova');
+            if (modalApprova.style.display === 'flex') {
+                confermaApprova();
+            }
+        }
+    });
+
+    console.log('✅ Admin Panel caricato correttamente!');
+</script>
+        
         // ============ CONFIGURAZIONE ============
         const ADMIN_PASSWORD = 'stockholm2026';
         const SUPABASE_URL = 'https://zylxndpjbnejrfgyltly.supabase.co';
