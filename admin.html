@@ -569,7 +569,7 @@
                 const isApprovata = stato === 'approvata';
 
                 html += `<tr>
-                    <td><strong>${(row.id || '').substring(0, 8)}</strong></td>
+                    <td><strong>${String(row.id || '').substring(0, 8)}</strong></td>
                     <td>${formatDate(row.data_richiesta || row.created_at)}</td>
                     <td>${row.nome || '-'} ${row.cognome || ''}</td>
                     <td>${row.codice_fiscale || '-'}</td>
