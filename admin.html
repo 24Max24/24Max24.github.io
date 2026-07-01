@@ -59,7 +59,7 @@
 
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(5, 1fr);
             gap: 20px;
             margin-bottom: 30px;
         }
@@ -133,25 +133,116 @@
         .status.in_valutazioni { background: #fff3e0; color: #f57c00; }
         .status.in_recupero { background: #e8f5e8; color: #388e3c; }
         .status.completata { background: #e8eaf6; color: #3f51b5; }
+        .status.approvata { background: #d1fae5; color: #065f46; }
 
-        .view-btn {
+        /* PULSANTI AZIONI */
+        .btn-approva {
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 12px;
+            margin-right: 5px;
+        }
+        .btn-approva:hover { background: #059669; }
+
+        .btn-dettagli {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 12px;
+            margin-right: 5px;
+        }
+        .btn-dettagli:hover { background: #1d4ed8; }
+
+        .btn-delete {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 12px;
+        }
+        .btn-delete:hover { background: #dc2626; }
+
+        /* MODAL APPROVAZIONE */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background: white;
+            padding: 35px;
+            border-radius: 16px;
+            max-width: 550px;
+            width: 95%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .modal-close {
+            float: right;
             background: none;
             border: none;
-            font-size: 18px;
+            font-size: 28px;
             cursor: pointer;
-            padding: 5px 10px;
-            border-radius: 5px;
-            transition: background 0.3s;
+            color: #4a5568;
         }
-
-        .view-btn:hover { background: #f0f0f0; }
-
-        footer {
-            text-align: center;
-            margin-top: 30px;
-            color: white;
+        .modal-close:hover { color: #1a237e; }
+        .modal h2 { color: #1a237e; margin-bottom: 20px; }
+        .modal .form-group { margin-bottom: 18px; }
+        .modal .form-group label { display: block; font-weight: 600; margin-bottom: 5px; color: #2d3748; font-size: 14px; }
+        .modal .form-group input, .modal .form-group select, .modal .form-group textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
             font-size: 14px;
+            font-family: inherit;
         }
+        .modal .form-group input:focus, .modal .form-group textarea:focus { border-color: #1a237e; outline: none; }
+        .modal .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .modal .btn-approva-modal {
+            width: 100%;
+            padding: 14px;
+            background: #10b981;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .modal .btn-approva-modal:hover { background: #059669; }
+        .modal .info-box {
+            background: #f0f4f8;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 13px;
+        }
+        .modal .info-box strong { color: #1a237e; }
+
+        /* MODAL DETTAGLI */
+        .modal-field { padding: 8px 0; border-bottom: 1px solid #e2e8f0; }
+        .modal-field strong { color: #4a5568; }
 
         .login-modal {
             position: fixed;
@@ -214,6 +305,11 @@
         .hidden {
             display: none;
         }
+
+        @media (max-width: 768px) {
+            .stats-grid { grid-template-columns: 1fr 1fr; }
+            .modal .form-row { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
@@ -237,6 +333,7 @@
         <div class="stats-grid">
             <div class="stat-card"><h3>Totale Richieste</h3><div class="stat-number" id="totale-richieste">0</div></div>
             <div class="stat-card"><h3>In Valutazione</h3><div class="stat-number" id="in-valutazione">0</div></div>
+            <div class="stat-card"><h3>Approvate</h3><div class="stat-number" id="approvate">0</div></div>
             <div class="stat-card"><h3>In Recupero</h3><div class="stat-number" id="in-recupero">0</div></div>
             <div class="stat-card"><h3>Completate</h3><div class="stat-number" id="completate">0</div></div>
         </div>
@@ -253,23 +350,104 @@
                         <th>Telefono</th>
                         <th style="width: 180px">Tipo Perdita</th>
                         <th style="width: 150px">Importo</th>
-                        <th style="width: 350px">Descrizione</th>
-                        <th>Documenti</th>
+                        <th style="width: 250px">Descrizione</th>
                         <th>Stato</th>
                         <th>Azioni</th>
                     </tr>
                 </thead>
                 <tbody id="tabella-richieste">
-                    <tr><td colspan="12" style="text-align: center; padding: 50px;">🔄 Caricamento dati...</td></tr>
+                    <tr><td colspan="11" style="text-align: center; padding: 50px;">🔄 Caricamento dati...</td></tr>
                 </tbody>
             </table>
         </div>
         <footer>© 2026 Stockholm Claim Partners</footer>
     </div>
 
-    <script>
-        const ADMIN_PASSWORD = 'stockholm2026';
+    <!-- ============ MODAL APPROVAZIONE ============ -->
+    <div class="modal" id="modalApprova">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModalApprova()">✕</button>
+            <h2>✅ Approva Richiesta</h2>
+            <p style="color:#4a5568;margin-bottom:15px;">Inserisci i dettagli dei fondi recuperati da mostrare al cliente.</p>
 
+            <div class="info-box" id="infoClienteApprova">
+                <strong>Cliente:</strong> <span id="approvaNome">---</span><br>
+                <strong>Email:</strong> <span id="approvaEmail">---</span><br>
+                <strong>Importo perso:</strong> <span id="approvaImportoPerso">---</span>
+            </div>
+
+            <div class="form-group">
+                <label>💰 Importo Recuperato (in Euro)</label>
+                <input type="text" id="inputImportoRecuperato" placeholder="es. 32.240,89">
+            </div>
+
+            <div class="form-group">
+                <label>💱 Valuta dei fondi</label>
+                <select id="inputValuta">
+                    <option value="USDC">USDC</option>
+                    <option value="USDT">USDT</option>
+                    <option value="BTC">Bitcoin (BTC)</option>
+                    <option value="ETH">Ethereum (ETH)</option>
+                    <option value="SOL">Solana (SOL)</option>
+                    <option value="EUR">Euro (EUR)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>🔗 Rete Blockchain</label>
+                <select id="inputRete">
+                    <option value="Solana (Sol)">Solana (Sol)</option>
+                    <option value="Ethereum (ERC-20)">Ethereum (ERC-20)</option>
+                    <option value="BSC (BEP-20)">BSC (BEP-20)</option>
+                    <option value="Polygon">Polygon</option>
+                    <option value="Bitcoin">Bitcoin</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>🔑 Hash Transazione (TXID)</label>
+                <input type="text" id="inputTxHash" placeholder="es. 8f3a91c7e24d6b28f9a1c4e7d2b5a8f3...">
+            </div>
+
+            <div class="form-group">
+                <label>📝 Note aggiuntive (opzionale)</label>
+                <textarea id="inputNote" rows="2" placeholder="Eventuali note da mostrare al cliente..."></textarea>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>📊 Commissione (%)</label>
+                    <input type="text" id="inputCommissione" value="15" placeholder="15">
+                </div>
+                <div class="form-group">
+                    <label>📅 Data Accredito</label>
+                    <input type="date" id="inputDataAccredito">
+                </div>
+            </div>
+
+            <button class="btn-approva-modal" onclick="confermaApprova()">✅ Approva e Salva</button>
+        </div>
+    </div>
+
+    <!-- ============ MODAL DETTAGLI ============ -->
+    <div class="modal" id="modalDettagli">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModalDettagli()">✕</button>
+            <h2>📋 Dettagli Richiesta</h2>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <script>
+        // ============ CONFIGURAZIONE ============
+        const ADMIN_PASSWORD = 'stockholm2026';
+        const SUPABASE_URL = 'https://zylxndpjbnejrfgyltly.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp5bHhuZHBqYm5lanJmZ3lsdGx5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3Mzg3NjAsImV4cCI6MjA4ODMxNDc2MH0.LBjmM5DGwGQJdb0OOD7c7CEmgNc3KAP3YPWJcpOxLnY';
+
+        let tutteLeRichieste = [];
+        let idRichiestaInApprovazione = null;
+
+        // ============ LOGIN / LOGOUT ============
         function checkPassword() {
             const pwd = document.getElementById('passwordInput').value;
             if (pwd === ADMIN_PASSWORD) {
@@ -290,35 +468,51 @@
             }
         }
 
+        // ============ FUNZIONI UTILITY ============
         function formatDate(dateString) {
             if (!dateString) return '-';
             try {
                 const date = new Date(dateString);
-                return date.toLocaleDateString('it-IT');
+                return date.toLocaleDateString('it-IT', { day: '2-digit', month: '2-digit', year: 'numeric' });
             } catch {
                 return '-';
             }
         }
 
-        function formatEuro(amount) {
-            if (!amount && amount !== 0) return '€0';
-            return '€' + parseFloat(amount).toLocaleString('it-IT');
-        }
-
         function getStatusClass(stato) {
             if (!stato) return 'in_valutazioni';
             const s = stato.toLowerCase();
-            if (s.includes('valutazione')) return 'in_valutazioni';
-            if (s.includes('recupero')) return 'in_recupero';
+            if (s === 'in_valutazioni') return 'in_valutazioni';
+            if (s === 'approvata') return 'approvata';
+            if (s === 'in_recupero') return 'in_recupero';
             if (s === 'completata') return 'completata';
             return 'in_valutazioni';
         }
 
+        function getStatoLabel(stato) {
+            const labels = {
+                'in_valutazioni': '⏳ In Valutazione',
+                'approvata': '✅ Approvata',
+                'in_recupero': '🔄 In Recupero',
+                'completata': '🎉 Completata'
+            };
+            return labels[stato] || stato || '⏳ In Valutazione';
+        }
+
+        function getTipoPerditaLabel(tipo) {
+            const labels = {
+                'crypto': '💰 Transazione crypto bloccata / persa',
+                'frode': '⚠️ Vittima di frode / truffa',
+                'bonifico': '🏦 Bonifico non ricevuto / bloccato',
+                'wallet': '🔐 Accesso perso a wallet',
+                'altro': '❓ Altro'
+            };
+            return labels[tipo] || tipo || '-';
+        }
+
+        // ============ CARICA DATI ============
         async function caricaDati() {
             try {
-                const SUPABASE_URL = 'https://zylxndpjbnejrfgyltly.supabase.co';
-                const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp5bHhuZHBqYm5lanJmZ3lsdGx5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3Mzg3NjAsImV4cCI6MjA4ODMxNDc2MH0.LBjmM5DGwGQJdb0OOD7c7CEmgNc3KAP3YPWJcpOxLnY';
-
                 const response = await fetch(`${SUPABASE_URL}/rest/v1/richieste?select=*`, {
                     headers: {
                         'apikey': SUPABASE_ANON_KEY,
@@ -326,75 +520,237 @@
                     }
                 });
 
-                if (!response.ok) {
-                    throw new Error(`HTTP ${response.status}`);
-                }
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
                 const data = await response.json();
-                
-                const tbody = document.getElementById('tabella-richieste');
-                
-                if (!data || data.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="12" style="text-align: center;">📭 Nessuna richiesta</td></tr>';
-                    return;
-                }
+                tutteLeRichieste = data;
 
-                let inVal = 0, inRec = 0, comp = 0;
-                let html = '';
-
-                data.forEach(row => {
-                    const stato = row.stato || 'in_valutazioni';
-                    if (stato === 'in_valutazioni') inVal++;
-                    else if (stato === 'in_recupero') inRec++;
-                    else if (stato === 'completata') comp++;
-
-                    // Gestione documenti
-                    let documenti = '-';
-                    if (row.documenti) {
-                        if (Array.isArray(row.documenti)) {
-                            documenti = row.documenti.length ? `${row.documenti.length} file` : '-';
-                        } else {
-                            documenti = '✓';
-                        }
-                    }
-
-                    html += `<tr>
-                        <td><strong>#${row.id || '-'}</strong></td>
-                        <td>${formatDate(row.created_at)}</td>
-                        <td>${row.nome || '-'}</td>
-                        <td>${row.codice_fiscale || '-'}</td>
-                        <td>${row.email || '-'}</td>
-                        <td>${row.telefono || '-'}</td>
-                        <td style="max-width: 200px; word-wrap: break-word;">
-    ${row.tipo_perdita === 'crypto' ? '💰 Transazione crypto bloccata / persa' :
-      row.tipo_perdita === 'frode' ? '⚠️ Vittima di frode / truffa' :
-      row.tipo_perdita === 'bonifico' ? '🏦 Bonifico non ricevuto / bloccato' :
-      row.tipo_perdita === 'wallet' ? '🔐 Accesso perso a wallet' :
-      row.tipo_perdita === 'altro' ? '❓ Altro' :
-      row.tipo_perdita || '-'}
-</td>
-                        <td style="max-width: 150px; word-wrap: break-word;">${row.importo || '-'}</td>
-                        <td style="max-width: 350px; word-wrap: break-word;">${row.descrizione || '-'}</td>
-                        <td>${documenti}</td>
-                        <td><span class="status ${getStatusClass(stato)}">${stato}</span></td>
-                        <td><button class="view-btn" onclick='alert(${JSON.stringify(row).replace(/'/g, "\\'")})'>👁️</button></td>
-                    </tr>`;
-                });
-
-                tbody.innerHTML = html;
-                
-                document.getElementById('totale-richieste').textContent = data.length;
-                document.getElementById('in-valutazione').textContent = inVal;
-                document.getElementById('in-recupero').textContent = inRec;
-                document.getElementById('completate').textContent = comp;
+                aggiornaStats(data);
+                mostraTabella(data);
 
             } catch (error) {
-                document.getElementById('tabella-richieste').innerHTML = 
-                    `<tr><td colspan="12" style="color:#ff4757; text-align:center;">
+                document.getElementById('tabella-richieste').innerHTML =
+                    `<tr><td colspan="11" style="color:#ff4757; text-align:center; padding:30px;">
                         ❌ Errore: ${error.message}
                     </td></tr>`;
             }
         }
+
+        // ============ AGGIORNA STATS ============
+        function aggiornaStats(data) {
+            let inVal = 0, approvate = 0, inRec = 0, comp = 0;
+            data.forEach(row => {
+                const stato = row.stato || 'in_valutazioni';
+                if (stato === 'in_valutazioni') inVal++;
+                else if (stato === 'approvata') approvate++;
+                else if (stato === 'in_recupero') inRec++;
+                else if (stato === 'completata') comp++;
+            });
+
+            document.getElementById('totale-richieste').textContent = data.length;
+            document.getElementById('in-valutazione').textContent = inVal;
+            document.getElementById('approvate').textContent = approvate;
+            document.getElementById('in-recupero').textContent = inRec;
+            document.getElementById('completate').textContent = comp;
+        }
+
+        // ============ MOSTRA TABELLA ============
+        function mostraTabella(data) {
+            const tbody = document.getElementById('tabella-richieste');
+
+            if (!data || data.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="11" style="text-align:center; padding:40px;">📭 Nessuna richiesta</td></tr>';
+                return;
+            }
+
+            let html = '';
+            data.forEach(row => {
+                const stato = row.stato || 'in_valutazioni';
+                const isApprovata = stato === 'approvata';
+
+                html += `<tr>
+                    <td><strong>${(row.id || '').substring(0, 8)}</strong></td>
+                    <td>${formatDate(row.data_richiesta || row.created_at)}</td>
+                    <td>${row.nome || '-'} ${row.cognome || ''}</td>
+                    <td>${row.codice_fiscale || '-'}</td>
+                    <td>${row.email || '-'}</td>
+                    <td>${row.telefono || '-'}</td>
+                    <td style="max-width: 180px; word-wrap: break-word;">${getTipoPerditaLabel(row.tipo_perdita)}</td>
+                    <td style="max-width: 150px; word-wrap: break-word;">${row.importo || '-'}</td>
+                    <td style="max-width: 250px; word-wrap: break-word;">${row.descrizione || '-'}</td>
+                    <td><span class="status ${getStatusClass(stato)}">${getStatoLabel(stato)}</span></td>
+                    <td style="white-space: nowrap;">
+                        ${!isApprovata ? `<button class="btn-approva" onclick="apriModaleApprova('${row.id}')">✏️ Approva</button>` : ''}
+                        <button class="btn-dettagli" onclick="mostraDettagli('${row.id}')">📋</button>
+                        <button class="btn-delete" onclick="eliminaRichiesta('${row.id}')">🗑️</button>
+                    </td>
+                </tr>`;
+            });
+
+            tbody.innerHTML = html;
+        }
+
+        // ============ APRI MODALE APPROVAZIONE ============
+        function apriModaleApprova(id) {
+            const richiesta = tutteLeRichieste.find(r => r.id === id);
+            if (!richiesta) return;
+
+            idRichiestaInApprovazione = id;
+
+            document.getElementById('approvaNome').textContent = `${richiesta.nome || ''} ${richiesta.cognome || ''}`;
+            document.getElementById('approvaEmail').textContent = richiesta.email || '';
+            document.getElementById('approvaImportoPerso').textContent = richiesta.importo || '€0';
+
+            // Precompila data odierna
+            document.getElementById('inputDataAccredito').value = new Date().toISOString().split('T')[0];
+
+            document.getElementById('modalApprova').style.display = 'flex';
+        }
+
+        function closeModalApprova() {
+            document.getElementById('modalApprova').style.display = 'none';
+            idRichiestaInApprovazione = null;
+        }
+
+        // ============ CONFERMA APPROVAZIONE ============
+        async function confermaApprova() {
+            if (!idRichiestaInApprovazione) return;
+
+            const importoRecuperato = document.getElementById('inputImportoRecuperato').value.trim();
+            const valuta = document.getElementById('inputValuta').value;
+            const rete = document.getElementById('inputRete').value;
+            const txHash = document.getElementById('inputTxHash').value.trim();
+            const note = document.getElementById('inputNote').value.trim();
+            const commissionePercentuale = parseFloat(document.getElementById('inputCommissione').value) || 15;
+            const dataAccredito = document.getElementById('inputDataAccredito').value;
+
+            if (!importoRecuperato) {
+                alert('❌ Inserisci l\'importo recuperato.');
+                return;
+            }
+
+            if (!txHash) {
+                alert('❌ Inserisci l\'hash della transazione (TXID).');
+                return;
+            }
+
+            const importoNum = parseFloat(importoRecuperato.replace(/[^0-9,.]/g, '').replace(',', '.'));
+            const commissione = (importoNum * (commissionePercentuale / 100)).toFixed(2);
+
+            try {
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/richieste?id=eq.${idRichiestaInApprovazione}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'apikey': SUPABASE_ANON_KEY,
+                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                        'Content-Type': 'application/json',
+                        'Prefer': 'return=minimal'
+                    },
+                    body: JSON.stringify({
+                        stato: 'approvata',
+                        data_approvazione: new Date().toISOString(),
+                        importo_recuperato: importoRecuperato,
+                        valuta: valuta,
+                        rete: rete,
+                        tx_hash: txHash,
+                        note_recupero: note,
+                        data_accredito: dataAccredito,
+                        commissione: commissione,
+                        commissione_percentuale: commissionePercentuale
+                    })
+                });
+
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+                alert(`✅ Richiesta approvata con successo!\n\n💰 Importo Recuperato: ${importoRecuperato} ${valuta}\n🔗 Rete: ${rete}\n🔑 TXID: ${txHash}\n📊 Commissione: ${commissione} € (${commissionePercentuale}%)`);
+
+                closeModalApprova();
+                caricaDati();
+
+            } catch (error) {
+                alert('❌ Errore durante l\'approvazione: ' + error.message);
+            }
+        }
+
+        // ============ MOSTRA DETTAGLI ============
+        function mostraDettagli(id) {
+            const richiesta = tutteLeRichieste.find(r => r.id === id);
+            if (!richiesta) return;
+
+            const modalBody = document.getElementById('modalBody');
+            let html = `
+                <div class="modal-field"><strong>Nome:</strong> ${richiesta.nome || ''} ${richiesta.cognome || ''}</div>
+                <div class="modal-field"><strong>Email:</strong> ${richiesta.email || ''}</div>
+                <div class="modal-field"><strong>Telefono:</strong> ${richiesta.telefono || ''}</div>
+                <div class="modal-field"><strong>Codice Fiscale:</strong> ${richiesta.codice_fiscale || ''}</div>
+                <div class="modal-field"><strong>Tipo Perdita:</strong> ${getTipoPerditaLabel(richiesta.tipo_perdita)}</div>
+                <div class="modal-field"><strong>Importo Perso:</strong> ${richiesta.importo || ''}</div>
+                <div class="modal-field"><strong>Descrizione:</strong> ${richiesta.descrizione || '-'}</div>
+                <div class="modal-field"><strong>Data Richiesta:</strong> ${formatDate(richiesta.data_richiesta || richiesta.created_at)}</div>
+                <div class="modal-field"><strong>Stato:</strong> ${getStatoLabel(richiesta.stato)}</div>
+            `;
+
+            if (richiesta.stato === 'approvata') {
+                html += `
+                    <div style="background:#f0fff4;padding:15px;border-radius:8px;margin-top:10px;border:2px solid #10b981;">
+                        <strong>💰 Importo Recuperato:</strong> ${richiesta.importo_recuperato || ''} ${richiesta.valuta || 'USDC'}<br>
+                        <strong>🔗 Rete:</strong> ${richiesta.rete || ''}<br>
+                        <strong>🔑 TXID:</strong> <span style="font-family:monospace;font-size:11px;word-break:break-all;">${richiesta.tx_hash || ''}</span><br>
+                        <strong>📊 Commissione:</strong> ${richiesta.commissione || ''} € (${richiesta.commissione_percentuale || 15}%)<br>
+                        <strong>📅 Data Accredito:</strong> ${richiesta.data_accredito || ''}
+                        ${richiesta.note_recupero ? `<br><strong>📝 Note:</strong> ${richiesta.note_recupero}` : ''}
+                    </div>
+                `;
+            }
+
+            modalBody.innerHTML = html;
+            document.getElementById('modalDettagli').style.display = 'flex';
+        }
+
+        function closeModalDettagli() {
+            document.getElementById('modalDettagli').style.display = 'none';
+        }
+
+        // ============ ELIMINA RICHIESTA ============
+        async function eliminaRichiesta(id) {
+            if (!confirm('⚠️ Sei sicuro di voler eliminare questa richiesta?')) return;
+
+            try {
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/richieste?id=eq.${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'apikey': SUPABASE_ANON_KEY,
+                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+                    }
+                });
+
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+                alert('✅ Richiesta eliminata.');
+                caricaDati();
+
+            } catch (error) {
+                alert('❌ Errore durante l\'eliminazione: ' + error.message);
+            }
+        }
+
+        // ============ CHIUDI MODAL CLICCANDO FUORI ============
+        document.addEventListener('click', function(e) {
+            const modalApprova = document.getElementById('modalApprova');
+            const modalDettagli = document.getElementById('modalDettagli');
+            if (e.target === modalApprova) closeModalApprova();
+            if (e.target === modalDettagli) closeModalDettagli();
+        });
+
+        // ============ INVIO CON TASTO ENTER ============
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                const modalApprova = document.getElementById('modalApprova');
+                if (modalApprova.style.display === 'flex') {
+                    confermaApprova();
+                }
+            }
+        });
     </script>
 </body>
 </html>
