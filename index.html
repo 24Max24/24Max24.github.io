@@ -2130,18 +2130,18 @@
 
     <!-- SCRIPT PRINCIPALE -->
     <script type="module">
-        import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
-        
-        // Configurazione Supabase
-        const SUPABASE_URL = 'https://zylxndpjbnejrfgyltly.supabase.co'
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp5bHhuZHBqYm5lanJmZ3lsdGx5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3Mzg3NjAsImV4cCI6MjA4ODMxNDc2MH0.LBjmM5DGwGQJdb0OOD7c7CEmgNc3KAP3YPWJcpOxLnY'
-        
-        const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+    import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 
-        // GESTIONE UPLOAD FILE
-        const fileUploadArea = document.getElementById('fileUploadArea');
-        const fileInput = document.getElementById('fileInput');
-        const fileList = document.getElementById('fileList');
+    // Configurazione Supabase - CORRETTA ✅
+    const SUPABASE_URL = 'https://zylxndpjbnejrfgyltly.supabase.co'
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp5bHhuZHBqYm5lanJmZ3lsdGx5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3Mzg3NjAsImV4cCI6MjA4ODMxNDc2MH0.LBjmM5DGwGQJdb0OOD7c7CEmgNc3KAP3YPWJcpOxLnY'
+
+    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+
+    // GESTIONE UPLOAD FILE
+    const fileUploadArea = document.getElementById('fileUploadArea');
+    const fileInput = document.getElementById('fileInput');
+    const fileList = document.getElementById('fileList');
         let uploadedFiles = [];
 
         fileUploadArea.addEventListener('click', function() {
